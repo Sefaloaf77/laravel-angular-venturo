@@ -1,0 +1,32 @@
+<form>
+  <div class="form-group row">
+      <label class="col-md-4 required">Nama</label>
+      <div class="col-md-8">
+          <input [(ngModel)]="formModel.name" type="text" name="name" class="form-control" [ngClass]="{ 'disabled' : isDisabledForm}"
+              placeholder="Nama Pengguna">
+      </div>
+  </div>
+  <div class="form-group row">
+      <label class="col-md-4 required">Email</label>
+      <div class="col-md-8">
+          <input [(ngModel)]="formModel.email" type="email" name="email" class="form-control"
+              placeholder="Email Pengguna">
+      </div>
+  </div>
+  <div class="form-group row">
+      <label class="col-md-4">Password</label>
+      <div class="col-md-8">
+          <input [(ngModel)]="formModel.password" type="password" name="password" class="form-control" [ngClass]="{ 'disabled' : isDisabledForm}"
+              placeholder="Password">
+          <small class="form-text text-muted" *ngIf="activeMode == MODE_UPDATE">Kosongi password jika tidak
+              diubah
+          </small>
+      </div>
+  </div>
+  <div class="form-group row">
+      <label class="col-md-4"></label>
+      <div class="col-md-8">
+          <button type="submit" class="btn btn-primary" [ngClass]="{ 'disabled' : isDisabledForm}" (click)="save()">Simpan</button>
+      </div>
+  </div>
+</form>

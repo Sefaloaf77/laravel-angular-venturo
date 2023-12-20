@@ -1,0 +1,8 @@
+<div class="input-group mr-2">
+    <div class="input-group-prepend">
+        <span class="input-group-text">
+            <em class="fa fa-calendar"></em>
+        </span>
+    </div>
+    <input daterangepicker name="daterange" [(ngModel)]="model.daterange" (selected)="selectedDate($event)" type="text" class="form-control" placeholder="">
+</div>
