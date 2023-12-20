@@ -4,9 +4,11 @@ import {
     Input,
     Output,
     SimpleChange,
+    OnInit,
 } from "@angular/core";
 import { UserService } from "../../services/user.service";
 import { LandaService } from "src/app/core/services/landa.service";
+import { ProgressServiceService } from "src/app/feature/core/progress-service.service";
 
 @Component({
     selector: "app-form-user",
@@ -14,9 +16,9 @@ import { LandaService } from "src/app/core/services/landa.service";
     styleUrls: ["./form-user.component.scss"],
 })
 export class FormUserComponent {
-    name: string;
+    // name: string;
 
-    @Input() userId: number;
+    @Input() userId: string;
     @Output() afterSave = new EventEmitter<boolean>();
 
     readonly MODE_CREATE = "add";
@@ -24,7 +26,7 @@ export class FormUserComponent {
 
     activeMode: string;
     formModel: {
-        id: number;
+        id: string;
         name: string;
         email: string;
         password: string;
@@ -33,8 +35,15 @@ export class FormUserComponent {
 
     constructor(
         private userService: UserService,
-        private landaService: LandaService
+        private landaService: LandaService,
+        private progressService: ProgressServiceService
     ) {}
+
+    ngOnInit(): void {}
+
+    ngOnChanges(changes: SimpleChange) {
+        this.resetForm();
+    }
 
     getUser(userId) {
         this.userService.getUserById(userId).subscribe(
@@ -49,13 +58,13 @@ export class FormUserComponent {
 
     resetForm() {
         this.formModel = {
-            id: 0,
+            id: "",
             name: "",
             email: "",
             password: "",
         };
 
-        if (this.userId > 0) {
+        if (this.userId) {
             this.activeMode = this.MODE_UPDATE;
             this.getUser(this.userId);
             return true;
@@ -76,14 +85,17 @@ export class FormUserComponent {
 
     insert() {
         this.isDisabledForm = true;
+        this.progressService.startLoading();
         this.userService.createUser(this.formModel).subscribe(
             (res: any) => {
                 this.landaService.alertSuccess("Berhasil", res.message);
                 this.afterSave.emit();
+                this.progressService.finishLoading();
                 this.isDisabledForm = false;
             },
             (err) => {
                 this.landaService.alertError("Mohon maaf", err.error.errors);
+                this.progressService.finishLoading();
                 this.isDisabledForm = false;
             }
         );
@@ -91,22 +103,19 @@ export class FormUserComponent {
 
     update() {
         this.isDisabledForm = true;
+        this.progressService.startLoading();
         this.userService.updateUser(this.formModel).subscribe(
             (res: any) => {
                 this.landaService.alertSuccess("Berhasil", res.message);
                 this.afterSave.emit();
+                this.progressService.finishLoading();
                 this.isDisabledForm = false;
             },
             (err) => {
                 this.landaService.alertError("Mohon maaf", err.error.errors);
+                this.progressService.finishLoading();
                 this.isDisabledForm = false;
             }
         );
     }
-
-    ngOnChange(change: SimpleChange) {
-        this.resetForm();
-    }
-
-    ngOnInit(): void {}
 }

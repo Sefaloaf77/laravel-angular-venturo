@@ -9,6 +9,7 @@ import { LayoutComponent } from './layout.component';
 import { FooterComponent } from './footer/footer.component';
 import { HorizontalComponent } from './horizontal/horizontal.component';
 import { HorizontaltopbarComponent } from './horizontaltopbar/horizontaltopbar.component';
+import { NgProgressModule } from 'ngx-progressbar';
 
 @NgModule({
   declarations: [LayoutComponent, FooterComponent, HorizontalComponent, HorizontaltopbarComponent],
@@ -18,6 +19,7 @@ import { HorizontaltopbarComponent } from './horizontaltopbar/horizontaltopbar.c
     NgbDropdownModule,
     ClickOutsideModule,
     PerfectScrollbarModule,
+    NgProgressModule
   ],
   exports: []
 })

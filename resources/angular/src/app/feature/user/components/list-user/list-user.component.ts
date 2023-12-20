@@ -1,4 +1,4 @@
-import { Component } from "@angular/core";
+import { Component,OnInit } from "@angular/core";
 import { UserService } from "../../services/user.service";
 import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
 import Swal from "sweetalert2";
@@ -11,7 +11,7 @@ import Swal from "sweetalert2";
 export class ListUserComponent {
     listUser: any;
     titleModal: string;
-    userId: number;
+    userId: string;
 
     constructor(
         private userService: UserService,
@@ -31,7 +31,7 @@ export class ListUserComponent {
 
     createUser(modalId) {
         this.titleModal = "Tambah User";
-        this.userId = 0;
+        this.userId = "";
         this.modalService.open(modalId, { size: "lg", backdrop: "static" });
     }
 
