@@ -21,7 +21,9 @@ class UserResource extends JsonResource
             'email' => $this->email,
             // 'photo_url' => !empty($this->photo) ? Storage::disk('public')->url($this->photo) : Storage::disk('public')->url('../assets/img/no-image.png'),
             'photo_url' => !empty($this->photo) ? Storage::disk('public')->url($this->photo) : null,
-            'updated_security' => $this->updated_security
+            'phone_number' => $this->phone_number,
+            'updated_security' => $this->updated_security,
+            'user_roles_id' => (string) $this->user_roles_id,
         ];
     }
 }

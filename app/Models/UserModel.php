@@ -32,6 +32,7 @@ class UserModel extends Model implements CrudInterface
         'name',
         'email',
         'password',
+        'phone_number',
         'photo',
         'user_roles_id',
     ];

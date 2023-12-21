@@ -46,8 +46,8 @@ class UserController extends Controller
             'name' => $request->name ?? '',
             'email' => $request->email ?? '',
         ];
-        $users = $this->user->getAll($filter, 5, $request->sort ?? '');
-        
+        $users = $this->user->getAll($filter, $request->per_page ?? 25, $request->sort ?? '');
+
         return response()->success(new UserCollection($users['data']));
     }
 
@@ -82,7 +82,7 @@ class UserController extends Controller
             return response()->failed($request->validator->errors());
         }
 
-        $payload = $request->only(['email', 'name', 'password', 'photo']);
+        $payload = $request->only(['email', 'name', 'password', 'photo', 'phone_number', 'user_roles_id']);
         $user = $this->user->create($payload);
 
         if (!$user['status']) {
@@ -107,7 +107,7 @@ class UserController extends Controller
             return response()->failed($request->validator->errors());
         }
 
-        $payload = $request->only(['email', 'name', 'password', 'id', 'photo']);
+        $payload = $request->only(['email', 'name', 'password', 'id', 'photo', 'phone_number', 'user_roles_id']);
         $user = $this->user->update($payload, $payload['id'] ?? 0);
 
         if (!$user['status']) {

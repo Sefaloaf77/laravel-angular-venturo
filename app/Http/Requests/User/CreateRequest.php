@@ -45,6 +45,8 @@ class CreateRequest extends FormRequest
             'photo' => 'nullable|file|image', // Validasi untuk upload file image saja, jika tidak ada perubahan foto user, isi key foto dengan NULL
             'email' => 'required|email|unique:user_auth', // Validasi email unik berdasarkan data di tabel user_auth
             'password' => 'required|min:6',
+            'phone_number' => 'numeric',
+            'user_roles_id' => 'required'
         ];
     }
 

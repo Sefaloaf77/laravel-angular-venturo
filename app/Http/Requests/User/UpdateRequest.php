@@ -40,8 +40,10 @@ class UpdateRequest extends FormRequest
             'id' => 'required',
             'name' => 'required|max:100',
             'photo' => 'nullable|file|image',
-            'email'=> 'required|email|unique:user_auth',
+            'email'=> 'required|email',
             'password' => 'nullable|min:6',
+            'phone_number' => 'numeric',
+            'user_roles_id' => 'required'
         ];
     }
 
