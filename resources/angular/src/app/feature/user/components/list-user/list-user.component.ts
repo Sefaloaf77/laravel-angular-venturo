@@ -1,7 +1,8 @@
-import { Component,OnInit } from "@angular/core";
+import { Component, OnInit, ViewChild } from "@angular/core";
 import { UserService } from "../../services/user.service";
 import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
 import Swal from "sweetalert2";
+import { DataTableDirective } from "angular-datatables";
 
 @Component({
     selector: "app-list-user",
@@ -9,9 +10,17 @@ import Swal from "sweetalert2";
     styleUrls: ["./list-user.component.scss"],
 })
 export class ListUserComponent {
+    @ViewChild(DataTableDirective)
+    dtElement: DataTableDirective;
+    dtInstance: Promise<DataTables.Api>;
+    dtOptions: any;
+
     listUser: any;
     titleModal: string;
     userId: string;
+    filter: {
+        name: "";
+    };
 
     constructor(
         private userService: UserService,
@@ -19,14 +28,36 @@ export class ListUserComponent {
     ) {}
 
     getUser() {
-        this.userService.getUsers([]).subscribe(
-            (res: any) => {
-                this.listUser = res.data.list;
+        this.dtOptions = {
+            serverSide: true,
+            processing: true,
+            ordering: false,
+            pageLength: 25,
+            ajax: (dtParams: any, callback) => {
+                const params = {
+                    ...this.filter,
+                    per_page: dtParams.length,
+                    page: dtParams.start / dtParams.length + 1,
+                };
+
+                this.userService.getUsers(params).subscribe(
+                    (res: any) => {
+                        const { list, meta } = res.data;
+
+                        let number = dtParams.start + 1;
+                        list.forEach((val) => (val.no = number++));
+                        this.listUser = list;
+
+                        callback({
+                            recordsTotal: meta.total,
+                            recordsFiltered: meta.total,
+                            data: [],
+                        });
+                    },
+                    (err: any) => {}
+                );
             },
-            (err: any) => {
-                console.log(err);
-            }
-        );
+        };
     }
 
     createUser(modalId) {
@@ -58,7 +89,21 @@ export class ListUserComponent {
             });
         });
     }
+
+    reloadDataTable(): void {
+        this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
+            dtInstance.draw();
+        });
+    }
+
+    setDefault() {
+        this.filter = {
+            name: "",
+        };
+    }
+
     ngOnInit(): void {
+        this.setDefault();
         this.getUser();
     }
 }

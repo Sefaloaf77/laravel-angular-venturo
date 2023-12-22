@@ -23,7 +23,11 @@ export class UserService {
         return this.landaService.DataPut("/v1/users", payload);
     }
 
-    deleteUser(userId){
+    deleteUser(userId) {
         return this.landaService.DataDelete("/v1/users/" + userId);
+    }
+
+    getRoles(arrParameter = {}) {
+        return this.landaService.DataGet("/v1/roles", arrParameter);
     }
 }

@@ -1,0 +1,29 @@
+.upload-image-container {
+   max-width: 500px;
+   background: #c2c2c233;
+   border-radius: 5px;
+   text-align: center;
+}
+
+.no-image {
+   padding: 50px 25px;
+}
+
+.image-picker .fa {
+   font-size: 4em;
+   color: #C2C2C2;
+}
+
+.image-picker:hover {
+   cursor: pointer;
+   transition: opacity 0.5s ease;
+   opacity: 0.5;
+}
+
+.image-picker img {
+   width: 100%;
+}
+
+.hide {
+   display: none;
+}

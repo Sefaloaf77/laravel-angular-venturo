@@ -12,7 +12,7 @@ class RoleModel extends Model implements CrudInterface
 {
     use HasFactory;
     use SoftDeletes; // Use SoftDeletes library
-    use Uuid;
+    // use Uuid;
     /**
      * Menentukan nama tabel yang terhubung dengan Class ini
      *
@@ -37,9 +37,9 @@ class RoleModel extends Model implements CrudInterface
         'access'
     ];
 
-    protected $casts = [
-        'id' => 'string',
-    ];
+    // protected $casts = [
+    //     'id' => 'string',
+    // ];
 
     public function getAll(array $filter, int $itemPerPage = 0, string $sort = '')
     {

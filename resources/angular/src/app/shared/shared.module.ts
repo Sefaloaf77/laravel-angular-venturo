@@ -5,18 +5,19 @@ import { ImageCropperModule } from 'ngx-image-cropper';
 import { DaterangepickerComponent } from './daterangepicker/daterangepicker.component';
 import { Daterangepicker } from 'ng2-daterangepicker';
 import { FormsModule } from '@angular/forms';
+import { UploadImageComponent } from './upload-image/upload-image.component';
 
 @NgModule({
-  declarations: [PageTitleComponent, DaterangepickerComponent],
-  imports: [
-    CommonModule,
-    FormsModule,
-    ImageCropperModule,
-    Daterangepicker
-  ],
-  exports: [
-    PageTitleComponent,
-    DaterangepickerComponent
-  ]
+    declarations: [
+        PageTitleComponent,
+        DaterangepickerComponent,
+        UploadImageComponent,
+    ],
+    imports: [CommonModule, FormsModule, ImageCropperModule, Daterangepicker],
+    exports: [
+        PageTitleComponent,
+        DaterangepickerComponent,
+        UploadImageComponent,
+    ],
 })
-export class SharedModule { }
+export class SharedModule {}

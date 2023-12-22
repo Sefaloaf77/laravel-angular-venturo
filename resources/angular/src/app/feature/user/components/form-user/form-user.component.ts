@@ -24,12 +24,17 @@ export class FormUserComponent {
     readonly MODE_CREATE = "add";
     readonly MODE_UPDATE = "update";
 
+    roles = [];
+
     activeMode: string;
     formModel: {
+        photo: string;
         id: string;
         name: string;
         email: string;
         password: string;
+        phone_number: string;
+        user_roles_id: string;
     };
     isDisabledForm: boolean = false;
 
@@ -57,11 +62,15 @@ export class FormUserComponent {
     }
 
     resetForm() {
+        this.getRoles();
         this.formModel = {
             id: "",
             name: "",
             email: "",
             password: "",
+            phone_number: "",
+            user_roles_id: "",
+            photo:""
         };
 
         if (this.userId) {
@@ -117,5 +126,20 @@ export class FormUserComponent {
                 this.isDisabledForm = false;
             }
         );
+    }
+
+    getRoles() {
+        this.userService.getRoles().subscribe(
+            (res: any) => {
+                this.roles = res.data.list;
+            },
+            (err) => {
+                console.log(err);
+            }
+        );
+    }
+
+    getCroppedImage($event) {
+        this.formModel.photo = $event;
     }
 }
