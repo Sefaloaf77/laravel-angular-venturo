@@ -26,7 +26,7 @@ class CreateRequest extends FormRequest
             'email' => 'required|email',
             'phone_number' => 'nullable|numeric',
             'photo' => 'nullable|file|image',
-            'date_of_birth' => 'date',
+            'date_of_birth' => 'nullable|date',
             'is_verified' => 'nullable'
         ];
     }

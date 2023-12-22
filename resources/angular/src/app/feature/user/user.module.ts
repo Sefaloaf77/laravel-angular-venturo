@@ -6,11 +6,12 @@ import { ListUserComponent } from "./components/list-user/list-user.component";
 import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
 import { DataTablesModule } from "angular-datatables";
 import { SharedModule } from "src/app/shared/shared.module";
+import { FormProfileComponent } from './components/form-profile/form-profile.component';
 
 @NgModule({
     declarations: [
       FormUserComponent, 
-      ListUserComponent
+      ListUserComponent, FormProfileComponent
     ],
     imports: [
       CommonModule, 

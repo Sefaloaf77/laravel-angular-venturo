@@ -6,7 +6,6 @@ use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Contracts\Validation\Validator;
 use ProtoneMedia\LaravelMixins\Request\ConvertsBase64ToFiles;
 
-
 class UpdateRequest extends FormRequest
 {
     use ConvertsBase64ToFiles; // Library untuk convert base64 menjadi File
@@ -34,11 +33,11 @@ class UpdateRequest extends FormRequest
     {
         return [
             'id' => 'required',
-            'name' => 'required|max:100',
-            'email' => 'required|email',
+            'name' => 'max:100',
+            'email' => 'email',
             'phone_number' => 'nullable|numeric',
             'photo' => 'nullable|file|image',
-            'date_of_birth' => 'date',
+            'date_of_birth' => 'nullable|date',
             'is_verified' => 'nullable'
         ];
     }

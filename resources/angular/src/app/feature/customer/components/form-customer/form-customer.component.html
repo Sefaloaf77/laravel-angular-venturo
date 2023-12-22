@@ -1,0 +1,78 @@
+<form>
+    <div class="form-group row mt-3">
+        <div class="col-md-4"></div>
+        <div class="col-md-4">
+            <app-upload-image
+                [defaultImage]="formModel.photo"
+                [ratioHigh]="4"
+                [ratioWidth]="3"
+                (onSubmit)="getCroppedImage($event)"
+            >
+            </app-upload-image>
+        </div>
+        <div class="col-md-4"></div>
+    </div>
+    <hr />
+    <div class="form-group row">
+        <label class="col-md-4 required">Nama</label>
+        <div class="col-md-8">
+            <input
+                [(ngModel)]="formModel.name"
+                type="text"
+                name="name"
+                class="form-control"
+                [ngClass]="{ disabled: isDisabledForm }"
+                placeholder="Nama Customer"
+            />
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-md-4 required">Email</label>
+        <div class="col-md-8">
+            <input
+                [(ngModel)]="formModel.email"
+                type="email"
+                name="email"
+                class="form-control"
+                placeholder="Email Customer"
+            />
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-md-4">Telepon</label>
+        <div class="col-md-8">
+            <input
+                [(ngModel)]="formModel.phone_number"
+                type="text"
+                name="phone_number"
+                class="form-control"
+                placeholder="No Telepon"
+            />
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-md-4">Tanggal Lahir</label>
+        <div class="col-md-8">
+            <input
+                [(ngModel)]="formModel.date_of_birth"
+                type="date"
+                name="date_of_birth"
+                class="form-control"
+                placeholder="Tanggal Lahir"
+            />
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-md-4"></label>
+        <div class="col-md-8 d-flex justify-content-end">
+            <button
+                type="submit"
+                class="btn btn-primary"
+                [ngClass]="{ disabled: isDisabledForm }"
+                (click)="save()"
+            >
+                Simpan
+            </button>
+        </div>
+    </div>
+</form>

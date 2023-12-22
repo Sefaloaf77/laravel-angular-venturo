@@ -10,7 +10,6 @@ use Throwable;
  * Helper untuk manajemen user
  * Mengambil data, menambah, mengubah, & menghapus ke tabel user_auth
  *
- * @author Wahyu Agung <wahyuagung26@gmail.com>
  */
 class UserHelper extends Venturo
 {
@@ -25,7 +24,6 @@ class UserHelper extends Venturo
     /**
      * method untuk menginput data baru ke tabel user_auth
      *
-     * @author Wahyu Agung <wahyuagung26@email.com>
      *
      * @param array $payload
      *                       $payload['name'] = string

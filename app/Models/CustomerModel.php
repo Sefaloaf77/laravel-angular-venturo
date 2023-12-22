@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use App\Repository\CrudInterface;
 
 class CustomerModel extends Model
 {
@@ -17,12 +18,12 @@ class CustomerModel extends Model
         'name', 'email', 'phone_number', 'date_of_birth', 'photo', 'is_verified'
     ];
 
-    public function drop(string $id)
+    public function drop(int $id)
     {
         return $this->find($id)->delete();
     }
 
-    public function edit(array $payload, string $id)
+    public function edit(array $payload, int $id)
     {
         return $this->find($id)->update($payload);
     }
@@ -46,7 +47,7 @@ class CustomerModel extends Model
         return $user->paginate($itemPerPage)->appends('sort', $sort);
     }
 
-    public function getById(string $id)
+    public function getById(int $id)
     {
         return $this->find($id);
     }

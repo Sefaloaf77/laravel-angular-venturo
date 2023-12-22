@@ -10,7 +10,6 @@ use Throwable;
  * Helper untuk manajemen customer
  * Mengambil data, menambah, mengubah, & menghapus ke tabel m_customer
  *
- * @author Wahyu Agung <wahyuagung26@gmail.com>
  */
 class CustomerHelper extends Venturo
 {
@@ -25,7 +24,6 @@ class CustomerHelper extends Venturo
     /**
      * method untuk menginput data baru ke tabel m_customer
      *
-     * @author Wahyu Agung <wahyuagung26@email.com>
      *
      * @param array $payload
      *                       $payload['name'] = string
@@ -63,7 +61,7 @@ class CustomerHelper extends Venturo
      *
      * @return bool
      */
-    public function delete(string $id): bool
+    public function delete(int $id): bool
     {
         try {
             $this->customerModel->drop($id);
@@ -104,7 +102,7 @@ class CustomerHelper extends Venturo
      *
      * @return array
      */
-    public function getById(string $id): array
+    public function getById(int $id): array
     {
         $customer = $this->customerModel->getById($id);
         if (empty($customer)) {
@@ -134,7 +132,7 @@ class CustomerHelper extends Venturo
      *
      * @return array
      */
-    public function update(array $payload, string $id): array
+    public function update(array $payload, int $id): array
     {
         try {
             // if (isset($payload['password']) && !empty($payload['password'])) {
@@ -142,7 +140,6 @@ class CustomerHelper extends Venturo
             // } else {
             //     unset($payload['password']);
             // }
-
             $payload = $this->uploadGetPayload($payload);
             $this->customerModel->edit($payload, $id);
 
@@ -163,7 +160,6 @@ class CustomerHelper extends Venturo
     /**
      * Upload file and remove payload when photo is not exist
      *
-     * @author Wahyu Agung <wahyuagung26@email.com>
      *
      * @param array $payload
      * @return array

@@ -83,11 +83,12 @@ class CustomerController extends Controller
          * Menampilkan pesan error ketika validasi gagal
          * pengaturan validasi bisa dilihat pada class app/Http/request/Customer/UpdateRequest
          */
+        // dd($request);
         if (isset($request->validator) && $request->validator->fails()) {
             return response()->failed($request->validator->errors());
         }
-
-        $payload = $request->only(['name', 'email', 'phone_number', 'date_of_birth', 'photo', 'is_verified']);
+        
+        $payload = $request->only(['name', 'email', 'phone_number', 'date_of_birth', 'photo', 'is_verified','id']);
         $customer = $this->customer->update($payload, $payload['id'] ?? 0);
 
         if (!$customer['status']) {

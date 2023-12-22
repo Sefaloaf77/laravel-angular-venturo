@@ -27,6 +27,12 @@ const routes: Routes = [
         loadChildren: () =>
             import("./feature/test/test.module").then((m) => m.TestModule),
     },
+    {
+        path: "",
+        component: LayoutComponent,
+        loadChildren: () =>
+            import("./feature/customer/customer.module").then((m) => m.CustomerModule),
+    },
 ];
 
 @NgModule({

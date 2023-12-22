@@ -1,44 +1,34 @@
-import {
-    Component,
-    EventEmitter,
-    Input,
-    Output,
-    SimpleChange,
-    OnInit,
-} from "@angular/core";
-import { UserService } from "../../services/user.service";
+import { Component, EventEmitter, Input, Output, SimpleChange } from "@angular/core";
+import { CustomerService } from "../../services/customer.service";
 import { LandaService } from "src/app/core/services/landa.service";
 import { ProgressServiceService } from "src/app/feature/core/progress-service.service";
 
 @Component({
-    selector: "app-form-user",
-    templateUrl: "./form-user.component.html",
-    styleUrls: ["./form-user.component.scss"],
+    selector: "app-form-customer",
+    templateUrl: "./form-customer.component.html",
+    styleUrls: ["./form-customer.component.scss"],
 })
-export class FormUserComponent {
-
-    @Input() userId: string;
+export class FormCustomerComponent {
+    @Input() customerId: number;
     @Output() afterSave = new EventEmitter<boolean>();
 
     readonly MODE_CREATE = "add";
     readonly MODE_UPDATE = "update";
 
-    roles = [];
-
     activeMode: string;
     formModel: {
         photo: string;
-        id: string;
+        id: number;
         name: string;
         email: string;
-        password: string;
         phone_number: string;
-        user_roles_id: string;
+        date_of_birth: string;
+        is_verified: string;
     };
     isDisabledForm: boolean = false;
 
     constructor(
-        private userService: UserService,
+        private customerService: CustomerService,
         private landaService: LandaService,
         private progressService: ProgressServiceService
     ) {}
@@ -49,8 +39,27 @@ export class FormUserComponent {
         this.resetForm();
     }
 
-    getUser(userId) {
-        this.userService.getUserById(userId).subscribe(
+    resetForm() {
+        this.formModel = {
+            id: 0,
+            name: "",
+            email: "",
+            phone_number: "",
+            date_of_birth: "",
+            is_verified: "",
+            photo: "",
+        };
+
+        if (this.customerId) {
+            this.activeMode = this.MODE_UPDATE;
+            this.getCustomer(this.customerId);
+            return true;
+        }
+        this.activeMode = this.MODE_CREATE;
+    }
+
+    getCustomer(customerId) {
+        this.customerService.getCustomerById(customerId).subscribe(
             (res: any) => {
                 this.formModel = res.data;
             },
@@ -58,26 +67,6 @@ export class FormUserComponent {
                 console.log(err);
             }
         );
-    }
-
-    resetForm() {
-        this.getRoles();
-        this.formModel = {
-            id: "",
-            name: "",
-            email: "",
-            password: "",
-            phone_number: "",
-            user_roles_id: "",
-            photo:""
-        };
-
-        if (this.userId) {
-            this.activeMode = this.MODE_UPDATE;
-            this.getUser(this.userId);
-            return true;
-        }
-        this.activeMode = this.MODE_CREATE;
     }
 
     save() {
@@ -94,7 +83,7 @@ export class FormUserComponent {
     insert() {
         this.isDisabledForm = true;
         this.progressService.startLoading();
-        this.userService.createUser(this.formModel).subscribe(
+        this.customerService.createCustomer(this.formModel).subscribe(
             (res: any) => {
                 this.landaService.alertSuccess("Berhasil", res.message);
                 this.afterSave.emit();
@@ -112,7 +101,7 @@ export class FormUserComponent {
     update() {
         this.isDisabledForm = true;
         this.progressService.startLoading();
-        this.userService.updateUser(this.formModel).subscribe(
+        this.customerService.updateCustomer(this.formModel).subscribe(
             (res: any) => {
                 this.landaService.alertSuccess("Berhasil", res.message);
                 this.afterSave.emit();
@@ -127,18 +116,8 @@ export class FormUserComponent {
         );
     }
 
-    getRoles() {
-        this.userService.getRoles().subscribe(
-            (res: any) => {
-                this.roles = res.data.list;
-            },
-            (err) => {
-                console.log(err);
-            }
-        );
-    }
-
     getCroppedImage($event) {
         this.formModel.photo = $event;
     }
+    
 }
