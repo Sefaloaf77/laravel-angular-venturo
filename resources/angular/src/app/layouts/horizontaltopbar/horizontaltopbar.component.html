@@ -25,6 +25,10 @@
                     <em class="mdi mdi-chevron-down d-none d-xl-inline-block"></em>
                 </button>
                 <div class="dropdown-menu dropdown-menu-right" ngbDropdownMenu>
+                    <a class="dropdown-item" href="javascript: void(0);" [routerLink]="['/editProfile']">
+                        <em class="font-size-16 fa fa-user mr-1"></em>
+                        Profile
+                    </a>
                     <a class="dropdown-item text-danger" href="javascript: void(0);" (click)="logout()">
                         <em class="bx bx-power-off font-size-16 align-middle mr-1 text-danger"></em>
                         Logout
@@ -44,6 +48,8 @@
                 <div class="dropdown-menu row" ngbDropdownMenu>
                     <a href="javascript: void(0);" [routerLink]="['/user']" class="col dropdown-item side-nav-link-ref">User</a>
                     <a href="javascript: void(0);" [routerLink]="['/customer']" class="col dropdown-item side-nav-link-ref">Customer</a>
+                    <a href="javascript: void(0);" [routerLink]="['/category']" class="col dropdown-item side-nav-link-ref">Menu Kategori</a>
+                    <a href="javascript: void(0);" [routerLink]="['/product']" class="col dropdown-item side-nav-link-ref">Menu</a>
                 </div>
             </li>
             <li class="nav-item dropdown" ngbDropdown>

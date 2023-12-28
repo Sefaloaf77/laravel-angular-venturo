@@ -1,0 +1,15 @@
+<form>
+   <div class="form-group row">
+       <label class="col-md-4 required">Nama</label>
+       <div class="col-md-8">
+           <input [(ngModel)]="formModel.name" type="text" name="name" class="form-control"
+               placeholder="Tuliskan Nama Kategori">
+       </div>
+   </div>
+   <div class="form-group row">
+       <label class="col-md-4"></label>
+       <div class="col-md-8 text-right">
+           <button type="submit" class="btn btn-primary" (click)="save()"><em class="fa fa-save"></em> Simpan</button>
+       </div>
+   </div>
+</form>

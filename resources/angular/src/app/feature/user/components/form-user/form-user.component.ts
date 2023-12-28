@@ -4,7 +4,6 @@ import {
     Input,
     Output,
     SimpleChange,
-    OnInit,
 } from "@angular/core";
 import { UserService } from "../../services/user.service";
 import { LandaService } from "src/app/core/services/landa.service";

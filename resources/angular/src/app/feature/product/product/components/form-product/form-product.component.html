@@ -1,0 +1,221 @@
+<form>
+    <div class="row">
+        <div class="col-md-2">
+            <div class="form-group row">
+                <div class="col-md-12">
+                    <app-upload-image
+                        [defaultImage]="formModel.photo_url"
+                        [ratioHigh]="3"
+                        [ratioWidth]="3"
+                        (onSubmit)="getCroppedImage($event)"
+                    ></app-upload-image>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="form-group row">
+                <label class="form-label col-md-3 required">Nama</label>
+                <div class="col-md-9">
+                    <input
+                        [(ngModel)]="formModel.name"
+                        type="text"
+                        name="name"
+                        class="form-control"
+                        placeholder="Tulis nama menu"
+                    />
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-md-3 required">Kategori</label>
+                <div class="col-md-9">
+                    <ng-select
+                        [items]="categories"
+                        placeholder="Pilih kategori"
+                        bindLabel="name"
+                        bindValue="id"
+                        [loading]="showLoading"
+                        [searchable]="false"
+                        [(ngModel)]="formModel.product_category_id"
+                        name="product_category_id"
+                    >
+                        <ng-template ng-header-tmp>
+                            <input
+                                class="form-control"
+                                type="text"
+                                debounceKeyUp
+                                (onEvent)="getCategories($event.target.value)"
+                            />
+                        </ng-template>
+                    </ng-select>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-md-3 required">Status</label>
+                <div class="col-md-9">
+                    <div
+                        class="btn-group"
+                        role="group"
+                        aria-label="Basic radio toggle button group"
+                        ngbRadioGroup
+                        name="is_available"
+                        [(ngModel)]="formModel.is_available"
+                    >
+                        <input
+                            type="radio"
+                            class="btn-check"
+                            name="is_available"
+                            id="btnradio1"
+                            autocomplete="off"
+                            ngbButton
+                            [value]="1"
+                            [(ngModel)]="formModel.is_available" [checked]="formModel.is_available == '1'"
+                        />
+                        <label
+                            class="btn btn-outline-primary"
+                            for="btnradio1"
+                            ngbButtonLabel
+                            >Ada</label
+                        >
+
+                        <input
+                            type="radio"
+                            class="btn-check"
+                            name="is_available"
+                            id="btnradio3"
+                            autocomplete="off"
+                            ngbButton
+                            [value]="0"
+                            [(ngModel)]="formModel.is_available" [checked]="formModel.is_available === '0'"
+                        />
+                        <label
+                            class="btn btn-outline-primary"
+                            for="btnradio3"
+                            ngbButtonLabel
+                            >Habis</label
+                        >
+                    </div>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-md-3 required">Harga</label>
+                <div class="col-md-9">
+                    <div class="input-group mr-2">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"> Rp </span>
+                        </div>
+                        <input
+                            [(ngModel)]="formModel.price"
+                            type="text"
+                            name="price"
+                            class="form-control"
+                            placeholder="Ex. 10.000"
+                        />
+                    </div>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-md-3">Deskripsi</label>
+                <div class="col-md-9">
+                    <ckeditor
+                        [editor]="configEditor"
+                        [(ngModel)]="formModel.description"
+                        name="description"
+                    ></ckeditor>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>
+                                <button
+                                    class="btn btn-sm btn-success"
+                                    (click)="addDetail()"
+                                >
+                                    <em class="fa fa-plus"></em>
+                                </button>
+                            </th>
+                            <th style="min-width: 200px">Keterangan</th>
+                            <th style="min-width: 200px">Type</th>
+                            <th style="min-width: 150px">Harga</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr
+                            *ngFor="let detail of formModel.details; index as i"
+                        >
+                            <td>
+                                <button
+                                    class="btn btn-sm btn-danger"
+                                    (click)="removeDetail(formModel.details, i)"
+                                >
+                                    <em class="fa fa-trash"></em>
+                                </button>
+                            </td>
+                            <td>
+                                <input
+                                    type="text"
+                                    placeholder="Ex. Level 1"
+                                    (change)="changeDetail(detail)"
+                                    class="form-control"
+                                    name="description[{{ i }}]"
+                                    [(ngModel)]="detail.description"
+                                />
+                            </td>
+                            <td>
+                                <ng-select
+                                    name="type[{{ i }}]"
+                                    appendTo="body"
+                                    [(ngModel)]="detail.type"
+                                    placeholder="Pilih Tipe "
+                                    [searchable]="false"
+                                    (change)="changeDetail(detail)"
+                                >
+                                    <ng-option [value]="'Toping'"
+                                        >Toping</ng-option
+                                    >
+                                    <ng-option [value]="'Level'"
+                                        >Level</ng-option
+                                    >
+                                </ng-select>
+                            </td>
+                            <td>
+                                <div class="input-group mr-2">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text">
+                                            Rp
+                                        </span>
+                                    </div>
+                                    <input
+                                        [(ngModel)]="detail.price"
+                                        type="text"
+                                        (change)="changeDetail(detail)"
+                                        name="price[{{ i }}]"
+                                        class="form-control"
+                                        placeholder="Ex. 10.000"
+                                    />
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12 text-right">
+            <button
+                type="button"
+                class="btn btn-light mr-2"
+                (click)="afterSave.emit()"
+            >
+                <em class="fa fa-arrow-left"></em> Kembali
+            </button>
+            <button type="button" class="btn btn-primary" (click)="save()">
+                <em class="fa fa-save"></em> Simpan
+            </button>
+        </div>
+    </div>
+</form>

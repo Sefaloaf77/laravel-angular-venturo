@@ -1,0 +1,64 @@
+<div class="container-fluid">
+   <div class="row">
+       <div class="col-md-12">
+           <div class="card card-transparent">
+               <div class="card-header  d-flex justify-content-between">
+                   <h1>Daftar Kategori</h1>
+                   <div class="d-flex justify-content-end">
+                       <button type="button" class="btn btn-sm btn-primary mr-2"
+                           (click)="createCategory(formCategory)">
+                           <em class="fa fa-plus font-size-14 align-middle mr-1"></em> Tambah Kategori
+                       </button>
+                   </div>
+               </div>
+               <div class="card-body">
+                   <table class="table table-hover" datatable [dtOptions]="dtOptions">
+                       <thead class="thead-light">
+                           <tr>
+                               <th class="text-center" style="width: 10px;">No</th>
+                               <th class="text-left">Nama</th>
+                               <th class="text-center"></th>
+                           </tr>
+                       </thead>
+                       <tbody dndDropzone dndEffectAllowed="move" (dndDrop)="onDrop($any($event), listCategory)">
+                           <tr  dndPlaceholderRef class="py-4 ">
+                               <td colspan="3 " class="dndPlaceholder"></td>
+                           </tr>
+                           <tr class="py-2 draggable" draggable="true"
+                               *ngFor="let category of listCategory ; let i = index;" [dndDraggable]="category"
+                               dndEffectAllowed="move" (dndMoved)="onDragged(category, listCategory)">
+                               <td class="text-center">{{i+1}}</td>
+                               <td class="vertical-middle text-left">{{category.name}}</td>
+                               <td class="vertical-middle text-center">
+                                   <a href="javascript: void(0);" class="align-middle mr-2"
+                                       (click)="updateCategory(formCategory, category)" placement="left"
+                                       container="body" ngbTooltip="Ubah">
+                                       <em class="fa fa-edit font-size-14"></em>
+                                   </a>
+                                   <a href="javascript: void(0);" class="align-middle"
+                                       (click)="deleteCategory(category.id)" placement="left" container="body"
+                                       ngbTooltip="Hapus">
+                                       <em class="fa fa-trash font-size-14"></em>
+                                   </a>
+                               </td>
+                           </tr>
+                       </tbody>
+                   </table>
+               </div>
+
+           </div>
+       </div>
+   </div>
+</div>
+
+<ng-template #formCategory let-modal>
+   <div class="modal-header">
+       <h5 class="modal-title mt-0">{{titleModal}}</h5>
+       <button type="button" class="close" (click)="modal.close()" aria-label="Close">
+           <span aria-hidden="true">&times;</span>
+       </button>
+   </div>
+   <div class="modal-body">
+       <app-form-category [categoryId]="categoryId" (afterSave)="modal.close(); reloadDataTable()"></app-form-category>
+   </div>
+</ng-template>
