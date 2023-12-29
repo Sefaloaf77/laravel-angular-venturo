@@ -110,19 +110,19 @@ class ProductHelper extends Venturo
         ];
     }
 
-    public function update(array $payload): array
+    public function update(array $payload,$id): array
     {
         try {
             $payload = $this->uploadAndGetPayload($payload);
 
             $this->beginTransaction();
 
-            $this->product->edit($payload, $payload['id']);
+            $this->product->edit($payload, $id);
 
-            $this->insertUpdateDetail($payload['details'] ?? [], $payload['id']);
+            $this->insertUpdateDetail($payload['details'] ?? [], $id);
             $this->deleteDetail($payload['details_deleted'] ?? []);
 
-            $product = $this->getById($payload['id']);
+            $product = $this->getById($id);
             $this->commitTransaction();
 
             return [
