@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\PromoController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\RoleController;
 use App\Http\Controllers\Api\UserController;
@@ -48,6 +49,12 @@ Route::prefix('v1')->group(function () {
     Route::post('/products', [ProductController::class, 'store']);
     Route::put('/products', [ProductController::class, 'update']);
     Route::delete('/products/{id}', [ProductController::class, 'destroy']);
+    
+    Route::get('/promo', [PromoController::class, 'index']);
+    Route::get('/promo/{id}', [PromoController::class, 'show']);
+    Route::post('/promo', [PromoController::class, 'store']);
+    Route::put('/promo', [PromoController::class, 'update']);
+    Route::delete('/promo/{id}', [PromoController::class, 'destroy']);
 });
 
 Route::get('/', function () {

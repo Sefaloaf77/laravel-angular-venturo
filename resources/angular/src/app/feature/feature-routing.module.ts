@@ -8,6 +8,7 @@ import { ListCustomerComponent } from "./customer/components/list-customer/list-
 import { FormProfileComponent } from "./user/components/form-profile/form-profile.component";
 import { ListCategoryComponent } from "./product/category/components/list-category/list-category.component";
 import { ListProductComponent } from "./product/product/components/list-product/list-product.component";
+import { ListPromoComponent } from "./promo/components/list-promo/list-promo.component";
 
 
 const routes: Routes = [
@@ -34,6 +35,7 @@ const routes: Routes = [
         component: ListCategoryComponent,
     },
     { path: "product", component:  ListProductComponent},
+    { path: "promo", component:  ListPromoComponent},
 ];
 
 @NgModule({

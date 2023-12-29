@@ -1,0 +1,160 @@
+<div class="container-fluid" *ngIf="!showForm">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card card-transparent">
+                <div class="card-header d-flex justify-content-between">
+                    <h1>Daftar Promo</h1>
+                    <div class="row d-flex justify-content-end">
+                        <div class="col-9">
+                            <form
+                                class="form-inline input-group align-items-center"
+                            >
+                                <div class="form-group p-2">
+                                    <div class="input-group mr-2">
+                                        <input
+                                            type="text"
+                                            class="form-control"
+                                            placeholder="Tulis nama promo"
+                                            [(ngModel)]="filter.name"
+                                            name="name"
+                                            debounceKeyUp
+                                            (onEvent)="reloadDataTable()"
+                                        />
+                                    </div>
+                                </div>
+                                <div class="form-group p-2">
+                                    <div class="input-group mr-2">
+                                        <ng-select
+                                            name="type"
+                                            appendTo="body"
+                                            [(ngModel)]="filter.status"
+                                            placeholder="Status"
+                                            [searchable]="false"
+                                            (change)="reloadDataTable()"
+                                        >
+                                            <ng-option [value]="'voucher'"
+                                                >Voucher</ng-option
+                                            >
+                                            <ng-option [value]="'diskon'"
+                                                >Diskon</ng-option
+                                            >
+                                        </ng-select>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="col-3 align-self-center">
+                            <button
+                                type="button"
+                                class="btn btn-sm btn-primary mr-2"
+                                (click)="formCreate()"
+                            >
+                                <em
+                                    class="fa fa-plus font-size-14 align-middle mr-1"
+                                ></em>
+                                Tambah Promo
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <table
+                        class="table table-hover"
+                        datatable
+                        [dtOptions]="dtOptions"
+                    >
+                        <thead class="thead-light">
+                            <tr>
+                                <th style="width: 70px">No</th>
+                                <th>Gambar</th>
+                                <th>Nama</th>
+                                <th>Tipe</th>
+                                <th>Total</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let promo of listPromo">
+                                <td class="vertical-middle">
+                                    {{ promo.no }}
+                                </td>
+                                <td class="vertical-middle">
+                                    <img
+                                        class="img-promo"
+                                        src="{{ promo.photo_url }}"
+                                        alt=""
+                                    />
+                                </td>
+                                <td class="vertical-middle">
+                                    {{ promo.name }}
+                                </td>
+                                <td class="vertical-middle">
+                                    <label
+                                        class="badge bg-success"
+                                        *ngIf="promo.status == 'voucher'"
+                                        >Voucher</label
+                                    >
+                                    <label
+                                        class="badge bg-danger"
+                                        *ngIf="promo.status == 'diskon'"
+                                        >Diskon</label
+                                    >
+                                </td>
+                                <td class="vertical-middle" *ngIf="promo.status=='voucher'">
+                                    Rp. {{ promo.nominal_rupiah | number }}
+                                </td>
+                                <td class="vertical-middle" *ngIf="promo.status=='diskon'">
+                                    {{ promo.nominal_percentage | number }} %
+                                </td>
+                                <td class="vertical-middle text-right">
+                                    <a
+                                        href="javascript: void(0);"
+                                        class="align-middle mr-2"
+                                        (click)="formUpdate(promo)"
+                                        placement="left"
+                                        container="body"
+                                        ngbTooltip="Ubah"
+                                    >
+                                        <em
+                                            class="fa fa-edit font-size-14 me-4"
+                                        ></em>
+                                    </a>
+                                    <a
+                                        href="javascript: void(0);"
+                                        class="align-middle"
+                                        (click)="deletePromo(promo.id)"
+                                        placement="left"
+                                        container="body"
+                                        ngbTooltip="Hapus"
+                                    >
+                                        <em
+                                            class="fa fa-trash font-size-14"
+                                        ></em>
+                                    </a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid" *ngIf="showForm">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card card-transparent">
+                <div class="card-header d-flex justify-content-between">
+                    <h1>{{ titleForm }}</h1>
+                </div>
+                <div class="card-body">
+                    <app-form-promo
+                        [promoId]="promoId"
+                        (afterSave)="showForm = false"
+                    ></app-form-promo>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
