@@ -37,7 +37,7 @@
                             "metismenujs/dist/metismenujs",
                             "sweetalert2",
                             "@ckeditor/ckeditor5-build-classic",
-                            "daterangepicker"
+                            "ng2-daterangepicker"
                         ],
                         "outputPath": "dist/skote",
                         "index": "src/index.html",
@@ -58,6 +58,7 @@
                             "src/styles.scss",
                             "node_modules/@ctrl/ngx-emoji-mart/picker.css",
                             "node_modules/ngx-bootstrap/datepicker/bs-datepicker.css",
+                            "node_modules/ng2-daterangepicker/assets/daterangepicker.css",
                             "src/assets/scss/bootstrap.scss",
                             "src/assets/scss/app.scss",
                             "src/assets/scss/icons.scss",
@@ -67,6 +68,7 @@
                         ],
                         "scripts": [
                             "node_modules/jquery/dist/jquery.js",
+                            "node_modules/jquery/dist/jquery.min.js",
                             "node_modules/datatables.net/js/jquery.dataTables.js"
                         ]
                     },
