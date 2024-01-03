@@ -1,11 +1,13 @@
 <?php
 
-use App\Http\Controllers\Api\PromoController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\RoleController;
 use App\Http\Controllers\Api\UserController;
+use App\Http\Controllers\Api\PromoController;
 use App\Http\Controllers\Api\ProductController;
+use App\Http\Controllers\Api\VoucherController;
 use App\Http\Controllers\Api\CustomerController;
+use App\Http\Controllers\Api\DiscountController;
 use App\Http\Controllers\Api\ProductCategoryController;
 
 /*
@@ -55,6 +57,19 @@ Route::prefix('v1')->group(function () {
     Route::post('/promo', [PromoController::class, 'store']);
     Route::put('/promo', [PromoController::class, 'update']);
     Route::delete('/promo/{id}', [PromoController::class, 'destroy']);
+
+
+    Route::get('/vouchers', [VoucherController::class, 'index']);
+    Route::get('/vouchers/{id}', [VoucherController::class, 'show']);
+    Route::post('/vouchers', [VoucherController::class, 'store']);
+    Route::put('/vouchers', [VoucherController::class, 'update']);
+    Route::delete('/vouchers/{id}', [VoucherController::class, 'destroy']);
+
+    Route::get('/discounts', [DiscountController::class, 'index']);
+    Route::get('/discounts/{id}', [DiscountController::class, 'show']);
+    Route::post('/discounts', [DiscountController::class, 'store']);
+    Route::put('/discounts', [DiscountController::class, 'update']);
+    Route::delete('/discounts/{id}', [DiscountController::class, 'destroy']);
 });
 
 Route::get('/', function () {

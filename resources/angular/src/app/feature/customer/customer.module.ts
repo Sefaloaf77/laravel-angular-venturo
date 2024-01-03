@@ -14,7 +14,8 @@ import { SharedModule } from "src/app/shared/shared.module";
         FormsModule,
         NgbModule,
         DataTablesModule,
-        SharedModule
+        SharedModule,
     ],
+    exports: [FormCustomerComponent],
 })
 export class CustomerModule {}

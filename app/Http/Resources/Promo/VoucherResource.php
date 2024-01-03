@@ -5,7 +5,7 @@ namespace App\Http\Resources\Promo;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class PromoResource extends JsonResource
+class VoucherResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -17,12 +17,15 @@ class PromoResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'name' => $this->name,
-            'status' => $this->status,
-            'expired_in_day' => $this->expired_in_day,
-            'nominal_percentage' => $this->nominal_percentage,
+            'customer_id' => $this->customer->id ?? null,
+            'customer_name' => $this->customer->name ?? null,
+            'promo_id' => $this->promo->id ?? null,
+            'promo_name' => $this->promo->name ?? null,
+            'start_time' => $this->start_time,
+            'end_time' => $this->end_time,
+            'total_voucher' => $this->total_voucher,
             'nominal_rupiah' => $this->nominal_rupiah,
-            'term_conditions' => $this->term_conditions,
+            'description' => $this->description,
             'photo' => $this->photo,
             'photo_url' => !empty($this->photo) ? Storage::disk('public')->url($this->photo) : Storage::disk('public')->url('../assets/img/no-image.png'),
         ];

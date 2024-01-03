@@ -14,7 +14,7 @@ export class DaterangepickerComponent implements OnInit {
   @Input() placeholder: string;
   @Input() startDate: string;
   @Input() endDate: string;
-  @Input() showRanges: string;
+  @Input() showRanges: boolean;
 
   model: {
     placeholder: string,

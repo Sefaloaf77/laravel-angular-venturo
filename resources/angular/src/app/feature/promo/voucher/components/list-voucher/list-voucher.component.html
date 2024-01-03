@@ -1,0 +1,91 @@
+<div class="container-fluid" *ngIf="!showForm">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card card-transparent">
+                <div class="card-header  d-flex justify-content-between">
+                    <h1>Daftar Voucher</h1>
+                    <div class="row d-flex justify-content-end w-50 mw-75 align-middle">
+                        <div class="col-9">
+                            <form class="form-inline input-group align-items-center">
+                                <div class="form-group">
+                                    <app-daterangepicker [startDate]="filter.start_time" [endDate]="filter.start_time" [showRanges]="true" (onChange)="filterByPeriode($event)">
+                                    </app-daterangepicker>
+                                </div>
+                                <div class="form-group ms-2">
+                                    <ng-select [items]="customers" (change)="filterByCustomer($event)" [multiple]="true"
+                                        id="filter-customer" class="mr-2" placeholder="Pilih Customer" bindLabel="name"
+                                        bindValue="id" [loading]="showLoading" [searchable]="false" name="customer_id">
+                                        <ng-template ng-header-tmp>
+                                            <input class="form-control" type="text" debounceKeyUp
+                                                (onEvent)="getCustomers($event.target.value)" />
+                                        </ng-template>
+                                    </ng-select>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="col-3">
+                            <button type="button" class="btn btn-sm btn-primary" (click)="formCreate()">
+                                <em class="fa fa-plus font-size-14 align-middle mr-1"></em> Tambah Voucher
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <table class="table table-hover" datatable [dtOptions]="dtOptions">
+                        <thead class="thead-light">
+                            <tr>
+                                <th style="width: 70px;">No</th>
+                                <th>Voucher</th>
+                                <th>Customer</th>
+                                <th>Total Voucher</th>
+                                <th>Periode</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let voucher of listVoucher;">
+                                <td class="vertical-middle">
+                                    {{voucher.no}}
+                                </td>
+                                <td class="vertical-middle">
+                                    <img class="img-voucher" src="{{voucher.photo_url}}" alt="" />
+                                </td>
+                                <td class="vertical-middle">{{voucher.customer_name}}</td>
+                                <td class="vertical-middle">{{voucher.total_voucher | number}}</td>
+                                <td class="vertical-middle">{{voucher.start_time | date:'dd-MM-yyyy'}} s.d
+                                    {{voucher.end_time | date:'dd-MM-yyyy'}}</td>
+                                <td class="vertical-middle text-right">
+                                    <a href="javascript: void(0);" class="align-middle mr-2"
+                                        (click)="formUpdate(voucher)" placement="left" container="body"
+                                        ngbTooltip="Ubah">
+                                        <em class="fa fa-edit font-size-14"></em>
+                                    </a>
+                                    <a href="javascript: void(0);" class="align-middle"
+                                        (click)="deleteVoucher(voucher.id)" placement="left" container="body"
+                                        ngbTooltip="Hapus">
+                                        <em class="fa fa-trash font-size-14"></em>
+                                    </a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid" *ngIf="showForm">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card card-transparent">
+                <div class="card-header  d-flex justify-content-between">
+                    <h1>{{titleForm}}</h1>
+                </div>
+                <div class="card-body">
+                    <app-form-voucher [voucherId]="voucherId" (afterSave)="setDefaultFilter(); showForm = false;"></app-form-voucher>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

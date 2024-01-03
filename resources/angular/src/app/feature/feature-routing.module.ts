@@ -9,6 +9,8 @@ import { FormProfileComponent } from "./user/components/form-profile/form-profil
 import { ListCategoryComponent } from "./product/category/components/list-category/list-category.component";
 import { ListProductComponent } from "./product/product/components/list-product/list-product.component";
 import { ListPromoComponent } from "./promo/components/list-promo/list-promo.component";
+import { ListVoucherComponent } from "./promo/voucher/components/list-voucher/list-voucher.component";
+import { ListDiscountComponent } from "./promo/discount/components/list-discount/list-discount.component";
 
 
 const routes: Routes = [
@@ -36,6 +38,8 @@ const routes: Routes = [
     },
     { path: "product", component:  ListProductComponent},
     { path: "promo", component:  ListPromoComponent},
+    { path: "voucher", component:  ListVoucherComponent},
+    { path: "discount", component:  ListDiscountComponent},
 ];
 
 @NgModule({
