@@ -1,0 +1,246 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card card-transparent">
+                <div class="card-header d-flex justify-content-between">
+                    <div class="row d-flex">
+                        <form
+                            class="form-inline input-group align-items-center"
+                        >
+                            <div class="form-group p-2">
+                                <div class="input-group mr-2">
+                                    
+                                    <!-- <ng-select
+                                            style="width: 270px"
+                                            [items]="customer"
+                                            placeholder="Nama Customer "
+                                            bindLabel="name"
+                                            bindValue="id"
+                                            [loading]="showLoading"
+                                            [searchable]="false"
+                                            [(ngModel)]="
+                                                filter.customer_id
+                                            "
+                                            name="customer_id"
+                                            (change)="reloadDataTable()"
+                                        >
+                                            <ng-template ng-header-tmp>
+                                                <input
+                                                    class="form-control"
+                                                    type="text"
+                                                    debounceKeyUp
+                                                    (onEvent)="
+                                                        getCustomers(
+                                                            $event.target.value
+                                                        )
+                                                    "
+                                                />
+                                            </ng-template>
+                                        </ng-select> -->
+                                </div>
+                            </div>
+                            <div class="form-group p-2">
+                                    <div class="input-group mr-2">
+                                        <!-- <input
+                                        type="text"
+                                        class="form-control"
+                                        placeholder="Tulis nama makanan"
+                                        [(ngModel)]="filter.name"
+                                        name="name"
+                                        debounceKeyUp
+                                        (onEvent)="reloadDataTable()"
+                                    /> -->
+                                    </div>
+                                </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-8">
+                        <div class="card-body">
+                            <div class="row d-flex align-content-start">
+                                <!-- loop product -->
+                                <div class="p-3 col-md-3">
+                                    <div class="text-end">
+                                        <a
+                                            href="javascript: void(0);"
+                                            class="align-middle"
+                                            placement="right"
+                                            container="body"
+                                            ngbTooltip="Ubah"
+                                        >
+                                            <em
+                                                class="fa fa-edit font-size-14"
+                                            ></em>
+                                        </a>
+                                    </div>
+                                    <div class="card">
+                                        <img
+                                            src="..."
+                                            class="card-img-top img-fluid"
+                                            alt="..."
+                                        />
+                                        <div
+                                            class="card-body text-center border-top-0"
+                                        >
+                                            <!-- nama menu -->
+                                            <h4>Nasi Goreng</h4>
+                                            <p
+                                                class="card-text h5 text-primary"
+                                            >
+                                                <!-- harga menu -->
+                                                Rp. 15.000
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card-body border-top-0">
+                            <p class="fs-5">Detail Order</p>
+                            <div class="d-flex justify-content-between">
+                                <h2>Ahmad Rizqi</h2>
+                                <a
+                                    href="javascript: void(0);"
+                                    class="align-middle"
+                                    placement="right"
+                                    container="body"
+                                    ngbTooltip="Ubah"
+                                >
+                                    <em class="fa fa-edit fs-4"></em>
+                                </a>
+                            </div>
+
+                            <hr
+                                class="border border-primary border-1 opacity-50"
+                            />
+                            <div
+                                class="row text-center align-middle align-items-center"
+                            >
+                                <div class="col-3">
+                                    <p class="fs-5">Promo</p>
+                                </div>
+                                <div class="col-3 rounded">
+                                    <span class="h3 fw-bold text-primary"
+                                        >10%</span
+                                    ><br />
+                                    Mengisi survey
+                                </div>
+                                <div class="col-3 rounded">
+                                    <span class="h3 fw-bold text-primary"
+                                        >10%</span
+                                    ><br />
+                                    Tidak terlambat
+                                </div>
+                                <div class="col-3 rounded">
+                                    <span class="h3 fw-bold text-primary"
+                                        >10%</span
+                                    ><br />
+                                    terlambat < 3
+                                </div>
+                            </div>
+                            <hr
+                                class="border border-primary border-1 opacity-50 mb-4"
+                            />
+                            <!-- loop pesanan -->
+                            <div class="card mb-3 pe-2">
+                                <div class="row g-0">
+                                    <div class="col-md-2">
+                                        <img
+                                            src="..."
+                                            class="img-fluid rounded-start object-fit-cover"
+                                            alt="..."
+                                        />
+                                    </div>
+                                    <div class="col-md-8">
+                                        <div class="card-body border-top-0">
+                                            <h4>Nasi Goreng</h4>
+                                            <p
+                                                class="card-text h5 text-primary"
+                                            >
+                                                <!-- harga menu -->
+                                                Rp. 15.000
+                                            </p>
+                                            <p class="card-text">
+                                                <a
+                                                    href="javascript: void(0);"
+                                                    class="align-middle"
+                                                    placement="right"
+                                                    container="body"
+                                                    ngbTooltip="Ubah"
+                                                >
+                                                    <em
+                                                        class="fa fa-sticky-note"
+                                                    ></em>
+                                                </a>
+                                                <small
+                                                    class="text-body-secondary ms-1"
+                                                    >Pedas banget ya</small
+                                                >
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div
+                                        class="col-md-2 align-items-center align-middle d-flex gap-3 text-center"
+                                    >
+                                        <button class="btn-sm btn btn-light">
+                                            <em class="fa fa-plus"></em>
+                                        </button>
+                                        <span>2</span>
+                                        <button class="btn-sm btn btn-primary">
+                                            <em class="fa fa-minus"></em>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <hr
+                                class="border border-primary border-1 opacity-50"
+                            />
+                            <p class="fs-5">Detail Pemabayaran</p>
+                            <!-- looping -->
+                            <div class="d-flex justify-content-between">
+                                <p>Subtotal</p>
+                                <p class="fw-bold">Rp -</p>
+                            </div>
+
+                            <hr
+                                class="border-primary border-1 opacity-50"
+                                style="border-bottom: dashed"
+                            />
+                            <div class="d-flex justify-content-between my-3">
+                                <h3>Total Pembayaran</h3>
+                                <p class="fw-bold">Rp 53.280</p>
+                            </div>
+                            <button
+                                type="button"
+                                class="btn btn-primary w-100 shadow"
+                            >
+                                <em class="fa fa-plus"></em> Tambah Pesanan
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- 
+<div class="container-fluid" *ngIf="showForm">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card card-transparent">
+                <div class="card-header d-flex justify-content-between">
+                    <h1>{{ titleForm }}</h1>
+                </div>
+                <div class="card-body">
+                    <app-form-product
+                        [productId]="productId"
+                        (afterSave)="showForm = false"
+                    ></app-form-product>
+                </div>
+            </div>
+        </div>
+    </div>
+</div> -->

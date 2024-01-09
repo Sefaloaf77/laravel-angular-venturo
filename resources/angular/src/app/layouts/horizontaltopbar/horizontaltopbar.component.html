@@ -4,33 +4,67 @@
             <img src="assets/images/logo.png" alt="" height="22" />
         </a>
 
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo02"
-            aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
+        <button
+            class="navbar-toggler"
+            type="button"
+            data-toggle="collapse"
+            data-target="#navbarTogglerDemo02"
+            aria-controls="navbarTogglerDemo02"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
+        >
             <em class="fa fa-fw fa-bars"></em>
         </button>
 
         <div class="d-flex mobile-profile">
             <div class="dropdown d-none d-lg-inline-block ml-1">
-                <button type="button" class="btn header-item noti-icon" data-toggle="fullscreen" (click)="fullscreen()">
+                <button
+                    type="button"
+                    class="btn header-item noti-icon"
+                    data-toggle="fullscreen"
+                    (click)="fullscreen()"
+                >
                     <em class="bx bx-fullscreen text-dark"></em>
                 </button>
             </div>
             <div class="dropdown d-inline-block" ngbDropdown>
-                <button type="button" class="btn header-item text-dark" id="page-header-user-dropdown"
-                    ngbDropdownToggle>
-                    <img class="rounded-circle header-profile-user" *ngIf="userLogin.foto_url"
-                        src="{{userLogin.foto_url}}" alt="User Avatar" />
+                <button
+                    type="button"
+                    class="btn header-item text-dark"
+                    id="page-header-user-dropdown"
+                    ngbDropdownToggle
+                >
+                    <img
+                        class="rounded-circle header-profile-user"
+                        *ngIf="userLogin.foto_url"
+                        src="{{ userLogin.foto_url }}"
+                        alt="User Avatar"
+                    />
                     <em *ngIf="!userLogin.foto_url" class="fa fa-user"></em>
-                    <span class="d-none d-xl-inline-block ml-1">{{userLogin.nama}}</span>
-                    <em class="mdi mdi-chevron-down d-none d-xl-inline-block"></em>
+                    <span class="d-none d-xl-inline-block ml-1">{{
+                        userLogin.nama
+                    }}</span>
+                    <em
+                        class="mdi mdi-chevron-down d-none d-xl-inline-block"
+                    ></em>
                 </button>
                 <div class="dropdown-menu dropdown-menu-right" ngbDropdownMenu>
-                    <a class="dropdown-item" href="javascript: void(0);" [routerLink]="['/editProfile']">
+                    <a
+                        class="dropdown-item"
+                        href="javascript: void(0);"
+                        [routerLink]="['/editProfile']"
+                    >
                         <em class="font-size-16 fa fa-user mr-1"></em>
                         Profile
                     </a>
-                    <a class="dropdown-item text-danger" href="javascript: void(0);" (click)="logout()">
-                        <em class="bx bx-power-off font-size-16 align-middle mr-1 text-danger"></em>
+                    <a
+                        class="dropdown-item text-danger"
+                        href="javascript: void(0);"
+                        (click)="logout()"
+                    >
+                        <em
+                            class="bx bx-power-off font-size-16 align-middle mr-1 text-danger"
+                        ></em>
                         Logout
                     </a>
                 </div>
@@ -40,39 +74,109 @@
     <div class="collapse navbar-menu navbar-collapse" id="navbarTogglerDemo02">
         <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
             <li class="nav-item dropdown" ngbDropdown>
-                <a class="nav-link dropdown-toggle" (click)="onMenuClick($event)"
-                    href="javascript: void(0);" id="topnav-components" role="button" ngbDropdownToggle>
+                <a
+                    class="nav-link dropdown-toggle"
+                    (click)="onMenuClick($event)"
+                    href="javascript: void(0);"
+                    id="topnav-components"
+                    role="button"
+                    ngbDropdownToggle
+                >
                     Setting
                     <div class="arrow-down"></div>
                 </a>
                 <div class="dropdown-menu row" ngbDropdownMenu>
-                    <a href="javascript: void(0);" [routerLink]="['/user']" class="col dropdown-item side-nav-link-ref">User</a>
-                    <a href="javascript: void(0);" [routerLink]="['/customer']" class="col dropdown-item side-nav-link-ref">Customer</a>
-                    <a href="javascript: void(0);" [routerLink]="['/category']" class="col dropdown-item side-nav-link-ref">Menu Kategori</a>
-                    <a href="javascript: void(0);" [routerLink]="['/product']" class="col dropdown-item side-nav-link-ref">Menu</a>
-                    <a href="javascript: void(0);" [routerLink]="['/promo']" class="col dropdown-item side-nav-link-ref">Promo</a>
-                    <a href="javascript: void(0);" [routerLink]="['/voucher']" class="col dropdown-item side-nav-link-ref">Voucher</a>
-                    <a href="javascript: void(0);" [routerLink]="['/discount']" class="col dropdown-item side-nav-link-ref">Discount</a>
+                    <a
+                        href="javascript: void(0);"
+                        [routerLink]="['/user']"
+                        class="col dropdown-item side-nav-link-ref"
+                        >User</a
+                    >
+                    <a
+                        href="javascript: void(0);"
+                        [routerLink]="['/customer']"
+                        class="col dropdown-item side-nav-link-ref"
+                        >Customer</a
+                    >
+                    <a
+                        href="javascript: void(0);"
+                        [routerLink]="['/category']"
+                        class="col dropdown-item side-nav-link-ref"
+                        >Menu Kategori</a
+                    >
+                    <a
+                        href="javascript: void(0);"
+                        [routerLink]="['/product']"
+                        class="col dropdown-item side-nav-link-ref"
+                        >Menu</a
+                    >
+                    <a
+                        href="javascript: void(0);"
+                        [routerLink]="['/promo']"
+                        class="col dropdown-item side-nav-link-ref"
+                        >Promo</a
+                    >
+                    <a
+                        href="javascript: void(0);"
+                        [routerLink]="['/voucher']"
+                        class="col dropdown-item side-nav-link-ref"
+                        >Voucher</a
+                    >
+                    <a
+                        href="javascript: void(0);"
+                        [routerLink]="['/discount']"
+                        class="col dropdown-item side-nav-link-ref"
+                        >Discount</a
+                    >
                 </div>
             </li>
             <li class="nav-item dropdown" ngbDropdown>
-                <a class="nav-link dropdown-toggle" (click)="onMenuClick($event)"
-                    href="javascript: void(0);" id="topnav-components" role="button" ngbDropdownToggle>
+                <a
+                    class="nav-link dropdown-toggle"
+                    (click)="onMenuClick($event)"
+                    href="javascript: void(0);"
+                    id="topnav-components"
+                    role="button"
+                    ngbDropdownToggle
+                >
                     Transaksi
                     <div class="arrow-down"></div>
                 </a>
                 <div class="dropdown-menu row" ngbDropdownMenu>
-                    <a class="col dropdown-item side-nav-link-ref">Penjualan Menu</a>
+                    <a
+                        href="javascript: void(0);"
+                        [routerLink]="['/sale']"
+                        class="col dropdown-item side-nav-link-ref"
+                        >Transaksi</a
+                    >
+                    <a class="col dropdown-item side-nav-link-ref"
+                        >Penjualan Menu</a
+                    >
                 </div>
             </li>
             <li class="nav-item dropdown" ngbDropdown>
-                <a class="nav-link dropdown-toggle" (click)="onMenuClick($event)"
-                    href="javascript: void(0);" id="topnav-components" role="button" ngbDropdownToggle>
+                <a
+                    class="nav-link dropdown-toggle"
+                    (click)="onMenuClick($event)"
+                    href="javascript: void(0);"
+                    id="topnav-components"
+                    role="button"
+                    ngbDropdownToggle
+                >
                     Laporan
                     <div class="arrow-down"></div>
                 </a>
                 <div class="dropdown-menu row" ngbDropdownMenu>
-                    <a class="col dropdown-item side-nav-link-ref">Penjualan</a>
+                    <a
+                        class="col dropdown-item side-nav-link-ref"
+                        [routerLink]="['/report/sales-transaction']"
+                        >Penjualan</a
+                    >
+                    <a
+                        class="col dropdown-item side-nav-link-ref"
+                        [routerLink]="['/report/sales-promo']"
+                        >Pemakaian Promo</a
+                    >
                 </div>
             </li>
         </ul>

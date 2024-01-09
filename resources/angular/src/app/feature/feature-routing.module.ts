@@ -11,6 +11,9 @@ import { ListProductComponent } from "./product/product/components/list-product/
 import { ListPromoComponent } from "./promo/components/list-promo/list-promo.component";
 import { ListVoucherComponent } from "./promo/voucher/components/list-voucher/list-voucher.component";
 import { ListDiscountComponent } from "./promo/discount/components/list-discount/list-discount.component";
+import { ListSaleComponent } from "./sale/components/list-sale/list-sale.component";
+import { SalesPromoComponent } from "./report/components/sales-promo/sales-promo.component";
+import { SalesTransactionComponent } from "./report/transaction/components/sales-transaction/sales-transaction.component";
 
 
 const routes: Routes = [
@@ -40,6 +43,9 @@ const routes: Routes = [
     { path: "promo", component:  ListPromoComponent},
     { path: "voucher", component:  ListVoucherComponent},
     { path: "discount", component:  ListDiscountComponent},
+    { path: "sale", component:  ListSaleComponent},
+    { path: "report/sales-promo", component:  SalesPromoComponent},
+    { path: "report/sales-transaction", component:  SalesTransactionComponent},
 ];
 
 @NgModule({

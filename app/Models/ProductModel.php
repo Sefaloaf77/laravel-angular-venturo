@@ -2,13 +2,15 @@
 
 namespace App\Models;
 
+use App\Models\SalesDetailModel;
 use App\Models\ProductDetailModel;
 use App\Models\ProductCategoryModel;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class ProductModel extends Model
 {
@@ -31,6 +33,11 @@ class ProductModel extends Model
      *
      * @return void
      */
+
+    public function salesDetails() :BelongsTo
+    {
+        return $this->belongsTo(SalesDetailModel::class, 'm_product_id', 'id');
+    }
     public function category() :HasOne
     {
         return $this->hasOne(ProductCategoryModel::class, 'id', 'm_product_category_id');

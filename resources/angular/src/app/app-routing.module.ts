@@ -45,6 +45,12 @@ const routes: Routes = [
         loadChildren: () =>
             import("./feature/promo/promo.module").then((m) => m.PromoModule),
     },
+    {
+        path: "",
+        component: LayoutComponent,
+        loadChildren: () =>
+            import("./feature/sale/sale.module").then((m) => m.SaleModule),
+    },
 ];
 
 @NgModule({

@@ -4,10 +4,12 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\RoleController;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\PromoController;
+use App\Http\Controllers\Api\SalesController;
 use App\Http\Controllers\Api\ProductController;
 use App\Http\Controllers\Api\VoucherController;
 use App\Http\Controllers\Api\CustomerController;
 use App\Http\Controllers\Api\DiscountController;
+use App\Http\Controllers\Api\ReportSalesController;
 use App\Http\Controllers\Api\ProductCategoryController;
 
 /*
@@ -51,7 +53,7 @@ Route::prefix('v1')->group(function () {
     Route::post('/products', [ProductController::class, 'store']);
     Route::put('/products', [ProductController::class, 'update']);
     Route::delete('/products/{id}', [ProductController::class, 'destroy']);
-    
+
     Route::get('/promo', [PromoController::class, 'index']);
     Route::get('/promo/{id}', [PromoController::class, 'show']);
     Route::post('/promo', [PromoController::class, 'store']);
@@ -69,7 +71,14 @@ Route::prefix('v1')->group(function () {
     Route::get('/discounts/{id}', [DiscountController::class, 'show']);
     Route::post('/discounts', [DiscountController::class, 'store']);
     Route::put('/discounts', [DiscountController::class, 'update']);
-    Route::delete('/discounts/{id}', [DiscountController::class, 'destroy']);
+    // Route::delete('/discounts/{id}', [DiscountController::class, 'destroy']);
+
+    Route::get('/sales', [SalesController::class, 'index']);
+    Route::get('/sales/{id}', [SalesController::class, 'show']);
+    Route::post('/sales', [SalesController::class, 'store']);
+
+    Route::get('/report/sales-promo', [ReportSalesController::class, 'viewSalesPromo']);
+    Route::get('/report/sales-transaction', [ReportSalesController::class, 'viewSalesTransaction']);
 });
 
 Route::get('/', function () {

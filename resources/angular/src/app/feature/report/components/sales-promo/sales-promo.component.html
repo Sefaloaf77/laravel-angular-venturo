@@ -1,0 +1,66 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card card-transparent">
+                <div class="card-header d-flex justify-content-between">
+                    <h1>Pemakaian Promo</h1>
+                    <div class="d-flex">
+                        <form class="form-inline d-flex gap-1" id="filter-sales-promo">
+                            <div class="form-group">
+                                <div class="input-group mr-2">
+                                    <app-daterangepicker [startDate]="filter.start_date" [endDate]="filter.end_date" [showRanges]="true" (onChange)="setFilterPeriod($event)">
+                                    </app-daterangepicker>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="input-group mr-2">
+                                    <ng-select style="width: 270px;" [items]="customers" placeholder="Customer"
+                                        bindLabel="name" bindValue="id" [loading]="showLoading" [searchable]="false"
+                                        name="customer_id" (change)="setFilterCustomer($event)" [multiple]="true">
+                                        <ng-template ng-header-tmp>
+                                            <input class="form-control" value="" type="text" debounceKeyUp
+                                                (onEvent)="getCustomers($any($event.target).value)" />
+                                        </ng-template>
+                                    </ng-select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="input-group mr-2">
+                                    <ng-select style="width: 270px;" [items]="promos" placeholder="Promo"
+                                        bindLabel="name" bindValue="id" [loading]="showLoading" [searchable]="false"
+                                        name="promo_id" (change)="setFilterPromo($event)" [multiple]="true">
+                                        <ng-template ng-header-tmp>
+                                            <input class="form-control" type="text" debounceKeyUp
+                                                (onEvent)="getPromos($any($event.target).value)" />
+                                        </ng-template>
+                                    </ng-select>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <table class="table table-hover">
+                        <thead class="thead-light">
+                            <tr>
+                                <th style="width: 70px;">No</th>
+                                <th>Customer</th>
+                                <th>Tanggal & Waktu</th>
+                                <th>Promo</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let sale of sales;">
+                                <td class="vertical-middle">
+                                    {{sale.no}}
+                                </td>
+                                <td class="vertical-middle">{{sale.customer_name}}</td>
+                                <td class="vertical-middle">{{sale.date_transaction | date:'dd-MM-yyyy HH:mm'}}</td>
+                                <td class="vertical-middle">{{sale.promo_name}}</td>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

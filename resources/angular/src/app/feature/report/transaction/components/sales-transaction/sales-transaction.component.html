@@ -1,0 +1,196 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card card-transparent">
+                <div class="card-header d-flex justify-content-between">
+                    <h1>Laporan Penjualan</h1>
+                        <form
+                            class="d-flex form-inline gap-1"
+                        >
+                            <div class="form-group" style="margin-right: 8px">
+                                <div class="input-group mr-2">
+                                    <app-daterangepicker
+                                        [startDate]="filter.start_date"
+                                        [endDate]="filter.end_date"
+                                        [showRanges]="true"
+                                        (onChange)="setFilterPeriod($event)"
+                                    >
+                                    </app-daterangepicker>
+                                </div>
+                            </div>
+                            <div class="form-group" style="margin-right: 8px">
+                                <div class="input-group mr-2">
+                                    <ng-select
+                                        style="width: 270px"
+                                        [items]="customers"
+                                        placeholder="Customer"
+                                        bindLabel="name"
+                                        bindValue="id"
+                                        [loading]="showLoading"
+                                        [searchable]="false"
+                                        name="customer_id"
+                                        (change)="setFilterCustomer($event)"
+                                        [multiple]="true"
+                                    >
+                                        <ng-template ng-header-tmp>
+                                            <input
+                                                class="form-control"
+                                                value=""
+                                                type="text"
+                                                debounceKeyUp
+                                                (onEvent)="
+                                                    getCustomers(
+                                                        $any($event.target)
+                                                            .value
+                                                    )
+                                                "
+                                            />
+                                        </ng-template>
+                                    </ng-select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="input-group mr-2">
+                                    <ng-select
+                                        style="width: 270px"
+                                        [items]="products"
+                                        placeholder="Product"
+                                        bindLabel="name"
+                                        bindValue="id"
+                                        [loading]="showLoading"
+                                        [searchable]="false"
+                                        name="customer_id"
+                                        (change)="setFilterProduct($event)"
+                                        [multiple]="true"
+                                    >
+                                        <ng-template ng-header-tmp>
+                                            <input
+                                                class="form-control"
+                                                type="text"
+                                                debounceKeyUp
+                                                (onEvent)="
+                                                    getProducts(
+                                                        $any($event.target)
+                                                            .value
+                                                    )
+                                                "
+                                            />
+                                        </ng-template>
+                                    </ng-select>
+                                </div>
+                            </div>
+                        </form>
+                </div>
+                <div class="card-body">
+                    <table
+                        class="table table-hover"
+                        datatable
+                        [dtOptions]="dtOptions"
+                    >
+                        <thead class="thead-light">
+                            <tr>
+                                <th style="width: 70px">No</th>
+                                <th>No Struk</th>
+                                <th>Customer</th>
+                                <th>Tanggal & Waktu</th>
+                                <th class="text-center" colspan="2">Promo</th>
+                                <th>Total Bayar</th>
+                                <th>Menu</th>
+                                <th>Jumlah</th>
+                                <th>Harga</th>
+                                <th>Total</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <ng-container
+                                *ngFor="
+                                    let trans of transactions
+                                "
+                            >
+                                <tr *ngIf="trans.details.length > 0">
+                                    <td
+                                        [attr.rowspan]="
+                                            trans.details.length + 1
+                                        "
+                                        class="vertical-middle align-middle"
+                                    >
+                                        {{ trans.no }}
+                                    </td>
+                                    <td
+                                        [attr.rowspan]="
+                                            trans.details.length + 1
+                                        "
+                                        class="vertical-middle align-middle"
+                                    >
+                                        {{ trans.no_struk }}
+                                    </td>
+                                    <td
+                                        [attr.rowspan]="
+                                            trans.details.length + 1
+                                        "
+                                        class="vertical-middle align-middle"
+                                    >
+                                        {{ trans.customer_name }}
+                                    </td>
+                                    <td
+                                        [attr.rowspan]="
+                                            trans.details.length + 1
+                                        "
+                                        class="vertical-middle align-middle"
+                                    >
+                                        {{
+                                            trans.date_transaction
+                                                | date : "dd-MM-yyyy HH:mm"
+                                        }}
+                                    </td>
+                                    <td
+                                        [attr.rowspan]="
+                                            trans.details.length + 1
+                                        "
+                                        class="vertical-middle align-middle"
+                                    >
+                                        Rp. {{ trans.promo_rupiah }}
+                                    </td>
+                                    <td
+                                        [attr.rowspan]="
+                                            trans.details.length + 1
+                                        "
+                                        class="vertical-middle align-middle"
+                                    >
+                                        {{ trans.promo_percentage }}%
+                                    </td>
+                                    <td
+                                        [attr.rowspan]="
+                                            trans.details.length + 1
+                                        "
+                                        class="vertical-middle align-middle"
+                                    >
+                                        {{ trans.total_bayar }}
+                                    </td>
+                                </tr>
+                                <ng-container
+                                    *ngFor="let detail of trans.details"
+                                >
+                                    <tr>
+                                        <td class="vertical-middle">
+                                            {{ detail.menu }}
+                                        </td>
+                                        <td class="vertical-middle">
+                                            {{ detail.jumlah }}
+                                        </td>
+                                        <td class="vertical-middle">
+                                            {{ detail.harga }}
+                                        </td>
+                                        <td class="vertical-middle">
+                                            {{ detail.total_harga }}
+                                        </td>
+                                    </tr>
+                                </ng-container>
+                            </ng-container>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
