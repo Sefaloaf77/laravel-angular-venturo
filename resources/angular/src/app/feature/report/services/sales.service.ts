@@ -13,4 +13,10 @@ export class SalesService {
             arrParameter
         );
     }
+    getSalesMenu(arrParameter = {}) {
+        return this.landaService.DataGet("/v1/report/sales-menu", arrParameter);
+    }
+    getSalesCustomer(arrParameter = {}) {
+        return this.landaService.DataGet("/v1/report/sales-customer", arrParameter);
+    }
 }

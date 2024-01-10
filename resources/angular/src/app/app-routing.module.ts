@@ -51,6 +51,12 @@ const routes: Routes = [
         loadChildren: () =>
             import("./feature/sale/sale.module").then((m) => m.SaleModule),
     },
+    {
+        path: "",
+        component: LayoutComponent,
+        loadChildren: () =>
+            import("./feature/report/report.module").then((m) => m.ReportModule),
+    },
 ];
 
 @NgModule({

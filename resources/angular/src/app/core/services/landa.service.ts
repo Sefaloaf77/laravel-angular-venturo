@@ -1,24 +1,37 @@
-import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import Swal from 'sweetalert2';
+import { Injectable } from "@angular/core";
+import { HttpClient } from "@angular/common/http";
+import Swal from "sweetalert2";
 
-import { environment } from '../../../environments/environment';
+import { environment } from "../../../environments/environment";
 
 @Injectable({
-    providedIn: 'root',
+    providedIn: "root",
 })
-
 export class LandaService {
     apiURL = environment.apiURL;
     userToken: any;
     httpOptions: any;
 
-    constructor(private http: HttpClient) {
+    constructor(private http: HttpClient) {}
 
+    ngOnInit(): void {}
+
+    removeNull(params = {}) {
+        let filledParams = {};
+        for (const key in params) {
+            if (params[key]) {
+                filledParams[key] = params[key];
+            }
+        }
+
+        return filledParams;
     }
-
-    ngOnInit(): void { }
-
+    DownloadLink(path: string, params = {}) {
+        let queryParams = new URLSearchParams(
+            this.removeNull(params)
+        ).toString();
+        window.open(this.apiURL + path + "?" + queryParams);
+    }
     /**
      * Request GET
      */
@@ -50,8 +63,8 @@ export class LandaService {
     }
 
     /**
-    * Request DELETE
-    */
+     * Request DELETE
+     */
     DataDelete(path, payloads = {}) {
         return this.http.delete(this.apiURL + path, {
             params: payloads,
@@ -65,7 +78,7 @@ export class LandaService {
         Swal.fire({
             title,
             text: content,
-            icon: 'success',
+            icon: "success",
             timer: timer * 1000,
             showConfirmButton: true,
         });
@@ -78,7 +91,7 @@ export class LandaService {
         Swal.fire({
             title,
             text: content,
-            icon: 'warning',
+            icon: "warning",
             timer: timer * 1000,
             showConfirmButton: true,
         });
@@ -91,7 +104,7 @@ export class LandaService {
         Swal.fire({
             title,
             text: content,
-            icon: 'info',
+            icon: "info",
             timer: timer * 1000,
             showConfirmButton: true,
         });
@@ -101,19 +114,18 @@ export class LandaService {
      * Sweet alert error
      */
     alertError(title, content) {
-        let isi = '';
+        let isi = "";
         if (Array.isArray(content) === true) {
             content.forEach(function (element) {
                 isi += `${element} <br>`;
             });
-        } else if (typeof content === 'object') {
+        } else if (typeof content === "object") {
             for (const key in content) {
                 isi += `${content[key]} <br>`;
             }
         } else {
             isi = String(content);
         }
-        Swal.fire(title, isi, 'error');
+        Swal.fire(title, isi, "error");
     }
-
 }

@@ -44,6 +44,26 @@ class SalesModel extends Model
     {
         return $this->hasOne(DiscountModel::class, 'id', 'm_discount_id');
     }
+
+    public function getAll(array $filter, int $itemPerPage = 0, string $sort = '')
+    {
+        $user = $this->query();
+
+        // if (!empty($filter['name'])) {
+        //     $user->where('name', 'LIKE', '%' . $filter['name'] . '%');
+        // }
+
+        if (!empty($filter['m_customer_id'])) {
+            $user->where('m_customer_id', '=', $filter['m_customer_id']);
+        }
+
+        $sort = $sort ?: 'id DESC';
+        $user->orderByRaw($sort);
+        $itemPerPage = ($itemPerPage > 0) ? $itemPerPage : false;
+
+        return $user->paginate($itemPerPage)->appends('sort', $sort);
+    }
+
     public function getSalesPromo($startDate, $endDate, $customer = [], $promo = [])
     {
         $sales = $this->query()->with(['voucher', 'customer', 'voucher.promo']);
@@ -100,24 +120,51 @@ class SalesModel extends Model
         return $sale->paginate($itemPerPage)->appends('sort', $sort);
     }
 
-
-    public function getAll(array $filter, int $itemPerPage = 0, string $sort = '')
+    public function getSalesByCategory($startDate, $endDate, $category = '')
     {
-        $user = $this->query();
+        $sales = $this->query()->with([
+            'details.product' => function ($query) use ($category) {
+                if (!empty($category)) {
+                    $query->where('m_product_category_id', $category);
+                }
+            },
+            'details',
+            'details.product.category'
+        ]);
 
-        // if (!empty($filter['name'])) {
-        //     $user->where('name', 'LIKE', '%' . $filter['name'] . '%');
-        // }
-
-        if (!empty($filter['m_customer_id'])) {
-            $user->where('m_customer_id', '=', $filter['m_customer_id']);
+        if (!empty($startDate) && !empty($endDate)) {
+            $sales->whereRaw('date >="' . $startDate . ' 00:00:01" and date <= "' . $endDate . ' 23:59:59"');
         }
 
-        $sort = $sort ?: 'id DESC';
-        $user->orderByRaw($sort);
-        $itemPerPage = ($itemPerPage > 0) ? $itemPerPage : false;
+        return $sales->orderByDesc('date')->limit(2)->get();
+    }
 
-        return $user->paginate($itemPerPage)->appends('sort', $sort);
+    public function getSalesByCustomer($startDate, $endDate, $customerId = '')
+    {
+        $sales = $this->query()->with([
+            'details.product',
+            'discount',
+            'customer',
+            'voucher.promo'
+        ]);
+        if (!empty($startDate) && !empty($endDate)) {
+            $sales->whereRaw('date >="' . $startDate . ' 00:00:01" and date <= "' . $endDate . ' 23:59:59"');
+        }
+        if (!empty($customerId)) {
+            $sales->where('m_customer_id', $customerId);
+        }
+        return $sales->orderByDesc('date')->get();
+    }
+
+    public function getByCustomerId($date, int $id)
+    {
+        $sale = $this->query()->with(['details', 'discount', 'customer', 'discount.promo']);
+
+        if (!empty($date)) {
+            $sale->whereRaw('date >= "' . $date . ' 00:00:01" and date <= "' . $date . ' 23:59:59"');
+        }
+
+        return $sale->where('m_customer_id', $id)->get();
     }
 
 }

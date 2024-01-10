@@ -1,0 +1,205 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card card-transparent">
+                <div class="card-header d-flex justify-content-between">
+                    <h1>Rekap Penjualan Customer</h1>
+                    <div class="d-flex justify-content-end gap-2">
+                        <form
+                            class="form-inline d-flex gap-2"
+                            id="filter-sales-customer"
+                        >
+                            <div class="form-group">
+                                <div class="input-group mr-2">
+                                    <app-daterangepicker
+                                        [startDate]="filter.start_date"
+                                        [endDate]="filter.end_date"
+                                        [showRanges]="true"
+                                        (onChange)="setFilterPeriod($event)"
+                                    >
+                                    </app-daterangepicker>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <ng-select
+                                    style="width: 270px"
+                                    [items]="customers"
+                                    (change)="setFilterCustomer($event)"
+                                    class="mr-2"
+                                    placeholder="Pilih Customer"
+                                    bindLabel="name"
+                                    bindValue="id"
+                                    [loading]="showLoading"
+                                    [searchable]="false"
+                                    name="customer_id"
+                                >
+                                    <ng-template ng-header-tmp>
+                                        <input
+                                            class="form-control"
+                                            type="text"
+                                            debounceKeyUp
+                                            (onEvent)="
+                                                getCustomers(
+                                                    $any($event.target).value
+                                                )
+                                            "
+                                        />
+                                    </ng-template>
+                                </ng-select>
+                            </div>
+                        </form>
+                        <button
+                            type="button"
+                            class="btn btn-sm btn-primary mr-2 h-auto"
+                            (click)="reloadSales()"
+                        >
+                            Tampilkan
+                        </button>
+                        <button
+                            type="button"
+                            class="btn btn-sm btn-primary"
+                            (click)="downloadExcel()"
+                        >
+                            Excel
+                        </button>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="table table-responsive">
+                        <table class="table table-hover" id="report-sales">
+                            <thead class="thead-light">
+                                <tr>
+                                    <th
+                                        style="
+                                            width: 70px;
+                                            vertical-align: middle;
+                                        "
+                                        rowspan="2"
+                                        id="customer"
+                                    >
+                                        Customer
+                                    </th>
+                                    <th
+                                        [colSpan]="meta?.dates?.length"
+                                        class="text-center"
+                                        id="periode"
+                                    >
+                                        Periode
+                                    </th>
+                                    <th
+                                        style="
+                                            width: 70px;
+                                            vertical-align: middle;
+                                        "
+                                        rowspan="2"
+                                        id="total"
+                                    >
+                                        Total
+                                    </th>
+                                </tr>
+                                <tr>
+                                    <th
+                                        *ngFor="let date of meta.dates"
+                                        id="date"
+                                    >
+                                        {{ date | date : "dd" }}
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <ng-container
+                                    *ngFor="let customer of sales || []"
+                                >
+                                    <tr class="customer">
+                                        <td>
+                                            {{ customer.customer_name }}
+                                        </td>
+
+                                        <td
+                                            class="nominal"
+                                            *ngFor="
+                                                let sale of customer.transactions
+                                            "
+                                        >
+                                            <a
+                                                href="javascript: void(0);"
+                                                class="text-dark"
+                                                (click)="
+                                                    detailSales(
+                                                        formCustomer,
+                                                        customer,
+                                                        sale
+                                                    )
+                                                "
+                                                placement="center"
+                                                container="body"
+                                                ngbTooltip="Ubah"
+                                            >
+                                                Rp
+                                                {{ sale.total_sales | number }}
+                                            </a>
+                                        </td>
+                                        <td class="nominal">
+                                            Rp
+                                            {{
+                                                customer.customer_total | number
+                                            }}
+                                        </td>
+                                    </tr>
+                                </ng-container>
+                                <tr class="customer">
+                                    <td class="highlight-customer">
+                                        Grand Total
+                                    </td>
+                                    <td
+                                        class="highlight-customer"
+                                        *ngFor="
+                                            let total of meta?.total_per_date
+                                        "
+                                    >
+                                        Rp. {{ total | number }}
+                                    </td>
+                                    <td class="nominal">
+                                        Rp {{ meta?.grand_total | number }}
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<ng-template #formCustomer let-modal>
+    <div class="modal-header">
+        <h5 class="modal-title mt-0">{{ titleModal }}</h5>
+        <button
+            type="button"
+            class="close"
+            (click)="modal.close()"
+            aria-label="Close"
+        >
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th scope="col">No. Struk</th>
+                    <th scope="col">Diskon</th>
+                    <th scope="col">Total Bayar</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let sale of salesDetail">
+                    <td>{{ sale.no_struk }}</td>
+                    <td>{{ sale.promo_rupiah }}</td>
+                    <td>{{ sale.total_bayar }}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</ng-template>

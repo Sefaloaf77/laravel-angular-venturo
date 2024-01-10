@@ -1,7 +1,7 @@
 <table>
     <thead>
         <tr>
-            <td style="width: 170px; vertical-align: middle;" rowspan="2" id="menu">Menu</td>
+            <td style="width: 170px; vertical-align: middle;" rowspan="2" id="customer">Customer</td>
             <td colspan="{{count($dates)}}" class="text-center" id="periode">Periode</td>
             <td style="width: 70px; vertical-align: middle;" rowspan="2" id="total">Total</td>
         </tr>
@@ -14,31 +14,25 @@
         </tr>
     </thead>
     <tbody>
-        @foreach($data as $category)
-        <tr class="category">
-            <td colspan="{{count($dates) + 1}}">
-                {{$category['category_name']}}
-            </td>
-            <td class="nominal">
-                Rp {{number_format($category['category_total'])}}
-            </td>
+        <tr class="customer">
+            <td></td>
         </tr>
-        @foreach($category['products'] as $product)
+        @foreach($data as $customer)
         <tr>
             <td>
-                {{$product['product_name']}}
+                {{$customer['customer_name']}}
             </td>
-            @foreach($product['transactions'] as $sale)
+            @foreach($customer['transactions'] as $sale)
             <td class="nominal">
                 Rp {{number_format($sale['total_sales'])}}
             </td>
             @endforeach
             <td class="nominal">
-                Rp {{number_format($product['transactions_total'])}}
+                Rp {{number_format($customer['transactions_total'])}}
             </td>
         </tr>
         @endforeach
-        <tr class="category">
+        <tr class="total">
             <td>Grand Total</td>
             @foreach($total_per_date as $total)
             <td class="nominal">
@@ -49,6 +43,5 @@
                 Rp {{number_format($grand_total)}}
             </td>
         </tr>
-        @endforeach
     </tbody>
 </table>

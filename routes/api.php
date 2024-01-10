@@ -79,6 +79,12 @@ Route::prefix('v1')->group(function () {
 
     Route::get('/report/sales-promo', [ReportSalesController::class, 'viewSalesPromo']);
     Route::get('/report/sales-transaction', [ReportSalesController::class, 'viewSalesTransaction']);
+
+    Route::get('/report/sales-menu', [ReportSalesController::class, 'viewSalesCategories']);
+    Route::get('/download/sales-category', [ReportSalesController::class, 'viewSalesCategories']);
+
+    Route::get('/report/sales-customer', [ReportSalesController::class, 'viewSalesCustomers']);
+    Route::get('/download/sales-customer', [ReportSalesController::class, 'viewSalesCustomers']);
 });
 
 Route::get('/', function () {

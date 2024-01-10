@@ -29,6 +29,7 @@ class SalesTransactionResource extends JsonResource
 
         return [
             'no_struk' => $this->id,
+            'customer_id' => $this->customer->id ?? null,
             'customer_name' => $this->customer->name ?? null,
             'date_transaction' => $this->date ?? null,
             'promo_percentage' => $this->voucher->promo->nominal_percentage ?? null,

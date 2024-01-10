@@ -8,10 +8,13 @@ import { Daterangepicker } from 'ng2-daterangepicker';
 import { SalesTransactionComponent } from './transaction/components/sales-transaction/sales-transaction.component';
 import { DataTablesModule } from "angular-datatables";
 import { CoreModule } from 'src/app/core/core.module';
+import { SalesMenuComponent } from './components/sales-menu/sales-menu.component';
+import { SalesCustomerComponent } from './components/sales-customer/sales-customer.component';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 
 @NgModule({
-    declarations: [SalesPromoComponent, SalesTransactionComponent],
+    declarations: [SalesPromoComponent, SalesTransactionComponent, SalesMenuComponent, SalesCustomerComponent],
     imports: [
         CommonModule,
         FormsModule,
@@ -19,7 +22,8 @@ import { CoreModule } from 'src/app/core/core.module';
         SharedModule,
         Daterangepicker,
         DataTablesModule,
-        CoreModule
+        CoreModule,
+        NgbModule
     ],
 })
 export class ReportModule {}
