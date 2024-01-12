@@ -1,1 +1,116 @@
-<p>dashboard works!</p>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-5">
+            <div class="row">
+                <div class="col-6">
+                    <div class="card card-summaries">
+                        <div class="card-body text-center">
+                            <div class="icon-container">
+                                <span class="icon">
+                                    <em class="fa fa-chart-bar"></em>
+                                </span>
+                            </div>
+                            <div class="title-summary">
+                                <h3>Hasil Kemarin</h3>
+                                <h2>Rp {{ total.yesterday | number }}</h2>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="card card-summaries">
+                        <div class="card-body text-center">
+                            <div class="icon-container">
+                                <span class="icon">
+                                    <em class="fa fa-chart-bar"></em>
+                                </span>
+                            </div>
+                            <div class="title-summary">
+                                <h3>Hasil Hari Ini</h3>
+                                <h2>Rp {{ total.today | number }}</h2>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="card card-summaries">
+                        <div class="card-body text-center">
+                            <div class="icon-container">
+                                <span class="icon">
+                                    <em class="fa fa-chart-bar"></em>
+                                </span>
+                            </div>
+                            <div class="title-summary">
+                                <h3>Hasil Bulan Lalu</h3>
+                                <h2>Rp {{ total.last_month | number }}</h2>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="card card-summaries">
+                        <div class="card-body text-center">
+                            <div class="icon-container">
+                                <span class="icon">
+                                    <em class="fa fa-chart-bar"></em>
+                                </span>
+                            </div>
+                            <div class="title-summary">
+                                <h3>Hasil Bulan Ini</h3>
+                                <h2>Rp {{ total.this_month | number }}</h2>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-7">
+            <div class="card card-dashboard">
+                <div class="card-header d-flex justify-content-between">
+                    <span>Grafik Penjualan</span>
+                    <div class="btn-group btn-group-toggle me-2" ngbRadioGroup>
+                        <label
+                            *ngFor="let button of buttons"
+                            class="btn btn-outline-light text-white"
+                            [ngClass]="{
+                                'btn-outline-light text-white':
+                                    activeButton !== button.id,
+                                'btn-light text-primary':
+                                    activeButton === button.id
+                            }"
+                        >
+                            <input
+                                type="radio"
+                                [value]="button.id"
+                                (click)="handleButtonClick(button.id)"
+                                name="is_available"
+                                class="d-none"
+                            />
+                            {{ button.label }}
+                        </label>
+                        <app-daterangepicker
+                            [startDate]="filter.startDate"
+                            [endDate]="filter.endDate"
+                            [showRanges]="true"
+                            (onChange)="setFilterPeriod($event)"
+                        >
+                        </app-daterangepicker>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div id="chart">
+                        <canvas
+                            baseChart
+                            [datasets]="barChartData"
+                            [labels]="barChartLabels"
+                            [options]="barChartOptions"
+                            [legend]="true"
+                            [chartType]="'bar'"
+                        >
+                        </canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -10,6 +10,7 @@ use App\Http\Controllers\Api\VoucherController;
 use App\Http\Controllers\Api\CustomerController;
 use App\Http\Controllers\Api\DiscountController;
 use App\Http\Controllers\Api\ReportSalesController;
+use App\Http\Controllers\Api\SalesSummaryController;
 use App\Http\Controllers\Api\ProductCategoryController;
 
 /*
@@ -85,6 +86,10 @@ Route::prefix('v1')->group(function () {
 
     Route::get('/report/sales-customer', [ReportSalesController::class, 'viewSalesCustomers']);
     Route::get('/download/sales-customer', [ReportSalesController::class, 'viewSalesCustomers']);
+
+    Route::get('/report/total-sales/summaries', [SalesSummaryController::class, 'getTotalSummary']);
+    Route::get('/report/total-sales/year', [SalesSummaryController::class, 'getDiagramPerYear']);
+    Route::get('/report/total-sales/month', [SalesSummaryController::class, 'getDiagramPerMonth']);
 });
 
 Route::get('/', function () {
