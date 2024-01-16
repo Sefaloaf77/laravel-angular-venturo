@@ -8,6 +8,8 @@ use App\Helpers\Promo\DiscountHelper;
 use App\Http\Requests\Promo\DiscountRequest;
 use App\Http\Resources\Promo\DiscountResource;
 use App\Http\Resources\Promo\DiscountCollection;
+use App\Http\Resources\Promo\PromoCollection;
+use App\Models\PromoModel;
 
 class DiscountController extends Controller
 {
@@ -45,12 +47,11 @@ class DiscountController extends Controller
             return response()->failed($request->validator->errors());
         }
 
-        $payload = $request->only(['customer_id',
+        $payload = $request->only([
+            'customer_id',
             'promo_id',
-            'tahsin',
-            'competency_matrix',
-            'late_under_3',
-            'full_absensi']);
+            'status'
+        ]);
         $payload = $this->renamePayload($payload);
         $discount = $this->discount->create($payload);
 
@@ -67,12 +68,12 @@ class DiscountController extends Controller
             return response()->failed($request->validator->errors());
         }
 
-        $payload = $request->only(['id', 'customer_id',
+        $payload = $request->only([
+            'id',
+            'customer_id',
             'promo_id',
-            'tahsin',
-            'competency_matrix',
-            'late_under_3',
-            'full_absensi']);
+            'status'
+        ]);
         $payload = $this->renamePayload($payload);
         $discount = $this->discount->update($payload, $payload['id'] ?? 0);
 
@@ -101,5 +102,13 @@ class DiscountController extends Controller
         unset($payload['customer_id']);
         unset($payload['promo_id']);
         return $payload;
+    }
+
+    public function getPromoByDiscount()
+    {
+        $promo = PromoModel::where('status', 'diskon')->get();
+        return response()->success([
+            'list' => $promo,
+        ]);
     }
 }

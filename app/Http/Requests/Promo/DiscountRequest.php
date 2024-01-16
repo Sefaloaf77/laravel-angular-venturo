@@ -19,7 +19,6 @@ class DiscountRequest extends FormRequest
         return [
             'customer_id' => 'Customer',
             'promo_id' => 'Promo',
-            'late_under_3' => 'Telat dibawah 3x',
         ];
     }
 
@@ -43,10 +42,7 @@ class DiscountRequest extends FormRequest
         return [
             'customer_id' => 'required|numeric',
             'promo_id' => 'required|numeric',
-            'tahsin' => 'numeric',
-            'competency_matrix' => 'numeric',
-            'late_under_3' => 'numeric',
-            'full_absensi' => 'numeric',
+            'status' => 'numeric',
         ];
     }
 
@@ -56,10 +52,7 @@ class DiscountRequest extends FormRequest
             'id' => 'required|numeric',
             'customer_id' => 'required|numeric',
             'promo_id' => 'required|numeric',
-            'tahsin' => 'numeric',
-            'competency_matrix' => 'numeric',
-            'late_under_3' => 'numeric',
-            'full_absensi' => 'numeric',
+            'status' => 'numeric',
         ];
     }
 }

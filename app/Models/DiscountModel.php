@@ -17,10 +17,7 @@ class DiscountModel extends Model
     protected $fillable = [
         'm_customer_id',
         'm_promo_id',
-        'tahsin',
-        'competency_matrix',
-        'late_under_3',
-        'full_absensi'
+        'status',
     ];
 
 
@@ -31,12 +28,19 @@ class DiscountModel extends Model
     }
 
     //relasi ke tabel m_promo
+    // public function promo()
+    // {
+    //     return $this->hasOne(PromoModel::class, 'id', 'm_promo_id');
+    // }
     public function promo()
     {
-        return $this->hasOne(PromoModel::class, 'id', 'm_promo_id');
+        return $this->belongsTo(PromoModel::class, 'm_promo_id', 'id');
     }
 
-
+    public function sale()
+    {
+        return $this->hasMany(SalesModel::class, 'm_discount_id');
+    }
     public function drop(int $id)
     {
         return $this->find($id)->delete();
@@ -60,6 +64,10 @@ class DiscountModel extends Model
             $discount->whereIn('m_customer_id', $filter['m_customer_id']);
         }
 
+        // if ($filter['status'] != '') {
+        //     $discount->where('status', '=', $filter['status']);
+        // }
+
         $sort = $sort ?: 'id DESC';
         $discount->orderByRaw($sort);
         $itemPerPage = ($itemPerPage > 0) ? $itemPerPage : false;
@@ -70,5 +78,11 @@ class DiscountModel extends Model
     public function getById(int $id)
     {
         return $this->find($id);
+    }
+
+    public function getPromoByDiscount(){
+        $promo = $this->query()->with(['promo']);
+
+        $promo->where('status','=','diskon');
     }
 }
