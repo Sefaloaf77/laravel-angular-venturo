@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Models\SalesDetailModel;
 use App\Models\ProductDetailModel;
+use App\Http\Traits\RecordSignature;
 use App\Models\ProductCategoryModel;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -16,6 +17,7 @@ class ProductModel extends Model
 {
     use HasFactory;
     use SoftDeletes;
+    // use RecordSignature;
 
     public $timestamps = true;
     protected $fillable = [
@@ -34,11 +36,11 @@ class ProductModel extends Model
      * @return void
      */
 
-    public function salesDetails() :BelongsTo
+    public function salesDetails(): BelongsTo
     {
         return $this->belongsTo(SalesDetailModel::class, 'm_product_id', 'id');
     }
-    public function category() :HasOne
+    public function category(): HasOne
     {
         return $this->hasOne(ProductCategoryModel::class, 'id', 'm_product_category_id');
     }
@@ -47,7 +49,7 @@ class ProductModel extends Model
      *
      * @return void
      */
-    public function details() :HasMany
+    public function details(): HasMany
     {
         return $this->hasMany(ProductDetailModel::class, 'm_product_id', 'id');
     }
@@ -70,7 +72,6 @@ class ProductModel extends Model
     public function getAll(array $filter, int $itemPerPage = 0, string $sort = '')
     {
         $user = $this->query();
-
         if (!empty($filter['name'])) {
             $user->where('name', 'LIKE', '%' . $filter['name'] . '%');
         }

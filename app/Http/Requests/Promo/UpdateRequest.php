@@ -47,7 +47,7 @@ class UpdateRequest extends FormRequest
             'expired_in_day' => 'required',
             'nominal_percentage' => 'nullable|numeric',
             'nominal_rupiah' => 'nullable|numeric',
-            'term_conditions' => 'required',
+            'term_conditions' => 'nullable',
             'photo' => 'nullable|file|image',
         ];
     }

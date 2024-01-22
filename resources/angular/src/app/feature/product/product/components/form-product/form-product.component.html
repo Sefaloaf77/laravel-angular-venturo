@@ -60,15 +60,35 @@
                         name="is_available"
                         [(ngModel)]="formModel.is_available"
                     >
-                        <input
+                        <label
+                            *ngFor="let button of buttons"
+                            class="btn btn-outline-primary text-primary"
+                            [ngClass]="{
+                                'btn-outline-primary text-primary':
+                                    button.id !== formModel.is_available,
+                                'btn-primary text-white':
+                                    button.id == formModel.is_available
+                            }"
+                        >
+                            <input
+                                type="radio"
+                                name="is_available"
+                                [value]="button.id"
+                                class="btn-check"
+                                [checked]="button.id === formModel.is_available"
+                                [(ngModel)]="formModel.is_available"
+                            />
+                            {{ button.label }}
+                        </label>
+                        <!-- <input
                             type="radio"
                             class="btn-check"
                             name="is_available"
                             id="btnradio1"
-                            autocomplete="off"
                             ngbButton
                             [value]="1"
-                            [(ngModel)]="formModel.is_available" [checked]="formModel.is_available == '1'"
+                            [(ngModel)]="formModel.is_available"
+                            [checked]="formModel.is_available == 1"
                         />
                         <label
                             class="btn btn-outline-primary"
@@ -82,17 +102,17 @@
                             class="btn-check"
                             name="is_available"
                             id="btnradio3"
-                            autocomplete="off"
                             ngbButton
                             [value]="0"
-                            [(ngModel)]="formModel.is_available" [checked]="formModel.is_available === '0'"
+                            [(ngModel)]="formModel.is_available"
+                            [checked]="formModel.is_available == 0"
                         />
                         <label
                             class="btn btn-outline-primary"
                             for="btnradio3"
                             ngbButtonLabel
                             >Habis</label
-                        >
+                        > -->
                     </div>
                 </div>
             </div>

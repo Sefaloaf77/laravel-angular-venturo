@@ -110,13 +110,28 @@ export class SalesTransactionComponent {
             (res: any) => {
                 const { list } = res.data;
                 let number = 1;
-                list.forEach((val) => (val.no = number++));
+                list.forEach((val) => {
+                    val.no = number++;
+                    val.no_struk = this.splitTanggalStruk(val.date_transaction);
+                });
                 this.transactions = list;
             },
             (err: any) => {
                 console.log(err);
             }
         );
+    }
+
+    splitTanggalStruk(tanggal) {
+        const dateObject = new Date(tanggal);
+
+        const year = dateObject.getFullYear();
+        const month = dateObject.getMonth() + 1; // Perlu ditambah 1 karena indeks bulan dimulai dari 0
+        const day = dateObject.getDate();
+
+        const struk = `${day}/KWT/${month}/${year}`;
+
+        return struk;
     }
 
     setFilterPeriod($event) {

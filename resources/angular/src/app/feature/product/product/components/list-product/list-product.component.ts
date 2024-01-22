@@ -87,6 +87,7 @@ export class ListProductComponent implements OnInit {
             (res: any) => {
                 this.categories = res.data.list;
                 this.showLoading = false;
+                this.getProducts();
             },
             (err) => {
                 console.log(err);

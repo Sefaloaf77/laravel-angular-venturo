@@ -21,6 +21,7 @@ export class FormProductComponent {
     readonly DEFAULT_TYPE = "Toping";
     readonly MODE_CREATE = "add";
     readonly MODE_UPDATE = "update";
+    activeButton: string = "";
 
     @Input() productId: number;
     @Output() afterSave = new EventEmitter<boolean>();
@@ -53,7 +54,10 @@ export class FormProductComponent {
     ngOnChanges(changes: SimpleChange) {
         this.resetForm();
     }
-
+    buttons = [
+        { id: "1", label: "Ada" },
+        { id: "0", label: "Habis" },
+    ];
     getCategories(name = "") {
         this.showLoading = true;
         this.categoryService.getCategories({ name: name }).subscribe(
@@ -72,7 +76,7 @@ export class FormProductComponent {
     }
 
     resetForm() {
-      this.getCategories();
+        this.getCategories();
         this.formModel = {
             id: 0,
             name: "",

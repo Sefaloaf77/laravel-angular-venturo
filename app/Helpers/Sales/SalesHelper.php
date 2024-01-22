@@ -24,8 +24,8 @@ class SalesHelper extends Venturo
             $this->beginTransaction();
 
             $sales = $this->sales->store($payload);
-
-            $this->insertUpdateDetail($payload['details'] ?? [], $sales->id);
+            // dd($payload['details']);
+            $this->insertDetail($payload['details'] ?? [], $sales->id);
 
             $this->commitTransaction();
 
@@ -139,6 +139,21 @@ class SalesHelper extends Venturo
             // Update
             if (isset($val['is_updated']) && $val['is_updated']) {
                 $this->salesDetail->edit($val, $val['id']);
+            }
+        }
+    }
+
+    private function insertDetail(array $details, int $salesId)
+    {
+        if (empty($details)) {
+            return false;
+        }
+
+        foreach ($details as $val) {
+            // Insert
+            if (isset($val['is_added']) && $val['is_added']) {
+                $val['m_product_id'] = $salesId;
+                $this->salesDetail->store($val);
             }
         }
     }

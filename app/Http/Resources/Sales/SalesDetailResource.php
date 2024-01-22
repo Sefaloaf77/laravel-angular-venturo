@@ -19,7 +19,7 @@ class SalesDetailResource extends JsonResource
             'id' => $this->id,
             't_sales_id' => $this->t_sales_id,
             'm_product_id' => $this->m_product_id,
-            'product' =>ProductResource::collection($this->product),
+            'product' => new ProductResource($this->product),
             'm_product_detail_id' => $this->m_product_detail_id,
             'total_item' => $this->total_item,
             'price' => $this->price,

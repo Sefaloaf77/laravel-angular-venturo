@@ -26,4 +26,8 @@ export class VoucherService {
     deleteVoucher(id) {
         return this.landaService.DataDelete("/v1/vouchers/" + id);
     }
+
+    getVoucherByCustomer(customerId) {
+        return this.landaService.DataGet("/v1/vouchers/cust/" + customerId);
+    }
 }

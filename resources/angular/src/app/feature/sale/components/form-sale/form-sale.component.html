@@ -1,1 +1,282 @@
-<p>form-sale works!</p>
+<ng-template #formCustomer let-modal>
+    <div class="modal-header">
+        <h5 class="modal-title mt-0">{{ titleModal }}</h5>
+        <button
+            type="button"
+            class="close"
+            (click)="modal.close()"
+            aria-label="Close"
+        >
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <app-form-customer
+            [customerId]="customerId"
+            (afterSave)="showForm = false"
+        ></app-form-customer>
+    </div>
+</ng-template>
+
+<div class="container-fluid card-body border-top-0" *ngIf="!showForm">
+    <p class="fs-5">Detail Order</p>
+    <div class="d-flex justify-content-between" *ngIf="customer">
+        <h2>{{ customer?.name }}</h2>
+        <a
+            href="javascript: void(0);"
+            class="align-middle mr-2"
+            (click)="formUpdate(formCustomer, customer)"
+            placement="left"
+            container="body"
+            ngbTooltip="Ubah"
+        >
+            <em class="fa fa-edit font-size-14"></em>
+        </a>
+    </div>
+    <hr class="border border-primary border-1 opacity-50" />
+    <div class="justify-content-start" *ngIf="customer">
+        <h5>Promo</h5>
+        <div class="d-flex justify-content-start">
+            <div *ngFor="let discount of listDiscount" class="col-3">
+                <div
+                    *ngIf="discount.is_available === '1'"
+                    class="card border-top-0 mb-3"
+                >
+                    <div
+                        class="card-body border-top-0 d-flex flex-column justify-content-center align-items-center"
+                    >
+                        <div class="bg-light rounded">
+                            <span class="text-primary h3 fw-bold"
+                                >{{ discount.nominal_diskon }}%</span
+                            >
+                        </div>
+                        <p class="text-center mt-3 mb-0">
+                            {{ discount.discount_name }}
+                        </p>
+                        <div class="d-flex">
+                            <button
+                                class="btn btn-outline-primary"
+                                [ngClass]="{
+                                    'd-none':
+                                        discount.nominal_diskon ===
+                                        discountApplied
+                                }"
+                                (click)="
+                                    applyDiscount(
+                                        discount.nominal_diskon,
+                                        discount.promo_id
+                                    )
+                                "
+                            >
+                                Apply
+                            </button>
+                            <button
+                                class="btn btn-outline-danger"
+                                [ngClass]="{
+                                    'd-none':
+                                        discount.nominal_diskon !==
+                                        discountApplied
+                                }"
+                                (click)="
+                                    applyDiscount(
+                                        discount.nominal_diskon,
+                                        discount.promo_id
+                                    )
+                                "
+                            >
+                                Remove
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div *ngFor="let voucher of listVoucher" class="col-3">
+                <div
+                    *ngIf="voucher.total_voucher > 0"
+                    class="card border-top-0 mb-3"
+                >
+                    <div
+                        class="card-body border-top-0 d-flex flex-column justify-content-center align-items-center"
+                    >
+                        <div class="bg-light rounded">
+                            <span class="text-primary text-primary h4 fw-bold"
+                                >Rp. {{ voucher.nominal_rupiah }}</span
+                            >
+                        </div>
+                        <p class="text-center mt-3 mb-0">
+                            {{ voucher.voucher_name }}
+                        </p>
+                        <div class="d-flex">
+                            <button
+                                class="btn btn-outline-primary"
+                                [ngClass]="{
+                                    'd-none':
+                                        voucher.nominal_rupiah ===
+                                        voucherApplied
+                                }"
+                                (click)="
+                                    applyVoucher(
+                                        voucher.nominal_rupiah,
+                                        voucher.promo_id
+                                    )
+                                "
+                            >
+                                Apply
+                            </button>
+                            <button
+                                class="btn btn-outline-danger"
+                                [ngClass]="{
+                                    'd-none':
+                                        voucher.nominal_rupiah !==
+                                        voucherApplied
+                                }"
+                                (click)="
+                                    applyVoucher(
+                                        voucher.nominal_rupiah,
+                                        voucher.promo_id
+                                    )
+                                "
+                            >
+                                Remove
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <hr class="border border-primary border-1 opacity-50" />
+    <div class="container">
+        <h5>Keranjang</h5>
+        <div
+            class="card border-top-0 mb-3"
+            style="max-width: 510px"
+            *ngFor="let product of selectedProducts; let i = index"
+            dndDropZone
+            dndEffectAllowed="move"
+            (dndDrop)="onDrop($any($event), selectedProducts)"
+        >
+            <div
+                class="row g-0 draggable" draggable="true"
+                [dndDraggable]="product"
+                dndEffectAllowed="move"
+                (dndMoved)="onDragged(product, selectedProducts, i)"
+            >
+                <div class="col-md-3">
+                    <img
+                        [src]="product.photo_url"
+                        alt="Product Image"
+                        class="img-fluid rounded-start object-fit-cover"
+                    />
+                </div>
+                <div class="col-md-6">
+                    <div class="card-body border-top-0">
+                        <h4 class="mt-0">{{ product.name }}</h4>
+                        <p class="card-text h5 text-primary">
+                            {{ product.description }}
+                        </p>
+                        <p class="card-text h5 text-primary">
+                            Rp {{ product.price }}
+                        </p>
+                        <!-- <ng-select
+              [items]="product.details"
+              bindLabel="description"
+              bindValue="id"
+              placeholder="Select Details"
+              [(ngModel)]="product.product_detail_id"
+            >
+            </ng-select> -->
+                    </div>
+                </div>
+                <div
+                    class="col-md-3 align-items-center align-middle d-flex gap-3 text-center"
+                >
+                    <div class="input-group">
+                        <button
+                            class="btn btn-sm btn-outline-primary"
+                            type="button"
+                            (click)="decreaseQuantity(product)"
+                        >
+                            -
+                        </button>
+                        <input
+                            type="number"
+                            class="form-control text-center mx-auto text-black"
+                            [(ngModel)]="product.quantity"
+                            min="1"
+                            disabled
+                        />
+                        <button
+                            class="btn btn-sm btn-primary"
+                            type="button"
+                            (click)="increaseQuantity(product)"
+                        >
+                            +
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title">Detail Pembayaran</h5>
+            <div class="row">
+                <div class="col-6">
+                    <p class="text-muted">Subtotal</p>
+                </div>
+                <div class="col-6 text-end">
+                    <p class="fw-bold">Rp. {{ getSubtotal() }}</p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-6">
+                    <p class="text-muted">Tax 11%</p>
+                </div>
+                <div class="col-6 text-end">
+                    <p class="fw-bold">{{ getTax(getSubtotal()) }}</p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-6">
+                    <p class="text-muted">Diskon</p>
+                </div>
+                <div class="col-6 text-end">
+                    <p class="fw-bold">- {{ discountApplied }}%</p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-6">
+                    <p class="text-muted">Voucher</p>
+                </div>
+                <div class="col-6 text-end">
+                    <p class="fw-bold">- Rp {{ voucherApplied }}</p>
+                </div>
+            </div>
+            <hr class="border border-primary border-1 opacity-50" />
+            <div class="row">
+                <div class="col-6">
+                    <p class="fw-bold">Total Pembayaran</p>
+                </div>
+                <div class="col-6 text-end">
+                    <p class="fw-bold">
+                        Rp {{ getTotalPayment(getSubtotal()) }}
+                    </p>
+                </div>
+            </div>
+            <hr class="border border-primary border-1 opacity-50" />
+            <div class="d-grid gap-2">
+                <button
+                    class="btn btn-primary"
+                    type="button"
+                    (click)="insert()"
+                >
+                    Tambah Pesanan
+                </button>
+            </div>
+        </div>
+    </div>
+    <div class="row" *ngIf="!customer">
+        <p>Please select a customer to view discounts and vouchers.</p>
+    </div>
+</div>

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Http\Traits\RecordSignature;
 use App\Models\ProductCategoryModel;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -11,6 +12,7 @@ class ProductDetailModel extends Model
 {
     use HasFactory;
     use SoftDeletes;
+    // use RecordSignature;
 
     public $timestamps = true;
     protected $fillable = [

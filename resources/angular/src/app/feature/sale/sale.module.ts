@@ -10,6 +10,8 @@ import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
 import { DndModule } from 'ngx-drag-drop';
 import { ListSaleComponent } from './components/list-sale/list-sale.component';
 import { FormSaleComponent } from './components/form-sale/form-sale.component';
+import { ProductModule } from '../product/product.module';
+import { CustomerModule } from '../customer/customer.module';
 
 
 
@@ -27,7 +29,9 @@ import { FormSaleComponent } from './components/form-sale/form-sale.component';
     SharedModule,
     CoreModule,
     CKEditorModule,
-    DndModule
+    DndModule,
+    ProductModule,
+    CustomerModule
   ]
 })
 export class SaleModule { }

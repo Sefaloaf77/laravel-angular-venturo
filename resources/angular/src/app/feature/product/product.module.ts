@@ -30,7 +30,8 @@ import { ListCategoryComponent } from "./category/components/list-category/list-
         SharedModule,
         CoreModule,
         CKEditorModule,
-        DndModule
+        DndModule,
     ],
+    exports: [FormProductComponent],
 })
 export class ProductModule {}

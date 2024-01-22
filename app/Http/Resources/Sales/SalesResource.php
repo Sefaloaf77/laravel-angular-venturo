@@ -20,7 +20,7 @@ class SalesResource extends JsonResource
             'customer_id' => $this->m_customer_id,
             'name' => $this->customer->name,
             'voucher_id'=>$this->m_voucher_id,
-            'total voucher' =>$this->vouchers->total_voucher,
+            // 'total voucher' =>$this->voucher->total_voucher,
             'voucher_nominal'=>$this->voucher_nominal,
             'discount_id'=>$this->m_discount_id,
             'date'=>$this->date,

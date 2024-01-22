@@ -30,17 +30,16 @@ class SalesRequest extends FormRequest
     private function createRules(): array
     {
         return [
-            'm_customer_id' => 'required',
-            'm_voucher_id' => 'nullable',
+            'customer_id' => 'required',
+            'voucher_id' => 'nullable',
             'voucher_nominal' => 'nullable',
-            'm_discount_id' => 'nullable',
+            'discount_id' => 'nullable',
             'date' => 'nullable',
             'details.*.total_item' => 'numeric',
-            'details.*.total_price' => 'required',
             'details.*.price' => 'required|numeric',
             'details.*.discount_nominal' => 'numeric',
-            'details.*.m_product_id' => 'numeric',
-            'details.*.m_product_detail_id' => 'nullable',
+            'details.*.product_id' => 'required|numeric',
+            'details.*.product_detail_id' => 'nullable',
         ];
     }
 

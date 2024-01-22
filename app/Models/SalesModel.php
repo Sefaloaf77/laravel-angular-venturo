@@ -2,15 +2,17 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Http\Traits\RecordSignature;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class SalesModel extends Model
 {
     use HasFactory;
     use SoftDeletes;
+    // use RecordSignature;
 
     public $timestamps = true;
     protected $fillable = [
@@ -35,16 +37,48 @@ class SalesModel extends Model
         return $this->hasMany(SalesDetailModel::class, 't_sales_id', 'id');
     }
 
+    // public function voucher()
+    // {
+    //     return $this->hasOne(VoucherModel::class, 'id', 'm_voucher_id');
+    // }
+
     public function voucher()
     {
-        return $this->hasOne(VoucherModel::class, 'id', 'm_voucher_id');
+        return $this->belongsTo(VoucherModel::class, 'm_voucher_id', 'id'); // Adjust the foreign key name if necessary
     }
 
     public function discount()
     {
         return $this->hasOne(DiscountModel::class, 'id', 'm_discount_id');
     }
+    public function drop(string $id)
+    {
+        return $this->find($id)->delete();
+    }
 
+    public function edit(array $payload, string $id)
+    {
+        return $this->find($id)->update($payload);
+    }
+
+    public function getById(string $id)
+    {
+        return $this->find($id);
+    }
+
+    public function store(array $payload)
+    {
+        $details = $payload['details'] ?? [];
+        unset($payload['details']); 
+
+        // dd($details);
+        $sale = $this->create($payload); 
+
+        foreach ($details as $detail) {
+            $sale->details()->create($detail);
+        }
+        return $sale;
+    }
     public function getAll(array $filter, int $itemPerPage = 0, string $sort = '')
     {
         $user = $this->query();
@@ -55,6 +89,9 @@ class SalesModel extends Model
 
         if (!empty($filter['m_customer_id'])) {
             $user->where('m_customer_id', '=', $filter['m_customer_id']);
+        }
+        if (!empty($filter['m_product_id'])) {
+            $user = $user->whereIn('m_product_id', 'LIKE', '%' . $filter['m_product_id'] . '%');
         }
 
         $sort = $sort ?: 'id DESC';

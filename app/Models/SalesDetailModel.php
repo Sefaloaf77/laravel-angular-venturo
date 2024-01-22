@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Models\SalesModel;
 use Illuminate\Support\Facades\DB;
+use App\Http\Traits\RecordSignature;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -12,6 +13,7 @@ class SalesDetailModel extends Model
 {
     use HasFactory;
     use SoftDeletes;
+    // use RecordSignature;
 
     public $timestamps = true;
     protected $fillable = [
@@ -68,7 +70,9 @@ class SalesDetailModel extends Model
         if (!empty($filter['m_product_id'])) {
             $user->where('m_product_id', 'LIKE', '%' . $filter['m_product_id'] . '%');
         }
-
+        if (!empty($filter['t_sales_id'])) {
+            $user->where('t_sales_id', 'LIKE', '%' . $filter['t_sales_id'] . '%');
+        }
         $sort = $sort ?: 'id DESC';
         $user->orderByRaw($sort);
         $itemPerPage = ($itemPerPage > 0) ? $itemPerPage : false;
