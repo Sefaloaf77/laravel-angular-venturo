@@ -40,19 +40,30 @@ class DiscountRequest extends FormRequest
     private function createRules(): array
     {
         return [
-            'customer_id' => 'required|numeric',
+            'customer_id' => 'required',
+            // 'diskon' => [
+            //     'promo_id' => 'required',
+            //     'is_available' => 'required'
+            // ]
+            // 'diskon' => 'required|array',
+            // 'diskon.*.promo_id' => 'required',
+            // 'diskon.*.is_available' => 'required',
             'promo_id' => 'required|numeric',
-            'status' => 'numeric',
+            'is_available' => 'numeric',
         ];
     }
 
     private function updateRules(): array
     {
         return [
+            // 'customer_id' => 'required',
+            // 'diskon' => 'required|array',
+            // 'diskon.*.promo_id' => 'required',
+            // 'diskon.*.is_available' => 'required',
             'id' => 'required|numeric',
-            'customer_id' => 'required|numeric',
+            'customer_id' => 'required',
             'promo_id' => 'required|numeric',
-            'status' => 'numeric',
+            'is_available' => 'numeric',
         ];
     }
 }

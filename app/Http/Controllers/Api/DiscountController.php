@@ -2,21 +2,53 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Models\PromoModel;
 use Illuminate\Http\Request;
+use App\Models\CustomerModel;
+use App\Models\DiscountModel;
+use App\Helpers\Promo\PromoHelper;
 use App\Http\Controllers\Controller;
 use App\Helpers\Promo\DiscountHelper;
+use Illuminate\Support\Facades\Storage;
+use App\Helpers\Customer\CustomerHelper;
 use App\Http\Requests\Promo\DiscountRequest;
+use App\Http\Resources\Promo\PromoCollection;
 use App\Http\Resources\Promo\DiscountResource;
 use App\Http\Resources\Promo\DiscountCollection;
-use App\Http\Resources\Promo\PromoCollection;
-use App\Models\PromoModel;
 
 class DiscountController extends Controller
 {
     private $discount;
+    private $customers;
+    private $promo;
+
     public function __construct()
     {
         $this->discount = new DiscountHelper();
+        $this->customers = new CustomerHelper();
+        $this->promo = new PromoHelper();
+    }
+
+    public function getTableHeadings()
+    {
+        $tableHeadings = []; // Initial headings
+
+        // Fetch discount names dynamically and append to tableHeadings
+        $discounts = $this->promo->getAll(['status' => 'diskon'], 100, ''); // Fetch discounts
+        foreach ($discounts['data'] as $discount) {
+            $tableHeadings[]['name'] = $discount->name;
+        }
+
+        return response()->success($tableHeadings);
+    }
+
+    // Check if the customer has a specific discount
+    private function checkIfCustomerHasDiscount($customer, $discountId)
+    {
+        // Check if the discount exists in the loaded discounts for the customer
+        $customerDiscount = $customer->discounts->where('id', $discountId)->first();
+
+        return $customerDiscount ? true : false;
     }
 
     public function index(Request $request)
@@ -24,20 +56,9 @@ class DiscountController extends Controller
         $filter = [
             'm_customer_id' => isset($request->customer_id) ? explode(',', $request->customer_id) : [],
         ];
-        $discounts = $this->discount->getAll($filter, $request->per_page ?? 25, $request->sort ?? '');
+        $discounts = $this->discount->getAll($filter, $request->per_page ?? 50, $request->sort ?? '');
 
         return response()->success(new DiscountCollection($discounts['data']));
-    }
-
-    public function show($id)
-    {
-        $discount = $this->discount->getById($id);
-
-        if (!($discount['status'])) {
-            return response()->failed(['Data discount tidak ditemukan'], 404);
-        }
-
-        return response()->success(new DiscountResource($discount['data']));
     }
 
 
@@ -47,11 +68,7 @@ class DiscountController extends Controller
             return response()->failed($request->validator->errors());
         }
 
-        $payload = $request->only([
-            'customer_id',
-            'promo_id',
-            'status'
-        ]);
+        $payload = $request->only(['customer_id', 'promo_id', 'is_available']);
         $payload = $this->renamePayload($payload);
         $discount = $this->discount->create($payload);
 
@@ -59,7 +76,55 @@ class DiscountController extends Controller
             return response()->failed($discount['error']);
         }
 
-        return response()->success(new DiscountResource($discount['data']), 'discount berhasil ditambahkan');
+        return response()->success(new DiscountResource($discount['data']), 'Diskon berhasil ditambahkan');
+    }
+
+    public function show($id)
+    {
+        $customer = CustomerModel::with('discounts')->find($id);
+
+        if (!$customer) {
+            return response()->failed(['Customer not found'], 404);
+        }
+
+        $discounts = $this->promo->getAll(['status' => 'diskon'], 100, '');
+
+        $customerDiscounts = [];
+        foreach ($discounts['data'] as $discount) {
+            $isAvailable = $this->checkIfCustomerHasDiscount($customer, $discount->id);
+
+            // Check if is_available already exists in the database for this customer and discount
+            if (!$isAvailable) {
+                $existingDiscount = DiscountModel::where('m_customer_id', $customer->id)
+                    ->where('m_promo_id', $discount->id)
+                    ->first();
+
+                if ($existingDiscount && $existingDiscount->is_available) {
+                    $isAvailable = true;
+                }
+            }
+
+            $customerDiscounts[] = [
+                'promo_id' => $discount->id,
+                'nama_diskon' => $discount->name,
+                'is_available' => $isAvailable ? '1' : '0',
+            ];
+        }
+
+        $transformedData = [
+            'customer' => [
+                'name' => $customer->name,
+                'customer_id' => $customer->id,
+                'email' => $customer->email,
+                'date_of_birth' => $customer->date_of_birth,
+                'photo_url' => !empty($customer->photo) ? Storage::disk('public')->url($customer->photo) : Storage::disk('public')->url('../assets/img/no-image.png'),
+                'phone_number' => $customer->phone_number,
+                'is_verified' => $customer->is_verified,
+            ],
+            'diskon' => $customerDiscounts,
+        ];
+
+        return response()->success($transformedData);
     }
 
     public function update(DiscountRequest $request)
@@ -68,12 +133,7 @@ class DiscountController extends Controller
             return response()->failed($request->validator->errors());
         }
 
-        $payload = $request->only([
-            'id',
-            'customer_id',
-            'promo_id',
-            'status'
-        ]);
+        $payload = $request->only(['id', 'customer_id', 'promo_id', 'is_available']);
         $payload = $this->renamePayload($payload);
         $discount = $this->discount->update($payload, $payload['id'] ?? 0);
 
@@ -81,8 +141,9 @@ class DiscountController extends Controller
             return response()->failed($discount['error']);
         }
 
-        return response()->success(new DiscountResource($discount['data']), 'discount berhasil diubah');
+        return response()->success(new DiscountResource($discount['data']), 'Diskon berhasil diubah');
     }
+
 
     public function destroy($id)
     {
@@ -104,11 +165,11 @@ class DiscountController extends Controller
         return $payload;
     }
 
-    public function getPromoByDiscount()
+    public function getByCust(string $customerId)
     {
-        $promo = PromoModel::where('status', 'diskon')->get();
-        return response()->success([
-            'list' => $promo,
-        ]);
+        $discountModel = new DiscountModel();
+        $discounts = $discountModel->getByCustomerId($customerId);
+
+        return response()->json($discounts);
     }
 }

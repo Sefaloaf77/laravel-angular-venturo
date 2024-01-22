@@ -1,4 +1,5 @@
 import {
+    ChangeDetectorRef,
     Component,
     EventEmitter,
     Input,
@@ -11,6 +12,7 @@ import { DiscountService } from "../../services/discount.service";
 import { CustomerService } from "src/app/feature/customer/services/customer.service";
 import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
 import { LandaService } from "src/app/core/services/landa.service";
+import { PromoService } from "../../../services/promo.service";
 
 @Component({
     selector: "app-list-discount",
@@ -18,84 +20,172 @@ import { LandaService } from "src/app/core/services/landa.service";
     styleUrls: ["./list-discount.component.scss"],
 })
 export class ListDiscountComponent {
-    @ViewChild(DataTableDirective)
-    dtElement: DataTableDirective;
-    dtInstance: Promise<DataTables.Api>;
-    dtOptions: any;
-
-    @Input() promoId: number;
-    @Output() afterSave = new EventEmitter<boolean>();
-
+    discounts: any;
+    promo: any;
     showLoading: boolean;
-    listDiscount: any;
+    listCustomers: any;
+    selectedCustomers: any;
+
     titleForm: string;
     discountId: number;
     showForm: boolean;
-    titleModal: string;
-    customerId: number;
-    customers: [];
     filter: {
-        customer_id: any;
+        customer_id: string;
+        // id: any;
     };
+    titleModal: string;
+    customerId: any;
 
     constructor(
         private discountService: DiscountService,
         private customerService: CustomerService,
-        private modalService: NgbModal,
-        private landaService: LandaService
+        private promoService: PromoService,
+        private modalService: NgbModal
     ) {}
 
     ngOnInit(): void {
         this.showForm = false;
         this.setDefaultFilter();
-        this.getDiscount();
         this.getCustomers();
+        this.getDiscountsPromo();
+        this.getDiscounts();
     }
 
     setDefaultFilter() {
         this.filter = {
             customer_id: "",
+            // id: "",
         };
     }
 
-    getDiscount() {
-        this.dtOptions = {
-            serverSide: true,
-            processing: true,
-            ordering: false,
-            pageLength: 25,
-            ajax: (dtParams: any, callback) => {
-                const params = {
-                    ...this.filter,
-                    per_page: dtParams.length,
-                    page: dtParams.start / dtParams.length + 1,
+    toggleDiscountStatus(customerId: number, promoId: number): void {
+        const existingDiscount = this.discounts.find(
+            (d) => d.customer_id == customerId && d.promo_id == promoId
+        );
+        const originalStatus = existingDiscount
+            ? existingDiscount.is_available
+            : 0;
+
+        const toggleStatus = () => {
+            const newStatus = existingDiscount
+                ? existingDiscount.is_available === 1
+                    ? 0
+                    : 1
+                : 1;
+
+            if (existingDiscount) {
+                // const newStatus = existingDiscount.is_available == 1 ? 0 : 1;
+                existingDiscount.is_available = newStatus;
+                this.updateDiscountStatus({
+                    id: existingDiscount.id,
+                    is_available: newStatus,
+                });
+                this.reloadTable();
+            } else {
+                const newDiscount = {
+                    customer_id: customerId,
+                    promo_id: promoId,
+                    is_available: 1,
                 };
+                this.discounts.push(newDiscount);
+                this.createDiscount(newDiscount);
+                this.reloadTable();
+            }
 
-                this.discountService.getDiscount(params).subscribe(
-                    (res: any) => {
-                        const { list, meta } = res.data;
-
-                        let number = dtParams.start + 1;
-                        list.forEach((val) => (val.no = number++));
-                        this.listDiscount = list;
-
-                        callback({
-                            recordsTotal: meta.total,
-                            recordsFiltered: meta.total,
-                            data: [],
-                        });
-                    },
-                    (err: any) => {}
-                );
-            },
+            const successMessage =
+                newStatus == 1
+                    ? "Diskon berhasil diubah"
+                    : "Diskon berhasil diubah";
+            Swal.fire({
+                icon: "success",
+                title: "Berhasil",
+                text: successMessage,
+            });
         };
+        if (existingDiscount) {
+            // Jika discount sudah ada, tampilkan konfirmasi Swal
+            Swal.fire({
+                title: "Konfirmasi",
+                text: "Apakah Anda yakin ingin mengubah status diskon?",
+                icon: "question",
+                showCancelButton: true,
+                confirmButtonText: "Ya",
+                cancelButtonText: "Tidak",
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    toggleStatus();
+                } else {
+                    existingDiscount.is_available = originalStatus;
+                }
+            });
+        } else {
+            // Jika discount belum ada, langsung lakukan toggle
+            toggleStatus();
+        }
+    }
+
+    isDiscountApplied(customerId: number, promoId: number): boolean {
+        return !!this.discounts.find(
+            (d) =>
+                d.customer_id == customerId &&
+                d.promo_id == promoId &&
+                d.is_available == 1
+        );
+    }
+
+    getDiscountsPromo(status = "diskon") {
+        this.promoService.getPromos({ status: status }).subscribe(
+            (res: any) => {
+                this.promo = res.data.list;
+                console.log(this.promo);
+            },
+            (err) => {
+                console.log(err);
+            }
+        );
+    }
+
+    getDiscounts() {
+        this.discountService.getDiscount().subscribe(
+            (res: any) => {
+                this.discounts = res.data.list;
+                console.log(this.discounts);
+            },
+            (err) => {
+                console.log(err);
+            }
+        );
+    }
+    generateSafeParam(list) {
+        let paramId = [];
+        list.forEach((val) => paramId.push(val.id));
+        if (!paramId) return "";
+
+        return paramId.join(",");
+    }
+    filterByCustomer(customers) {
+        this.filter.customer_id = this.generateSafeParam(customers);
+        this.reloadTable();
+    }
+    // filterByCustomer(customers) {
+    //     const customerIdsString = customers.join(",");
+    //     this.filter.id = customerIdsString;
+    //     this.reloadTable();
+    // }
+
+    reloadTable() {
+        this.customerService.getCustomers(this.filter).subscribe((res: any) => {
+            const { list } = res.data;
+            this.listCustomers = list;
+            this.showLoading = false;
+            console.log(res);
+        });
     }
 
     getCustomers(name = "") {
-        this.showLoading = true;
         this.customerService.getCustomers({ name: name }).subscribe(
             (res: any) => {
-                this.customers = res.data.list;
+                this.listCustomers = res.data.list;
                 this.showLoading = false;
             },
             (err) => {
@@ -104,69 +194,49 @@ export class ListDiscountComponent {
         );
     }
 
-    reloadDataTable(): void {
-        this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
-            dtInstance.draw();
-        });
-    }
-
-    filterByCustomer(customers) {
-        let customersId = [];
-        customers.forEach((val) => customersId.push(val.id));
-        if (!customersId) return false;
-
-        this.filter.customer_id = customersId.join(",");
-        this.reloadDataTable();
-    }
-    formCreate() {
-        this.showForm = true;
-        this.titleForm = "Tambah Discount";
-        this.discountId = 0;
-    }
-
-    formUpdate(discount) {
-        this.showForm = true;
-        this.titleForm = "Edit Discount: " + discount.customer_name;
-        this.discountId = discount.id;
-    }
-    calculateTotal(column: string): number {
-        return this.listDiscount.filter((discount) => discount[column] == 1)
-            .length;
-    }
-    updateCustomer(modalId, discount) {
-        this.titleModal = "Edit Customer: " + discount.customer_name;
-        this.customerId = discount.customer_id;
-        this.modalService.open(modalId, { size: "lg", backdrop: "static" });
-    }
-
-    onCheckboxChange(
-        event: any,
-        discountId: number,
-        customerId: number,
-        promoId: number,
-        columnName: string
-    ) {
-        const existingPayload = {
-            id: discountId,
-            customer_id: customerId,
-            promo_id: promoId,
-        };
-        const updatedColumnValue = event.target.checked ? 1 : 0;
-        const payload = {
-            ...existingPayload,
-            [columnName]: updatedColumnValue,
-        };
-
-        // Panggil fungsi service untuk menyimpan ke database
-        this.discountService.updateDiscount(payload).subscribe(
+    createDiscount(discount: any): void {
+        this.discountService.createDiscount(discount).subscribe(
             (res: any) => {
-                this.landaService.alertSuccess("Berhasil", res.message);
-                this.afterSave.emit();
+                console.log(res);
             },
             (err) => {
-                this.landaService.alertError("Mohon Maaf", err.error.errors);
+                console.error(err);
             }
         );
-        this.reloadDataTable();
+    }
+
+    updateDiscountStatus(payload: any): void {
+        const existingDiscount = this.discounts.find((d) => d.id == payload.id);
+
+        if (existingDiscount) {
+            payload.customer_id = existingDiscount.customer_id;
+            payload.promo_id = existingDiscount.promo_id;
+
+            this.discountService.updateDiscount(payload).subscribe(
+                (res: any) => {
+                    console.log(res);
+                },
+                (err) => {
+                    console.log(err);
+                    console.error(err);
+                }
+            );
+        }
+    }
+
+    getTotalDiscountStatus(promoId: number, discounts: any[]) {
+        let count = 0;
+        discounts.forEach((discount) => {
+            if (discount.is_available == 1 && discount.promo_id == promoId) {
+                count++;
+            }
+        });
+        return count !== 0 ? count : 0;
+    }
+
+    updateCustomer(modalId, customer) {
+        this.titleModal = "Edit customer: " + customer.name;
+        this.customerId = customer.id;
+        this.modalService.open(modalId, { size: "lg", backdrop: "static" });
     }
 }

@@ -1,1 +1,110 @@
-<p>form-discount works!</p>
+<!-- <form>
+  <div class="form-group row mt-3">
+    <div class="col-md-4"></div>
+    <div class="col-md-4">
+      <app-upload-image
+        [defaultImage]="formModel.customer.photo_url"
+        [ratioHigh]="4"
+        [ratioWidth]="3"
+        (onSubmit)="getCroppedImage($event)"
+      >
+      </app-upload-image>
+    </div>
+    <div class="col-md-4"></div>
+  </div>
+  <hr />
+  <div class="form-group row">
+    <label class="col-md-4 required">Nama</label>
+    <div class="col-md-8">
+      <input
+        [(ngModel)]="formModel.customer.name"
+        type="text"
+        name="name"
+        class="form-control"
+        placeholder="Nama Pengguna"
+      />
+    </div>
+  </div>
+  <div class="form-group row">
+    <label class="col-md-4 required">Email</label>
+    <div class="col-md-8">
+      <input
+        [(ngModel)]="formModel.customer.email"
+        type="email"
+        name="email"
+        class="form-control"
+        placeholder="Email Pengguna"
+      />
+    </div>
+  </div>
+  <div class="form-group row">
+    <label class="col-md-4">Phone Number</label>
+    <div class="col-md-8">
+      <input
+        [(ngModel)]="formModel.customer.phone_number"
+        type="text"
+        name="phone_number"
+        class="form-control"
+        placeholder="No Telepon"
+      />
+      <small class="form-text text-muted" *ngIf="activeMode === MODE_UPDATE">
+        Kosongi password jika tidak diubah
+      </small>
+    </div>
+  </div>
+  <div class="form-group row">
+    <label class="col-md-4">Tanggal Lahir</label>
+    <div class="col-md-8">
+      <input
+        [(ngModel)]="formModel.customer.date_of_birth"
+        type="date"
+        name="date_of_birth"
+        class="form-control"
+        placeholder="Tanggal Lahir"
+      />
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-12">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Discount Name</th>
+            <th>Is Available</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let discount of listDiscount; let i = index">
+            <td>{{ discount.nama_diskon }}</td>
+            <td>
+              <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                <label
+                  *ngFor="let value of ['1', '0']"
+                  class="btn btn-outline-primary"
+                  [ngClass]="{ active: discount.is_available === value }"
+                  (click)="setIsAvailable(discount, value)"
+                >
+                  <input
+                    type="radio"
+                    [value]="value"
+                    name="is_available_{{ i }}"
+                    class="d-none"
+                  />
+                  {{ value === "1" ? "Ada" : "Habis" }}
+                </label>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="col-md-12 text-right">
+    <button type="button" class="btn btn-light me-2" (click)="afterSave.emit()">
+      <em class="fa fa-arrow-left"></em> Kembali
+    </button>
+    <button type="button" class="btn btn-primary" (click)="save()">
+      <em class="fa fa-save"></em> Simpan
+    </button>
+  </div>
+</form> -->

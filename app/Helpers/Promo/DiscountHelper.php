@@ -86,4 +86,20 @@ class DiscountHelper extends Venturo
             ];
         }
     }
+
+    public function getDiscountById($id): array
+    {
+        $discount = $this->discount->getById($id);
+        if (empty($discount)) {
+            return [
+                'status' => false,
+                'data' => null
+            ];
+        }
+
+        return [
+            'status' => true,
+            'data' => $discount
+        ];
+    }
 }

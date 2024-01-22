@@ -2,14 +2,16 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Http\Traits\RecordSignature;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class DiscountModel extends Model
 {
     use HasFactory;
     use SoftDeletes;
+    // use RecordSignature;
 
     protected $table = 'm_discount';
     public $timestamps = true;
@@ -17,7 +19,7 @@ class DiscountModel extends Model
     protected $fillable = [
         'm_customer_id',
         'm_promo_id',
-        'status',
+        'is_available',
     ];
 
 
@@ -59,7 +61,10 @@ class DiscountModel extends Model
     public function getAll(array $filter, int $itemPerPage = 0, string $sort = '')
     {
         $discount = $this->query();
-
+        // dd($filter);
+        // if (!empty($filter['m_customer_id']) && is_array($filter['m_customer_id'])) {
+        //     $discount->whereIn('m_customer_id', $filter['m_customer_id']);
+        // }
         if (!empty($filter['m_customer_id']) && is_array($filter['m_customer_id'])) {
             $discount->whereIn('m_customer_id', $filter['m_customer_id']);
         }
@@ -84,5 +89,13 @@ class DiscountModel extends Model
         $promo = $this->query()->with(['promo']);
 
         $promo->where('status','=','diskon');
+    }
+
+    public function getByCustomerId(string $customerId)
+    {
+        return $this->with(['customer:id,name', 'promo:id,name,nominal_percentage'])
+            ->where('m_customer_id', $customerId)
+            ->where('is_available', 1)
+            ->get();
     }
 }

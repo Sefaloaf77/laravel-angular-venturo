@@ -21,7 +21,7 @@ class DiscountResource extends JsonResource
             'customer_name' => $this->customer->name ?? null,
             'promo_id' => $this->promo->id ?? null,
             'promo_name' => $this->promo->name ?? null,
-            'status' => $this->status,
+            // 'status' => $this->status,
             // 'competency_matrix' => $this->competency_matrix,
             // 'late_under_3' => $this->late_under_3,
             // 'full_absensi' => $this->full_absensi,
@@ -31,7 +31,7 @@ class DiscountResource extends JsonResource
             // 'customer_name' => $this->customer->name ?? null,
             // 'promo_id' => $this->promo->id ?? null,
             // 'promo_name' => $this->promo->name ?? null,
-            // 'is_available' => $this->is_available
+            'is_available' => $this->is_available
         ];
     }
 }

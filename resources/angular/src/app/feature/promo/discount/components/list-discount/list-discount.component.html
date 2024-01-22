@@ -3,86 +3,85 @@
         <div class="col-md-12">
             <div class="card card-transparent">
                 <div class="card-header d-flex justify-content-between">
-                    <h1>
-                        <span class="badge bg-warning p-3 text-dark">
-                            <strong>Daftar Discount</strong>
-                        </span>
-                    </h1>
-                    <div
-                        class="row d-flex justify-content-end w-25 mw-50 align-middle"
-                    >
-                        <div class="col">
-                            <form
-                                class="form-inline align-items-center justify-content-end"
-                            >
-                                <div class="form-group">
+                    <h1>Diskon</h1>
+                    <div class="d-flex justify-content-end">
+                        <form class="form-inline d-flex align-items-center">
+                            <div class="form-group flex-grow-1 mb-0">
+                                <div class="input-group">
                                     <ng-select
-                                        [items]="customers"
+                                        [items]="listCustomers"
+                                        [(ngModel)]="selectedCustomers"
                                         (change)="filterByCustomer($event)"
                                         [multiple]="true"
                                         id="filter-customer"
-                                        class="w-100"
-                                        placeholder="Pilih Customer"
                                         bindLabel="name"
                                         bindValue="id"
                                         [loading]="showLoading"
                                         [searchable]="false"
                                         name="customer_id"
+                                        placeholder="Pilih Customer"
+                                        style="width: 200px"
                                     >
                                         <ng-template ng-header-tmp>
                                             <input
-                                                class="form-control"
+                                                class="form-control form-control-sm"
                                                 type="text"
                                                 debounceKeyUp
                                                 (onEvent)="
                                                     getCustomers(
-                                                        $event.target.value
+                                                        $any($event.target)
+                                                            .value
                                                     )
                                                 "
                                             />
                                         </ng-template>
                                     </ng-select>
                                 </div>
-                            </form>
-                        </div>
+                            </div>
+                        </form>
                     </div>
                 </div>
                 <div class="card-body">
-                    <table
-                        class="table table-hover"
-                        datatable
-                        [dtOptions]="dtOptions"
-                    >
-                        <thead class="thead-light">
+                    <table class="table table-hover" #tableComponent>
+                        <thead>
                             <tr>
-                                <th style="width: 70px">No</th>
-                                <th>Nama Customer</th>
-                                <th></th>
-                                <th>Tahsin</th>
-                                <th>Competency Matrix</th>
-                                <th>Terlambat di bawah 3x</th>
-                                <th>Full Absensi</th>
-                                <th></th>
+                                <th class="text-center" style="width: 70px">
+                                    No
+                                </th>
+                                <th class="text-center">Customer</th>
+                                <th
+                                    class="text-center"
+                                    style="width: 10px"
+                                ></th>
+                                <th class="text-center"></th>
+                                <th
+                                    class="text-center"
+                                    *ngFor="let pro of promo"
+                                    style="width: 200px"
+                                >
+                                    {{ pro.name }}
+                                </th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr *ngFor="let discount of listDiscount">
-                                <td class="vertical-middle">
-                                    {{ discount.no }}
+                            <tr
+                                *ngFor="
+                                    let cust of listCustomers;
+                                    let i = index
+                                "
+                            >
+                                <td class="vertical-middle text-center">
+                                    {{ i + 1 }}
                                 </td>
                                 <td class="vertical-middle">
-                                    {{ discount.customer_name }}
+                                    {{ cust.name }}
                                 </td>
-
-                                <td class="vertical-middle">
+                                <td class="vertical-middle text-left">
                                     <a
                                         href="javascript: void(0);"
-                                        class="align-middle me-3"
+                                        class="align-middle"
                                         (click)="
-                                            updateCustomer(
-                                                formCustomer,
-                                                discount
-                                            )
+                                            updateCustomer(formCustomer, cust)
                                         "
                                         placement="left"
                                         container="body"
@@ -93,101 +92,45 @@
                                         ></em>
                                     </a>
                                 </td>
-                                <td class="vertical-middle">
-                                    <div class="form-check">
-                                        <input
-                                            class="form-check-input"
-                                            type="checkbox"
-                                            value="1"
-                                            id="flexCheckDefault"
-                                            [checked]="discount.tahsin == 1"
-                                            (change)="
-                                                onCheckboxChange(
-                                                    $event,
-                                                    discount.id,
-                                                    discount.customer_id,
-                                                    discount.promo_id,'tahsin'
-                                                )
-                                            "
-                                        />
-                                    </div>
-                                </td>
-                                <td class="vertical-middle">
-                                    <div class="form-check">
-                                        <input
-                                            class="form-check-input"
-                                            type="checkbox"
-                                            value="1"
-                                            id="flexCheckDefault"
-                                            [checked]="
-                                                discount.competency_matrix == 1
-                                            "
-                                            (change)="
-                                                onCheckboxChange(
-                                                    $event,
-                                                    discount.id,
-                                                    discount.customer_id,
-                                                    discount.promo_id,'competency_matrix'
-                                                )
-                                            "
-                                        />
-                                    </div>
-                                </td>
-                                <td class="vertical-middle">
-                                    <div class="form-check">
-                                        <input
-                                            class="form-check-input"
-                                            type="checkbox"
-                                            value="1"
-                                            id="flexCheckDefault"
-                                            [checked]="
-                                                discount.late_under_3 == 1
-                                            "
-                                            (change)="
-                                                onCheckboxChange(
-                                                    $event,
-                                                    discount.id,
-                                                    discount.customer_id,
-                                                    discount.promo_id,'late_under_3'
-                                                )
-                                            "
-                                        />
-                                    </div>
-                                </td>
-                                <td class="vertical-middle">
-                                    <div class="form-check">
-                                        <input
-                                            class="form-check-input"
-                                            type="checkbox"
-                                            value="1"
-                                            id="flexCheckDefault"
-                                            [checked]="
-                                                discount.full_absensi == 1
-                                            "
-                                            (change)="
-                                                onCheckboxChange(
-                                                    $event,
-                                                    discount.id,
-                                                    discount.customer_id,
-                                                    discount.promo_id, 'full_absensi'
-                                                )
-                                            "
-                                        />
-                                    </div>
+                                <td></td>
+                                <td
+                                    class="vertical-middle text-center"
+                                    *ngFor="let pro of promo"
+                                >
+                                    <input
+                                        class="form-check-input"
+                                        type="checkbox"
+                                        name="is_available"
+                                        [checked]="
+                                            isDiscountApplied(cust.id, pro.id)
+                                        "
+                                        (change)="
+                                            toggleDiscountStatus(
+                                                cust.id,
+                                                pro.id
+                                            )
+                                        "
+                                    />
                                 </td>
                             </tr>
                         </tbody>
                         <tfoot>
                             <tr>
-                                <td colspan="2"></td>
-                                <td>Total</td>
-                                <td>{{ calculateTotal("tahsin") }}</td>
-                                <td>
-                                    {{ calculateTotal("competency_matrix") }}
-                                </td>
-                                <td>{{ calculateTotal("late_under_3") }}</td>
-                                <td>{{ calculateTotal("full_absensi") }}</td>
-                                <td></td>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th class="text-start">Total</th>
+                                <th
+                                    *ngFor="let pro of promo"
+                                    class="text-center"
+                                >
+                                    {{
+                                        getTotalDiscountStatus(
+                                            pro.id,
+                                            discounts
+                                        )
+                                    }}
+                                </th>
                             </tr>
                         </tfoot>
                     </table>
@@ -196,24 +139,6 @@
         </div>
     </div>
 </div>
-
-<!-- <div class="container-fluid" *ngIf="showForm">
-    <div class="row">
-        <div class="col-md-12">
-            <div class="card card-transparent">
-                <div class="card-header d-flex justify-content-between">
-                    <h1>{{ titleForm }}</h1>
-                </div>
-                <div class="card-body">
-                    <app-form-voucher
-                        [discountId]="discountId"
-                        (afterSave)="setDefaultFilter(); showForm = false"
-                    ></app-form-voucher>
-                </div>
-            </div>
-        </div>
-    </div>
-</div> -->
 
 <ng-template #formCustomer let-modal>
     <div class="modal-header">
@@ -230,7 +155,7 @@
     <div class="modal-body">
         <app-form-customer
             [customerId]="customerId"
-            (afterSave)="modal.close(); reloadDataTable()"
+            (afterSave)="modal.close()"
         ></app-form-customer>
     </div>
 </ng-template>
