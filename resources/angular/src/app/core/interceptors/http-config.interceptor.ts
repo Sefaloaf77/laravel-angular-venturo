@@ -64,7 +64,7 @@ export class HttpConfigInterceptor implements HttpInterceptor {
                 return event;
             }),
             catchError((error: HttpErrorResponse) => {
-                if ([403, 401].includes(error.error.status_code)) {
+                if ([403, 401].includes(error.status)) {
                     Swal.fire({
                         title: 'Ooops',
                         text: error.error.errors[0],

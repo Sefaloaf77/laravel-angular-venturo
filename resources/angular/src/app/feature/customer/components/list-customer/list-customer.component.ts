@@ -86,6 +86,7 @@ export class ListCustomerComponent {
 
             this.customerService.deleteCustomer(customerId).subscribe((res: any) => {
                 this.getCustomer();
+                this.reloadDataTable();
             });
         });
     }

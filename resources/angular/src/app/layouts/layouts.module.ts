@@ -10,6 +10,7 @@ import { FooterComponent } from './footer/footer.component';
 import { HorizontalComponent } from './horizontal/horizontal.component';
 import { HorizontaltopbarComponent } from './horizontaltopbar/horizontaltopbar.component';
 import { NgProgressModule } from 'ngx-progressbar';
+import { UserModule } from '../feature/user/user.module';
 
 @NgModule({
   declarations: [LayoutComponent, FooterComponent, HorizontalComponent, HorizontaltopbarComponent],
@@ -19,7 +20,8 @@ import { NgProgressModule } from 'ngx-progressbar';
     NgbDropdownModule,
     ClickOutsideModule,
     PerfectScrollbarModule,
-    NgProgressModule
+    NgProgressModule,
+    UserModule
   ],
   exports: []
 })

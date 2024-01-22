@@ -23,9 +23,10 @@ class ProductController extends Controller
      */
     public function index(Request $request)
     {
+        // dd($request);
         $filter = [
             'name' => $request->name ?? '',
-            'm_product_category_id' => $request->m_category_id ?? '',
+            'm_product_category_id' => $request->product_category_id ?? '',
             'is_available' => isset($request->is_available) ? $request->is_available : '',
         ];
 

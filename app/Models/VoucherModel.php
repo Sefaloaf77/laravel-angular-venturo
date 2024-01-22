@@ -2,14 +2,16 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Http\Traits\RecordSignature;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class VoucherModel extends Model
 {
     use HasFactory;
     use SoftDeletes;
+    // use RecordSignature;
 
     public $timestamps = true;
     protected $fillable = [
@@ -35,6 +37,11 @@ class VoucherModel extends Model
     public function promo()
     {
         return $this->hasOne(PromoModel::class, 'id', 'm_promo_id');
+    }
+
+    public function sale()
+    {
+        return $this->hasMany(SalesModel::class, 'm_voucher_id');
     }
 
     public function drop(int $id)
@@ -83,5 +90,12 @@ class VoucherModel extends Model
     public function getById(int $id)
     {
         return $this->find($id);
+    }
+
+    public function getByCustomerId(string $customerId)
+    {
+        return $this->with(['customer:id,name', 'promo:id,name,nominal_rupiah'])
+            ->where('m_customer_id', $customerId)
+            ->get();
     }
 }

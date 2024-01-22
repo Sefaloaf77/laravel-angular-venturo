@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Models\VoucherModel;
 use Illuminate\Http\Request;
 use App\Helpers\Promo\VoucherHelper;
 use App\Http\Controllers\Controller;
@@ -94,5 +95,12 @@ class VoucherController extends Controller
         unset($payload['customer_id']);
         unset($payload['promo_id']);
         return $payload;
+    }
+    public function getByCust(string $customerId)
+    {
+        $voucherModel = new VoucherModel();
+        $discounts = $voucherModel->getByCustomerId($customerId);
+
+        return response()->json($discounts);
     }
 }

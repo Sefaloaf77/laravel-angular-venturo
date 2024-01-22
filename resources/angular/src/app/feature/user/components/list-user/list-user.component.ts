@@ -86,6 +86,7 @@ export class ListUserComponent {
 
             this.userService.deleteUser(userId).subscribe((res: any) => {
                 this.getUser();
+                this.reloadDataTable()
             });
         });
     }

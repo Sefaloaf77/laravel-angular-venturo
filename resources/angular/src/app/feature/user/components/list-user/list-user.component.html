@@ -3,46 +3,40 @@
         <div class="col-md-12">
             <div class="card card-transparent">
                 <div class="card-header d-flex justify-content-between">
-                    <h1>Daftar User</h1>
-                    <div class="row d-flex justify-content-end">
-                        <div class="col-7">
-                            <form class="form-inline">
-                                <div class="form-group">
-                                    <label class="mr-2">Nama</label>
+                    <h1 class="align-self-center">Daftar User</h1>
+                    <div class="d-flex justify-content-end gap-2">
+                        <form class="form-inline">
+                            <div class="d-flex gap-1">
+                                <label class="align-self-center">Nama:</label>
+                                <div class="input-group input-group-sm mr-2">
+                                    <input
+                                        type="text"
+                                        class="form-control form-control-sm"
+                                        [(ngModel)]="filter.name"
+                                        name="name"
+                                        placeholder="isikan Nama:"
+                                    />
                                     <div
-                                        class="input-group input-group-sm mr-2"
+                                        class="input-group-append"
+                                        (click)="reloadDataTable()"
                                     >
-                                        <input
-                                            type="text"
-                                            class="form-control form-control-sm"
-                                            [(ngModel)]="filter.name"
-                                            name="name"
-                                            placeholder="isikan Nama:"
-                                        />
-                                        <div
-                                            class="input-group-append"
-                                            (click)="reloadDataTable()"
-                                        >
-                                            <span class="input-group-text">
-                                                <em class="fa fa-search"></em>
-                                            </span>
-                                        </div>
+                                        <span class="input-group-text">
+                                            <em class="fa fa-search"></em>
+                                        </span>
                                     </div>
                                 </div>
-                            </form>
-                        </div>
-                        <div class="col-5 align-self-center">
-                            <button
-                                type="button"
-                                class="btn btn-sm btn-primary"
-                                (click)="createUser(formUser)"
-                            >
-                                <em
-                                    class="fa fa-plus font-size-14 align-middle mr-1"
-                                ></em>
-                                Tambah User
-                            </button>
-                        </div>
+                            </div>
+                        </form>
+                        <button
+                            type="button"
+                            class="btn btn-sm btn-primary"
+                            (click)="createUser(formUser)"
+                        >
+                            <em
+                                class="fa fa-plus font-size-14 align-middle mr-1"
+                            ></em>
+                            Tambah User
+                        </button>
                     </div>
                 </div>
                 <div class="card-body">

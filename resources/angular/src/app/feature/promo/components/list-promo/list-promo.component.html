@@ -4,57 +4,49 @@
             <div class="card card-transparent">
                 <div class="card-header d-flex justify-content-between">
                     <h1>Daftar Promo</h1>
-                    <div class="row d-flex justify-content-end">
-                        <div class="col-9">
-                            <form
-                                class="form-inline input-group align-items-center"
-                            >
-                                <div class="form-group p-2">
-                                    <div class="input-group mr-2">
-                                        <input
-                                            type="text"
-                                            class="form-control"
-                                            placeholder="Tulis nama promo"
-                                            [(ngModel)]="filter.name"
-                                            name="name"
-                                            debounceKeyUp
-                                            (onEvent)="reloadDataTable()"
-                                        />
-                                    </div>
-                                </div>
-                                <div class="form-group p-2">
-                                    <div class="input-group mr-2">
-                                        <ng-select
-                                            name="type"
-                                            appendTo="body"
-                                            [(ngModel)]="filter.status"
-                                            placeholder="Status"
-                                            [searchable]="false"
-                                            (change)="reloadDataTable()"
-                                        >
-                                            <ng-option [value]="'voucher'"
-                                                >Voucher</ng-option
-                                            >
-                                            <ng-option [value]="'diskon'"
-                                                >Diskon</ng-option
-                                            >
-                                        </ng-select>
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
-                        <div class="col-3 align-self-center">
-                            <button
-                                type="button"
-                                class="btn btn-sm btn-primary mr-2"
-                                (click)="formCreate()"
-                            >
-                                <em
-                                    class="fa fa-plus font-size-14 align-middle mr-1"
-                                ></em>
-                                Tambah Promo
-                            </button>
-                        </div>
+                    <div class="d-flex justify-content-end gap-2">
+                        <form class="form-inline d-flex gap-2">
+                            <div class="input-group">
+                                <input
+                                    type="text"
+                                    style="width: 270px"
+                                    class="form-control"
+                                    placeholder="Tulis nama promo"
+                                    [(ngModel)]="filter.name"
+                                    name="name"
+                                    debounceKeyUp
+                                    (onEvent)="reloadDataTable()"
+                                />
+                            </div>
+                            <div class="input-group">
+                                <ng-select
+                                    name="type"
+                                    style="width: 140px"
+                                    appendTo="body"
+                                    [(ngModel)]="filter.status"
+                                    placeholder="Status"
+                                    [searchable]="false"
+                                    (change)="reloadDataTable()"
+                                >
+                                    <ng-option [value]="'voucher'"
+                                        >Voucher</ng-option
+                                    >
+                                    <ng-option [value]="'diskon'"
+                                        >Diskon</ng-option
+                                    >
+                                </ng-select>
+                            </div>
+                        </form>
+                        <button
+                            type="button"
+                            class="btn btn-sm btn-primary"
+                            (click)="formCreate()"
+                        >
+                            <em
+                                class="fa fa-plus font-size-14 align-middle mr-1"
+                            ></em>
+                            Tambah Promo
+                        </button>
                     </div>
                 </div>
                 <div class="card-body">
@@ -100,10 +92,16 @@
                                         >Diskon</label
                                     >
                                 </td>
-                                <td class="vertical-middle" *ngIf="promo.status=='voucher'">
+                                <td
+                                    class="vertical-middle"
+                                    *ngIf="promo.status == 'voucher'"
+                                >
                                     Rp. {{ promo.nominal_rupiah | number }}
                                 </td>
-                                <td class="vertical-middle" *ngIf="promo.status=='diskon'">
+                                <td
+                                    class="vertical-middle"
+                                    *ngIf="promo.status == 'diskon'"
+                                >
                                     {{ promo.nominal_percentage | number }} %
                                 </td>
                                 <td class="vertical-middle text-right">

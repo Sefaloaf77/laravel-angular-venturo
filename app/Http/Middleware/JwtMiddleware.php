@@ -28,7 +28,7 @@ class JwtMiddleware extends BaseMiddleware
             $userToken = JWTAuth::parseToken()->getPayload()->get('user');
 
             $updatedDb = new DateTime($userModel->updated_security);
-            $updatedToken = new DateTime($userToken->updated_security);
+            $updatedToken = new DateTime($userToken['updated_security']);
 
             // Cek jika ada perubahan pengaturan keamanan, user harus login ulang
             if ($updatedDb > $updatedToken) {

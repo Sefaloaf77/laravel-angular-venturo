@@ -71,29 +71,35 @@
     <div class="form-group row">
         <label class="col-md-4">Status</label>
         <div class="col-md-8">
-            <div
-                class="btn-group btn-group-toggle"
-                ngbRadioGroup
-                name="user_roles_id"
-                [(ngModel)]="formModel.user_roles_id"
-            >
-                <div *ngFor="let role of roles">
-                    <input
-                        type="radio"
-                        class="btn-check"
-                        id="btnradio{{ role.id }}"
-                        autocomplete="off"
-                        [checked]="role.id === formModel.user_roles_id"
-                        [(ngModel)]="formModel.user_roles_id"
-                        value="{{ role.id }}"
-                        name="user_roles_id"
-                    />
+            <div>
+                <div
+                    class="btn-group btn-group-toggle"
+                    ngbRadioGroup
+                    role="group"
+                    aria-label="Basic radio toggle button group"
+                    name="user_roles_id"
+                    [(ngModel)]="formModel.user_roles_id"
+                >
                     <label
-                        ngbButtonLabel
-                        for="btnradio{{ role.id }}"
-                        class="btn btn-outline-primary"
-                        >{{ role.name }}</label
+                        *ngFor="let role of roles"
+                        class="btn btn-outline-primary text-primary"
+                        [ngClass]="{
+                            'btn-outline-primary text-primary':
+                                role.id !== formModel.user_roles_id,
+                            'btn-primary text-white':
+                                role.id == formModel.user_roles_id
+                        }"
                     >
+                        <input
+                            type="radio"
+                            [value]="role.id"
+                            name="user_roles_id"
+                            class="btn-check"
+                            [checked]="role.id === formModel.user_roles_id"
+                            [(ngModel)]="formModel.user_roles_id"
+                        />
+                        {{ role.name }}
+                    </label>
                 </div>
             </div>
         </div>

@@ -8,7 +8,7 @@ import { DashboardService } from "./services/dashboard.service";
 })
 export class DashboardComponent implements OnInit {
     activeButton: string = "";
-    defaultMonthButtonOn: boolean = true;
+    defaultMonthButtonOn: boolean = false;
     showLoading: boolean;
     constructor(private dashboardService: DashboardService) {}
 
@@ -28,7 +28,9 @@ export class DashboardComponent implements OnInit {
         this.getSummaries();
         this.getTotalPerYear();
         this.getTotalPerMonth();
-        this.resetFilter()
+        this.resetFilter();
+        this.activeButton = "month";
+        this.handleButtonClick(this.activeButton);
     }
 
     resetFilter() {

@@ -24,23 +24,24 @@ class RoleMiddleware extends BaseMiddleware
      */
     public function handle($request, Closure $next, $roles)
     {
-        // try {
-        //     $user = JWTAuth::parseToken()->authenticate();
+        try {
+            $user = JWTAuth::parseToken()->authenticate();
+            // dd($user);
 
-        //     // Cek jika user tidak mempunyai akses, tolak request ke endpoint yg diminta
-        //     if(!$user->hasRole($roles)){
-        //         return response()->failed(['Anda tidak memiliki credential untuk mengakses data ini'], 403);
-        //     }
+            // Cek jika user tidak mempunyai akses, tolak request ke endpoint yg diminta
+            if(!$user->isHasRole($roles)){
+                return response()->failed(['Anda tidak memiliki credential untuk mengakses data ini'], 403);
+            }
 
-        // } catch (Exception $e) {
-        //     if ($e instanceof TokenInvalidException){
-        //         return response()->failed(['Token yang anda gunakan tidak valid'], 403);
-        //     }else if ($e instanceof TokenExpiredException){
-        //         return response()->failed(['Token anda telah kadaluarsa, silahkan login ulang'], 403);
-        //     }else{
-        //         return response()->failed($e->getMessage());
-        //     }
-        // }
+        } catch (Exception $e) {
+            if ($e instanceof TokenInvalidException){
+                return response()->failed(['Token yang anda gunakan tidak valid'], 403);
+            }else if ($e instanceof TokenExpiredException){
+                return response()->failed(['Token anda telah kadaluarsa, silahkan login ulang'], 403);
+            }else{
+                return response()->failed($e->getMessage());
+            }
+        }
 
         return $next($request);
     }

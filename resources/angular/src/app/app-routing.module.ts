@@ -1,7 +1,8 @@
-import { NgModule } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
+import { NgModule } from "@angular/core";
+import { Routes, RouterModule } from "@angular/router";
 
-import { LayoutComponent } from './layouts/layout.component';
+import { LayoutComponent } from "./layouts/layout.component";
+import { AuthGuard } from "./core/guards/auth.guard";
 
 const routes: Routes = [
     {
@@ -14,6 +15,7 @@ const routes: Routes = [
         component: LayoutComponent,
         loadChildren: () =>
             import("./feature/feature.module").then((m) => m.FeatureModule),
+        canActivate: [AuthGuard]
     },
     {
         path: "",
@@ -31,13 +33,17 @@ const routes: Routes = [
         path: "",
         component: LayoutComponent,
         loadChildren: () =>
-            import("./feature/customer/customer.module").then((m) => m.CustomerModule),
+            import("./feature/customer/customer.module").then(
+                (m) => m.CustomerModule
+            ),
     },
     {
         path: "",
         component: LayoutComponent,
         loadChildren: () =>
-            import("./feature/product/product.module").then((m) => m.ProductModule),
+            import("./feature/product/product.module").then(
+                (m) => m.ProductModule
+            ),
     },
     {
         path: "",
@@ -55,13 +61,16 @@ const routes: Routes = [
         path: "",
         component: LayoutComponent,
         loadChildren: () =>
-            import("./feature/report/report.module").then((m) => m.ReportModule),
+            import("./feature/report/report.module").then(
+                (m) => m.ReportModule
+            ),
     },
 ];
 
 @NgModule({
-    imports: [RouterModule.forRoot(routes, { scrollPositionRestoration: 'top' })],
-    exports: [RouterModule]
+    imports: [
+        RouterModule.forRoot(routes, { scrollPositionRestoration: "top" }),
+    ],
+    exports: [RouterModule],
 })
-
-export class AppRoutingModule { }
+export class AppRoutingModule {}

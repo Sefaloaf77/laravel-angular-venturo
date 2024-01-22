@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Http\Traits\Uuid;
 use App\Repository\CrudInterface;
+use App\Http\Traits\RecordSignature;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -13,6 +14,8 @@ class RoleModel extends Model implements CrudInterface
     use HasFactory;
     use SoftDeletes; // Use SoftDeletes library
     // use Uuid;
+    // use RecordSignature;
+    
     /**
      * Menentukan nama tabel yang terhubung dengan Class ini
      *

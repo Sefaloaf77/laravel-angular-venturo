@@ -9,7 +9,7 @@ use ProtoneMedia\LaravelMixins\Request\ConvertsBase64ToFiles;
 class UpdateRequest extends FormRequest
 {
     use ConvertsBase64ToFiles; // Library untuk convert base64 menjadi File
-    
+
     public $validator = null;
 
     /**
@@ -31,7 +31,7 @@ class UpdateRequest extends FormRequest
      */
     public function failedValidation(Validator $validator)
     {
-       $this->validator = $validator;
+        $this->validator = $validator;
     }
 
     public function rules()
@@ -40,10 +40,11 @@ class UpdateRequest extends FormRequest
             'id' => 'required',
             'name' => 'required|max:100',
             'photo' => 'nullable|file|image',
-            'email'=> 'required|email',
+            'email' => 'required|email',
             'password' => 'nullable|min:6',
             'phone_number' => 'numeric',
-            'user_roles_id' => 'required'
+            'user_roles_id' => 'required',
+            'updated_security' => 'nullable'
         ];
     }
 

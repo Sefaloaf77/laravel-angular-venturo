@@ -1,69 +1,25 @@
-<div class="account-pages">
-    <div class="row main-pages">
-        <div class="col-lg-6 col-md-6 col-xs-12 col-sm-12 d-flex justify-content-center align-items-center">
-            <section class="form-section">
-                <div class="content mt-5 mb-5">
-                    <div class="row">
-                        <div class="col-md-12 mb-3">
-                            <h2><b>Sign In</b></h2>
-                            <p>
-                                Don't have account? <a href="#" class="text-primary">Sign Up</a>
-                            </p>
+<div class="container" id="login-page">
+    <div class="row align-items-center vh-100">
+        <div class="col-lg-5 col-md-6 col-xs-12 mx-auto">
+            <div class="card" id="card-login">
+                <div class="card-body">
+                    <h1>Login</h1>
+                    <h2>Please Login To Continue</h2>
+                    <form id="form-login">
+                        <div class="form-group">
+                            <label>Email</label>
+                            <input type="text" [(ngModel)]="email" name="email" class="form-control" placeholder="example@gmail.com">
                         </div>
-                        <div class="col-12 mb-3">
-                            <div class="form-group">
-                                <label for="email">Email <span class="text-danger">*</span></label>
-                                <input type="email" [(ngModel)]="email" class="form-control" placeholder="Email Address....." />
-                            </div>
+                        <div class="form-group">
+                            <label>Password</label>
+                            <input type="password" [(ngModel)]="password" name="password" class="form-control" placeholder="Your password">
                         </div>
-                        <div class="col-12 mb-3">
-                            <div class="form-group">
-                                <label for="email">Password <span class="text-danger">*</span></label>
-                                <input type="password" [(ngModel)]="password" class="form-control" placeholder="Password....." />
-                            </div>
+                        <div class="form-group">
+                            <button type="button" (click)="login()" class="btn btn-primary">Login</button>
                         </div>
-                    </div>
-                    <div class="row mb-3">
-                        <div class="col-12 text-center">
-                            <button class="btn-login" (click)="login()">Sign In</button>
-                        </div>
-                    </div>
-                    <div class="row mb-3">
-                        <div class="col-12">
-                            <div class="d-flex align-items-center continue">
-                                <span></span>
-                                <p>Or Continue</p>
-                                <span></span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-4 text-center">
-                            <button class="button"><i class='bx bxl-facebook'></i></button>
-                        </div>
-                        <div class="col-4 text-center">
-                            <button class="button"><i class='bx bxl-twitter'></i></button>
-                        </div>
-                        <div class="col-4 text-center">
-                            <button class="button"><i class='bx bxl-google'></i></button>
-                        </div>
-                    </div>
+                    </form>
                 </div>
-            </section>
-        </div>
-        <div class="col-lg-6 col-md-6 xs-hidden d-flex justify-content-center align-items-center" style=" background-image: url('../../../../assets/images/bg-login.jpg');
-      background-size: cover;">
-            <section class="form-section">
-                <div class="intro mt-5 mb-5 mr-5 ml-5">
-                    <h1>Welcome To<br />Our Community</h1>
-                    <p style="color: lightgrey;">
-                        Lorem ipsum dolor sit amet consectetur, adipisicing elit. Dolor
-                        corrupti iste eius, accusamus ab facilis officiis esse odit laborum
-                        quidem alias sequi expedita pariatur velit sed cupiditate provident
-                        adipisci ut, neque eaque et numquam nobis atque.
-                    </p>
-                </div>
-            </section>
+            </div>
         </div>
     </div>
 </div>

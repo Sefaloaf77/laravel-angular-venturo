@@ -1,0 +1,38 @@
+#donate {
+  float: left;
+}
+
+#donate label {
+  float: left;
+  width: 60px;
+  background-color: #fff;
+  border: 1px solid #009aad;
+  overflow: auto;
+}
+
+#donate label span {
+  text-align: center;
+  font-size: 10px;
+  padding: 10px 0px;
+  display: block;
+}
+
+#donate label input {
+  position: absolute;
+  top: -20px;
+}
+
+#donate input:checked + span {
+  background-color: #fff;
+  color: #009aad;
+}
+#donate .check {
+  background-color: #009aad;
+  color: #fff;
+}
+
+input {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+}

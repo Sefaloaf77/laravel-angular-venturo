@@ -63,6 +63,10 @@ export class FormVoucherComponent {
 
     ngOnChanges(changes: SimpleChange) {
         this.resetForm();
+        if (this.voucherId) {
+            this.getVoucher(this.voucherId);
+        }
+        // this.getCustomerById(this.cus)
     }
 
     setPeriodValue($event) {
@@ -93,11 +97,12 @@ export class FormVoucherComponent {
 
         if (this.voucherId > 0) {
             this.activeMode = this.MODE_UPDATE;
-            this.getVoucherById(this.voucherId);
+            this.getVoucher(this.voucherId);
+            this.getCustomerById(this.formModel.customer_id);
             return true;
+        } else {
+            this.activeMode = this.MODE_CREATE;
         }
-
-        this.activeMode = this.MODE_CREATE;
     }
 
     getCustomers(name = "") {
@@ -133,12 +138,38 @@ export class FormVoucherComponent {
         this.formModel.photo_url = $event.photo_url;
         this.formModel.photo = $event.photo;
     }
-
+    getVoucher(voucherId) {
+        this.voucherService.getVoucherById(voucherId).subscribe(
+            (res: any) => {
+                this.formModel = res.data;
+                this.activeMode = this.MODE_UPDATE;
+            },
+            (err) => {
+                console.log(err);
+            }
+        );
+    }
     getVoucherById(voucherId) {
         this.voucherService.getVoucherById(voucherId).subscribe(
             (res: any) => {
                 this.formModel = res.data;
                 this.setSelectedPromo(this.formModel);
+            },
+            (err) => {
+                console.log(err);
+            }
+        );
+    }
+    setSelectedCustomer($event) {
+        this.formModel.customer_id = $event.customer_id;
+    }
+    getCustomerById(customer_id) {
+        this.customerService.getCustomerById(customer_id).subscribe(
+            (res: any) => {
+                console.log(res.data)
+                this.formModel = res.data;
+                this.formModel.customer_id = res.data.customer_id;
+                this.setSelectedCustomer(this.formModel);
             },
             (err) => {
                 console.log(err);

@@ -1,17 +1,21 @@
 <?php
 namespace App\Models;
 
+use App\Http\Traits\RecordSignature;
 use App\Http\Traits\Uuid;
 use App\Repository\CrudInterface;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Tymon\JWTAuth\Contracts\JWTSubject;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 
-class UserModel extends Model implements CrudInterface
+class UserModel extends Authenticatable implements CrudInterface, JWTSubject
 {
     use HasFactory;
     use SoftDeletes; // Use SoftDeletes library
     use Uuid;
+    // use RecordSignature;
 
     /**
      * Akan mengisi kolom "created_at" dan "updated_at" secara otomatis,
@@ -47,6 +51,41 @@ class UserModel extends Model implements CrudInterface
      * @var string
      */
     protected $table = 'user_auth';
+    public function getJWTIdentifier()
+    {
+        return $this->getKey();
+    }
+    public function getJWTCustomClaims()
+    {
+        return [
+            'user' => [
+                'id' => $this->id,
+                'email' => $this->email,
+                'updated_security' => $this->updated_security
+            ]
+        ];
+    }
+    public function isHasRole($permissionName)
+    {
+        $tokenPermission = explode('|', $permissionName);
+        $userPrivilege = json_decode($this->role->access ?? '{}', TRUE);
+
+        foreach ($tokenPermission as $val) {
+            $permission = explode('.', $val);
+            $feature = $permission[0] ?? '-';
+            $activity = $permission[1] ?? '-';
+            if (isset($userPrivilege[$feature][$activity]) && $userPrivilege[$feature][$activity] === true) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public function role()
+    {
+        return $this->hasOne(RoleModel::class, 'id', 'user_roles_id');
+    }
 
     public function drop(string $id)
     {

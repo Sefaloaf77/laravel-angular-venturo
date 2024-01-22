@@ -34,7 +34,7 @@ class UpdateRequest extends FormRequest
         return [
             'id' => 'required',
             'name' => 'max:100',
-            'email' => 'email',
+            'email' => 'nullable|email',
             'phone_number' => 'nullable|numeric',
             'photo' => 'nullable|file|image',
             'date_of_birth' => 'nullable|date',

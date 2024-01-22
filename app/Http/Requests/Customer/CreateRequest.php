@@ -23,7 +23,7 @@ class CreateRequest extends FormRequest
     {
         return [
             'name' => 'required|max:100',
-            'email' => 'required|email',
+            'email' => 'nullable|email',
             'phone_number' => 'nullable|numeric',
             'photo' => 'nullable|file|image',
             'date_of_birth' => 'nullable|date',

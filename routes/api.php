@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\RoleController;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\PromoController;
@@ -25,9 +26,15 @@ use App\Http\Controllers\Api\ProductCategoryController;
 */
 
 Route::prefix('v1')->group(function () {
-    Route::get('/users', [UserController::class, 'index']);
-    Route::get('/users/{id}', [UserController::class, 'show']);
-    Route::post('/users', [UserController::class, 'store']);
+    Route::get('/users', [UserController::class, 'index'])->middleware([
+        'auth.api',
+        'role:user.view|role:user.create'
+    ]);
+    Route::get('/users/{id}', [UserController::class, 'show'])->middleware(['auth.api']);
+    Route::post('/users', [UserController::class, 'store'])->middleware([
+        'auth.api',
+        'role:user.create'
+    ]);
     Route::put('/users', [UserController::class, 'update']);
     Route::delete('/users/{id}', [UserController::class, 'destroy']);
 
@@ -39,15 +46,18 @@ Route::prefix('v1')->group(function () {
 
     Route::get('/customers', [CustomerController::class, 'index']);
     Route::get('/customers/{id}', [CustomerController::class, 'show']);
-    Route::post('/customers', [CustomerController::class, 'store']);
-    Route::put('/customers', [CustomerController::class, 'update']);
-    Route::delete('/customers/{id}', [CustomerController::class, 'destroy']);
+    Route::post('/customers', [CustomerController::class, 'store'])->middleware([
+        'auth.api',
+        'role:customers.create|user.create'
+    ]);
+    Route::put('/customers', [CustomerController::class, 'update'])->middleware(['auth.api', 'role:customers.update']);
+    Route::delete('/customers/{id}', [CustomerController::class, 'destroy'])->middleware(['auth.api', 'role:customers.delete']);
 
-    Route::get('/categories', [ProductCategoryController::class, 'index']);
-    Route::get('/categories/{id}', [ProductCategoryController::class, 'show']);
-    Route::post('/categories', [ProductCategoryController::class, 'store']);
-    Route::put('/categories', [ProductCategoryController::class, 'update']);
-    Route::delete('/categories/{id}', [ProductCategoryController::class, 'destroy']);
+    Route::get('/categories', [ProductCategoryController::class, 'index'])->middleware(['auth.api', 'role:categories.view']);
+    Route::get('/categories/{id}', [ProductCategoryController::class, 'show'])->middleware(['auth.api', 'role:categories.view']);
+    Route::post('/categories', [ProductCategoryController::class, 'store'])->middleware(['auth.api', 'role:categories.create']);
+    Route::put('/categories', [ProductCategoryController::class, 'update'])->middleware(['auth.api', 'role:categories.update']);
+    Route::delete('/categories/{id}', [ProductCategoryController::class, 'destroy'])->middleware(['auth.api', 'role:categories.delete']);
 
     Route::get('/products', [ProductController::class, 'index']);
     Route::get('/products/{id}', [ProductController::class, 'show']);
@@ -67,16 +77,26 @@ Route::prefix('v1')->group(function () {
     Route::post('/vouchers', [VoucherController::class, 'store']);
     Route::put('/vouchers', [VoucherController::class, 'update']);
     Route::delete('/vouchers/{id}', [VoucherController::class, 'destroy']);
+    Route::get('/vouchers/cust/{id}', [VoucherController::class, 'getByCust']);
 
     Route::get('/discounts', [DiscountController::class, 'index']);
-    Route::get('/discounts/{id}', [DiscountController::class, 'show']);
+    // Route::get('/discounts/promo', [DiscountController::class, 'getPromoByDiscount']);
+    // Route::get('/discounts/{id}', [DiscountController::class, 'show']);
     Route::post('/discounts', [DiscountController::class, 'store']);
     Route::put('/discounts', [DiscountController::class, 'update']);
-    // Route::delete('/discounts/{id}', [DiscountController::class, 'destroy']);
+    // Route::get('/discounts', [DiscountController::class, 'index']);
+    // Route::get('/discounts/table-headings', [DiscountController::class, 'getTableHeadings']);
+    // Route::get('/discounts/{id}', [DiscountController::class, 'show']);
+    // Route::post('/discounts', [DiscountController::class, 'store']);
+    // Route::put('/discounts/{id}', [DiscountController::class, 'update']);
+    Route::get('/discounts/{id}', [DiscountController::class, 'getByCust']);
 
     Route::get('/sales', [SalesController::class, 'index']);
     Route::get('/sales/{id}', [SalesController::class, 'show']);
     Route::post('/sales', [SalesController::class, 'store']);
+
+    Route::get('/sale', [SalesController::class, 'getTransaction']);
+    Route::post('/sale', [SalesController::class, 'storeTransaction']);
 
     Route::get('/report/sales-promo', [ReportSalesController::class, 'viewSalesPromo']);
     Route::get('/report/sales-transaction', [ReportSalesController::class, 'viewSalesTransaction']);
@@ -90,6 +110,9 @@ Route::prefix('v1')->group(function () {
     Route::get('/report/total-sales/summaries', [SalesSummaryController::class, 'getTotalSummary']);
     Route::get('/report/total-sales/year', [SalesSummaryController::class, 'getDiagramPerYear']);
     Route::get('/report/total-sales/month', [SalesSummaryController::class, 'getDiagramPerMonth']);
+
+    Route::post('/auth/login', [AuthController::class, 'login']);
+    Route::get('/auth/profile', [AuthController::class, 'profile'])->middleware(['auth.api']);
 });
 
 Route::get('/', function () {

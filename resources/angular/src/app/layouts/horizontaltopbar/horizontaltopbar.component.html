@@ -36,13 +36,13 @@
                 >
                     <img
                         class="rounded-circle header-profile-user"
-                        *ngIf="userLogin.foto_url"
-                        src="{{ userLogin.foto_url }}"
+                        *ngIf="userLogin.photo"
+                        src="{{ userLogin.photo }}"
                         alt="User Avatar"
                     />
-                    <em *ngIf="!userLogin.foto_url" class="fa fa-user"></em>
+                    <em *ngIf="!userLogin.photo" class="fa fa-user"></em>
                     <span class="d-none d-xl-inline-block ml-1">{{
-                        userLogin.nama
+                        userLogin.name
                     }}</span>
                     <em
                         class="mdi mdi-chevron-down d-none d-xl-inline-block"
@@ -52,7 +52,7 @@
                     <a
                         class="dropdown-item"
                         href="javascript: void(0);"
-                        [routerLink]="['/editProfile']"
+                        (click)="updateProfile(formProfile, userLogin)"
                     >
                         <em class="font-size-16 fa fa-user mr-1"></em>
                         Profile
@@ -89,6 +89,7 @@
                     <a
                         href="javascript: void(0);"
                         [routerLink]="['/user']"
+                        
                         class="col dropdown-item side-nav-link-ref"
                         >User</a
                     >
@@ -107,18 +108,21 @@
                     <a
                         href="javascript: void(0);"
                         [routerLink]="['/product']"
+                        
                         class="col dropdown-item side-nav-link-ref"
                         >Menu</a
                     >
                     <a
                         href="javascript: void(0);"
                         [routerLink]="['/promo']"
+                        
                         class="col dropdown-item side-nav-link-ref"
                         >Promo</a
                     >
                     <a
                         href="javascript: void(0);"
                         [routerLink]="['/voucher']"
+                        
                         class="col dropdown-item side-nav-link-ref"
                         >Voucher</a
                     >
@@ -149,9 +153,9 @@
                         class="col dropdown-item side-nav-link-ref"
                         >Transaksi</a
                     >
-                    <a class="col dropdown-item side-nav-link-ref"
+                    <!-- <a class="col dropdown-item side-nav-link-ref"
                         >Penjualan Menu</a
-                    >
+                    > -->
                 </div>
             </li>
             <li class="nav-item dropdown" ngbDropdown>
@@ -192,3 +196,23 @@
         </ul>
     </div>
 </nav>
+
+<ng-template #formProfile let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title mt-0">{{ titleModal }}</h5>
+    <button
+      type="button"
+      class="close"
+      (click)="modal.close()"
+      aria-label="Close"
+    >
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <app-form-profile
+      [profileId]="profileId"
+      (afterSave)="modal.close()"
+    ></app-form-profile>
+  </div>
+</ng-template>

@@ -1,110 +1,157 @@
 .account-pages {
     overflow: hidden;
     background-color: white;
-  }
-  
-  .col-md-6 {
+}
+
+.col-md-6 {
     padding: 0;
-  }
-  
-  .main-pages {
+}
+
+.main-pages {
     height: 100vh;
-  }
-  
-  .form-section {
+}
+
+.form-section {
     color: black;
-  
+
     .content {
-      width: 340px;
+        width: 340px;
     }
     .intro {
-      width: 500px;
+        width: 500px;
     }
-  
+
     h2 {
-      font-size: 30px;
-      color: black;
+        font-size: 30px;
+        color: black;
     }
     h1 {
-      font-size: 2rem;
-      display: block;
-      font-weight: bolder;
-      color: white;
+        font-size: 2rem;
+        display: block;
+        font-weight: bolder;
+        color: white;
     }
-  
+
     p {
-      font-size: 1rem;
-      color: black;
+        font-size: 1rem;
+        color: black;
     }
-  
+
     .form-control {
-      padding: 1.5rem 0.75rem;
+        padding: 1.5rem 0.75rem;
     }
-  
+
     label {
-      font-size: 14px;
-    }
-  
-    .img-logo {
-      width: 60px;
-    }
-  
-    .btn-login {
-      width: 70%;
-      outline: none;
-      border: none;
-      background: none;
-      background-color: rgb(80, 80, 199);
-      border-radius: 20px;
-      color: white;
-      padding: 10px;
-    }
-  
-    .form-check {
-      padding-left: 2.25rem;
-    }
-  
-    .continue {
-      span {
-        width: 35%;
-        border: 1px solid rgb(218, 218, 218);
-      }
-  
-      p {
-        margin-top: 15px;
         font-size: 14px;
-        color: grey;
-        margin-right: 5px;
-        margin-left: 5px;
-      }
     }
-  
+
+    .img-logo {
+        width: 60px;
+    }
+
+    .btn-login {
+        width: 70%;
+        outline: none;
+        border: none;
+        background: none;
+        background-color: rgb(80, 80, 199);
+        border-radius: 20px;
+        color: white;
+        padding: 10px;
+    }
+
+    .form-check {
+        padding-left: 2.25rem;
+    }
+
+    .continue {
+        span {
+            width: 35%;
+            border: 1px solid rgb(218, 218, 218);
+        }
+
+        p {
+            margin-top: 15px;
+            font-size: 14px;
+            color: grey;
+            margin-right: 5px;
+            margin-left: 5px;
+        }
+    }
+
     .button {
-      background: none;
-      outline: none;
-      border: none;
-      background-color: white;
-      border: 2px solid rgb(233, 233, 233);
-      padding: 5px 30px;
-      color: gray;
-      border-radius: 12px;
-      font-size: 20px;
-  
-      &:hover {
-        background-color: rgb(233, 233, 233);
-      }
+        background: none;
+        outline: none;
+        border: none;
+        background-color: white;
+        border: 2px solid rgb(233, 233, 233);
+        padding: 5px 30px;
+        color: gray;
+        border-radius: 12px;
+        font-size: 20px;
+
+        &:hover {
+            background-color: rgb(233, 233, 233);
+        }
     }
-  }
-  @media (max-width: 641px) {
+}
+
+#card-login {
+    box-shadow: 0px 0px 36px rgba(74, 74, 74, 0.3);
+    border-radius: 15px;
+}
+
+#card-login .card-body {
+    padding: 50px 35px;
+}
+
+#card-login .card-body h1 {
+    color: #009aad;
+    font-weight: bold;
+    text-transform: uppercase;
+    text-align: center;
+}
+
+#card-login .card-body h2 {
+    color: #4a4a4a;
+    font-weight: 500;
+    font-size: 0.8rem;
+    text-align: center;
+}
+
+#form-login {
+    margin-top: 30px;
+}
+
+#form-login button {
+    margin-top: 20px;
+    width: 100%;
+    border-radius: 15px;
+    box-shadow: 0px 0px 21px rgba(0, 154, 173, 0.36);
+}
+
+#form-login .form-group label {
+    color: #009aad;
+}
+
+#form-login .form-group input {
+    border: none;
+    border-bottom: 1px solid #a7a7a7;
+    padding: 15px 0px;
+}
+
+#form-login .form-group input:focus {
+    border-bottom: 2px solid #80bdff !important;
+}
+@media (max-width: 641px) {
     .intro {
-      width: 340px !important;
+        width: 340px !important;
     }
     /* portrait tablets, portrait iPad, landscape e-readers, landscape 800x480 or 854x480 phones */
-  }
-  @media (max-width: 961px) {
+}
+@media (max-width: 961px) {
     .intro {
-      width: 340px !important;
+        width: 340px !important;
     }
     /* tablet, landscape iPad, lo-res laptops ands desktops */
-  }
-  
+}

@@ -14,12 +14,12 @@ import { UserModule } from "./user/user.module";
 import { TestModule } from "./test/test.module";
 import { CustomerModule } from "./customer/customer.module";
 import { ProductModule } from "./product/product.module";
-import { PromoModule } from "./promo/promo.module";
-import { SaleModule } from "./sale/sale.module";
 import { ReportModule } from "./report/report.module";
 import { ChartsModule } from "ng2-charts";
 import { Daterangepicker } from "ng2-daterangepicker";
 import { SharedModule } from 'src/app/shared/shared.module';
+import { PromoModule } from "./promo/promo.module";
+import { SaleModule } from "./sale/sale.module";
 
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     suppressScrollX: true,
@@ -38,12 +38,12 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
         TestModule,
         CustomerModule,
         ProductModule,
-        PromoModule,
         SaleModule,
         ReportModule,
         ChartsModule,
         Daterangepicker,
         SharedModule,
+        PromoModule
     ],
     providers: [
         {

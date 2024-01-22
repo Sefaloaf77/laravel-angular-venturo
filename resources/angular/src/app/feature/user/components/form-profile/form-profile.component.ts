@@ -15,47 +15,53 @@ import { ProgressServiceService } from "src/app/feature/core/progress-service.se
     styleUrls: ["./form-profile.component.scss"],
 })
 export class FormProfileComponent {
-    @Input() userId: string;
+    @Input() profileId: any;
     @Output() afterSave = new EventEmitter<boolean>();
 
-    readonly MODE_CREATE = "add";
-    readonly MODE_UPDATE = "update";
-
-    roles = [];
-
-    activeMode: string;
     formModel: {
-        photo: string;
-        id: string;
+        id: any;
         name: string;
         email: string;
         password: string;
+        photo: any;
+        photo_url: any;
         phone_number: string;
         user_roles_id: string;
     };
-    isDisabledForm: boolean = false;
 
+    isDisabledForm: boolean = false;
     constructor(
         private userService: UserService,
-        private landaService: LandaService,
-        private progressService: ProgressServiceService
+        private landaService: LandaService
     ) {}
 
-    ngOnInit(): void {}
-
-    ngOnChanges(changes: SimpleChange) {
-        this.resetForm();
-    }
-
-    getUser(userId) {
-        this.userService.getUserById(userId).subscribe(
+    roles: any;
+    getRoles() {
+        this.userService.getRoles([]).subscribe(
             (res: any) => {
-                this.formModel = res.data;
+                this.roles = res.data.list;
             },
             (err) => {
                 console.log(err);
             }
         );
+    }
+
+    getUser(profileId) {
+        console.log(profileId);
+        this.userService.getUserById(profileId).subscribe(
+            (res: any) => {
+                this.formModel = res.data;
+                console.log(res);
+            },
+            (err) => {
+                console.log(err);
+            }
+        );
+    }
+
+    getCroppedImage($event) {
+        this.formModel.photo = $event;
     }
 
     resetForm() {
@@ -68,75 +74,31 @@ export class FormProfileComponent {
             phone_number: "",
             user_roles_id: "",
             photo: "",
+            photo_url: "",
         };
 
-        if (this.userId) {
-            this.activeMode = this.MODE_UPDATE;
-            this.getUser(this.userId);
-            return true;
+        if (this.profileId != 0) {
+            this.getUser(this.profileId);
         }
-        this.activeMode = this.MODE_CREATE;
-    }
-
-    save() {
-        switch (this.activeMode) {
-            case this.MODE_CREATE:
-                this.insert();
-                break;
-            case this.MODE_UPDATE:
-                this.update();
-                break;
-        }
-    }
-
-    insert() {
-        this.isDisabledForm = true;
-        this.progressService.startLoading();
-        this.userService.createUser(this.formModel).subscribe(
-            (res: any) => {
-                this.landaService.alertSuccess("Berhasil", res.message);
-                this.afterSave.emit();
-                this.progressService.finishLoading();
-                this.isDisabledForm = false;
-            },
-            (err) => {
-                this.landaService.alertError("Mohon maaf", err.error.errors);
-                this.progressService.finishLoading();
-                this.isDisabledForm = false;
-            }
-        );
     }
 
     update() {
         this.isDisabledForm = true;
-        this.progressService.startLoading();
         this.userService.updateUser(this.formModel).subscribe(
             (res: any) => {
                 this.landaService.alertSuccess("Berhasil", res.message);
                 this.afterSave.emit();
-                this.progressService.finishLoading();
                 this.isDisabledForm = false;
             },
             (err) => {
-                this.landaService.alertError("Mohon maaf", err.error.errors);
-                this.progressService.finishLoading();
+                this.landaService.alertError("Mohon Maaf", err.error.errors);
                 this.isDisabledForm = false;
             }
         );
     }
 
-    getRoles() {
-        this.userService.getRoles().subscribe(
-            (res: any) => {
-                this.roles = res.data.list;
-            },
-            (err) => {
-                console.log(err);
-            }
-        );
+    ngOnChanges(changes: SimpleChange) {
+        this.resetForm();
     }
-
-    getCroppedImage($event) {
-        this.formModel.photo = $event;
-    }
+    ngOnInit(): void {}
 }

@@ -23,37 +23,42 @@
             <div class="form-group row">
                 <label class="form-label col-md-3 required">Customer</label>
                 <div class="col-md-9">
-                    <div class="input-group mr-2">
-                        <ng-select
-                            [items]="customers"
-                            style="min-width: 300px"
-                            placeholder="Pilih Customer"
-                            bindLabel="name"
-                            bindValue="id"
-                            [loading]="showLoading"
-                            [searchable]="false"
-                            [(ngModel)]="formModel.customer_id"
-                            name="customer_id"
-                        >
-                            <ng-template ng-header-tmp>
-                                <input
-                                    class="form-control"
-                                    type="text"
-                                    debounceKeyUp
-                                    (onEvent)="
-                                        getCustomers($event.target.value)
-                                    "
-                                />
-                            </ng-template>
-                        </ng-select>
-
-                        <div
-                            class="input-group-prepend"
-                            (click)="createCustomer(formCustomer)"
-                        >
-                            <span class="input-group-text">
-                                <em class="fa fa-plus"></em>
-                            </span>
+                    <div class="row align-items-center">
+                        <div class="col-md-10">
+                            <ng-select
+                                [items]="customers"
+                                style="min-width: 300px"
+                                placeholder="Pilih Customer"
+                                bindLabel="name"
+                                bindValue="id"
+                                [loading]="showLoading"
+                                [searchable]="false"
+                                [(ngModel)]="formModel.customer_id"
+                                name="customer_id"
+                            >
+                                <ng-template ng-header-tmp>
+                                    <input
+                                        class="form-control"
+                                        type="text" 
+                                        debounceKeyUp
+                                        (onEvent)="
+                                            setSelectedCustomer($event.target.value)
+                                        "
+                                    />
+                                </ng-template>
+                            </ng-select>
+                        </div>
+                        <div class="col-md-2">
+                            <div
+                                class="input-group-prepend h-auto"
+                                (click)="createCustomer(formCustomer)"
+                            >
+                                <span
+                                    class="input-group-text d-flex justify-content-center align-items-center"
+                                >
+                                    <em class="fa fa-plus"></em>
+                                </span>
+                            </div>
                         </div>
                     </div>
                 </div>
