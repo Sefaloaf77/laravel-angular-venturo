@@ -53,11 +53,11 @@ Route::prefix('v1')->group(function () {
     Route::put('/customers', [CustomerController::class, 'update'])->middleware(['auth.api', 'role:customers.update']);
     Route::delete('/customers/{id}', [CustomerController::class, 'destroy'])->middleware(['auth.api', 'role:customers.delete']);
 
-    Route::get('/categories', [ProductCategoryController::class, 'index'])->middleware(['auth.api', 'role:categories.view']);
-    Route::get('/categories/{id}', [ProductCategoryController::class, 'show'])->middleware(['auth.api', 'role:categories.view']);
-    Route::post('/categories', [ProductCategoryController::class, 'store'])->middleware(['auth.api', 'role:categories.create']);
-    Route::put('/categories', [ProductCategoryController::class, 'update'])->middleware(['auth.api', 'role:categories.update']);
-    Route::delete('/categories/{id}', [ProductCategoryController::class, 'destroy'])->middleware(['auth.api', 'role:categories.delete']);
+    Route::get('/categories', [ProductCategoryController::class, 'index'])->middleware(['auth.api']);
+    Route::get('/categories/{id}', [ProductCategoryController::class, 'show'])->middleware(['auth.api']);
+    Route::post('/categories', [ProductCategoryController::class, 'store'])->middleware(['auth.api']);
+    Route::put('/categories', [ProductCategoryController::class, 'update'])->middleware(['auth.api']);
+    Route::delete('/categories/{id}', [ProductCategoryController::class, 'destroy'])->middleware(['auth.api']);
 
     Route::get('/products', [ProductController::class, 'index']);
     Route::get('/products/{id}', [ProductController::class, 'show']);

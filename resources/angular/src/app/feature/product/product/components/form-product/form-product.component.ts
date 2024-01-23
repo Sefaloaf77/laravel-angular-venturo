@@ -10,6 +10,7 @@ import { LandaService } from "src/app/core/services/landa.service";
 import * as ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import { LoaderService } from "src/app/core/services/loader.service";
 import { CategoryService } from "../../../category/services/category.service";
+import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
 
 @Component({
     selector: "app-form-product",
@@ -21,32 +22,35 @@ export class FormProductComponent {
     readonly DEFAULT_TYPE = "Toping";
     readonly MODE_CREATE = "add";
     readonly MODE_UPDATE = "update";
-    activeButton: string = "";
 
     @Input() productId: number;
     @Output() afterSave = new EventEmitter<boolean>();
 
     configEditor = ClassicEditor;
     activeMode: string;
-    categories = [];
+    categories: [];
     showLoading: boolean;
+
+    titleModal: string;
+    categoryId: number;
     formModel: {
         id: number;
         name: string;
+        product_category_id: number;
         price: string;
         description: string;
         photo: string;
         photo_url: string;
         is_available: string;
-        product_category_id: number;
         details: any;
-        details_deleted: any;
+        details_deleted: any[];
     };
 
     constructor(
         private productService: ProductService,
-        private categoryService: CategoryService,
-        private landaService: LandaService
+        private categoriService: CategoryService,
+        private landaService: LandaService,
+        private modalService: NgbModal
     ) {}
 
     ngOnInit(): void {}
@@ -54,13 +58,10 @@ export class FormProductComponent {
     ngOnChanges(changes: SimpleChange) {
         this.resetForm();
     }
-    buttons = [
-        { id: "1", label: "Ada" },
-        { id: "0", label: "Habis" },
-    ];
+
     getCategories(name = "") {
         this.showLoading = true;
-        this.categoryService.getCategories({ name: name }).subscribe(
+        this.categoriService.getCategories({ name: name }).subscribe(
             (res: any) => {
                 this.categories = res.data.list;
                 this.showLoading = false;
@@ -95,6 +96,7 @@ export class FormProductComponent {
             this.getProduct(this.productId);
             return true;
         }
+
         this.activeMode = this.MODE_CREATE;
     }
 
@@ -102,6 +104,7 @@ export class FormProductComponent {
         this.productService.getProductId(productId).subscribe(
             (res: any) => {
                 this.formModel = res.data;
+                console.log(res.data);
             },
             (err) => {
                 console.log(err);
@@ -133,6 +136,8 @@ export class FormProductComponent {
     }
 
     update() {
+        console.log(this.formModel);
+
         this.productService.updateProduct(this.formModel).subscribe(
             (res: any) => {
                 this.landaService.alertSuccess("Berhasil", res.message);
@@ -154,10 +159,18 @@ export class FormProductComponent {
         this.formModel.details.push(val);
     }
 
-    removeDetail(details, paramIndex) {
-        details.splice(paramIndex, 1);
-        if (details[paramIndex]?.id) {
-            this.formModel.details_deleted.push(details[paramIndex]);
+    removeDetail(paramIndex: number) {
+        const removedDetail = this.formModel.details[paramIndex];
+        if (!this.formModel.details_deleted) {
+            this.formModel.details_deleted = [];
+        }
+
+        if (Array.isArray(this.formModel.details)) {
+            this.formModel.details.splice(paramIndex, 1);
+
+            if (removedDetail?.id) {
+                this.formModel.details_deleted.push(removedDetail);
+            }
         }
     }
 
@@ -165,5 +178,11 @@ export class FormProductComponent {
         if (details?.id) {
             details.is_updated = true;
         }
+    }
+
+    createCategory(modalId) {
+        this.titleModal = "Tambah Category";
+        this.categoryId = 0;
+        this.modalService.open(modalId, { size: "lg", backdrop: "static" });
     }
 }
