@@ -16,23 +16,17 @@ export class SalesTransactionComponent {
     dtInstance: Promise<DataTables.Api>;
     dtOptions: any;
 
+    row = 1;
+    customers: [];
+    products: [];
+    showLoading: boolean;
+    transactions: any;
     filter: {
         start_date: string;
         end_date: string;
         customer_id: string;
         product_id: string;
     };
-    showLoading: boolean;
-    customers: [];
-    products: [];
-    transactions: any[];
-
-    ngOnInit(): void {
-        this.resetFilter();
-        this.getCustomers();
-        this.getProducts();
-        this.reloadTransaction();
-    }
 
     constructor(
         private transactionService: TransactionService,
@@ -40,12 +34,54 @@ export class SalesTransactionComponent {
         private productService: ProductService
     ) {}
 
+    ngOnInit(): void {
+        this.resetFilter();
+        this.getCustomers();
+        this.getProducts();
+        this.getTransaction();
+    }
+
     resetFilter() {
         this.filter = {
             start_date: null,
             end_date: null,
             customer_id: null,
             product_id: null,
+        };
+    }
+
+    getTransaction() {
+        this.dtOptions = {
+            serverSide: true,
+            processing: true,
+            ordering: false,
+            pageLength: 10,
+            ajax: (dtParams: any, callback) => {
+                const params = {
+                    ...this.filter,
+                    per_page: dtParams.length,
+                    page: dtParams.start / dtParams.length + 1,
+                };
+                this.transactionService.getSalesTransaction(params).subscribe(
+                    (res: any) => {
+                        const { list, meta } = res.data;
+                        let number = dtParams.start + 1;
+                        list.forEach((val) => {
+                            val.no = number++;
+                        });
+                        this.transactions = list;
+                        callback({
+                            recordsTotal: meta.total,
+                            recordsFiltered: meta.total,
+                            data: [],
+                        });
+                    },
+                    (err: any) => {
+                        console.error("Error fetching transactions:", err);
+                        callback({ data: [] });
+                    }
+                );
+            },
         };
     }
 
@@ -68,6 +104,7 @@ export class SalesTransactionComponent {
             (res: any) => {
                 this.products = res.data.list;
                 this.showLoading = false;
+                console.log(this.products);
             },
             (err) => {
                 console.log(err);
@@ -75,69 +112,26 @@ export class SalesTransactionComponent {
         );
     }
 
-    reloadTransaction() {
-        // this.dtOptions = {
-        //     serverSide: true,
-        //     processing: true,
-        //     ordering: false,
-        //     pageLength: 25,
-        //     ajax: (dtParams: any, callback) => {
-        //         const params = {
-        //             ...this.filter,
-        //             per_page: dtParams.length,
-        //             page: dtParams.start / dtParams.length + 1,
-        //         };
-
-        //         this.transactionService.getSalesTransaction(params).subscribe(
-        //             (res: any) => {
-        //                 const { list, meta } = res.data;
-
-        //                 let number = dtParams.start + 1;
-        //                 list.forEach((val) => (val.no = number++));
-        //                 this.transactions = list;
-
-        // callback({
-        //     recordsTotal: meta.total,
-        //     recordsFiltered: meta.total,
-        //     data: [],
-        // });
-        //             },
-        //             (err: any) => {}
-        //         );
-        //     },
-        // };
-        this.transactionService.getSalesTransaction(this.filter).subscribe(
-            (res: any) => {
-                const { list } = res.data;
-                let number = 1;
-                list.forEach((val) => {
-                    val.no = number++;
-                    val.no_struk = this.splitTanggalStruk(val.date_transaction);
-                });
-                this.transactions = list;
-            },
-            (err: any) => {
-                console.log(err);
-            }
-        );
-    }
-
-    splitTanggalStruk(tanggal) {
-        const dateObject = new Date(tanggal);
-
-        const year = dateObject.getFullYear();
-        const month = dateObject.getMonth() + 1; // Perlu ditambah 1 karena indeks bulan dimulai dari 0
-        const day = dateObject.getDate();
-
-        const struk = `${day}/KWT/${month}/${year}`;
-
-        return struk;
+    reloadDataTable(): void {
+        this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
+            dtInstance.draw();
+        });
     }
 
     setFilterPeriod($event) {
         this.filter.start_date = $event.startDate;
         this.filter.end_date = $event.endDate;
-        this.reloadTransaction();
+        this.reloadDataTable();
+    }
+
+    setFilterCustomer($event) {
+        this.filter.customer_id = this.generateSafeParam($event);
+        this.reloadDataTable();
+    }
+
+    setFilterProduct($event) {
+        this.filter.product_id = this.generateSafeParam($event);
+        this.reloadDataTable();
     }
 
     generateSafeParam(list) {
@@ -146,15 +140,5 @@ export class SalesTransactionComponent {
         if (!paramId) return "";
 
         return paramId.join(",");
-    }
-
-    setFilterCustomer(customers) {
-        this.filter.customer_id = this.generateSafeParam(customers);
-        this.reloadTransaction();
-    }
-
-    setFilterProduct(products) {
-        this.filter.product_id = this.generateSafeParam(products);
-        this.reloadTransaction();
     }
 }

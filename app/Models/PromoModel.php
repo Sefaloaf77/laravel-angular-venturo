@@ -28,9 +28,14 @@ class PromoModel extends Model
         return $this->hasMany(DiscountModel::class, 'm_promo_id', 'id');
     }
 
+    // public function vouchers()
+    // {
+    //     return $this->hasMany(VoucherModel::class, 'm_promo_id');
+    // }
+
     public function vouchers()
     {
-        return $this->hasMany(VoucherModel::class, 'm_promo_id');
+        return $this->belongsTo(VoucherModel::class, 'm_promo_id', 'id'); // Adjust the foreign key name if necessary
     }
     protected $table = 'm_promo';
 
