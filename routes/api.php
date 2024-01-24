@@ -27,13 +27,11 @@ use App\Http\Controllers\Api\ProductCategoryController;
 
 Route::prefix('v1')->group(function () {
     Route::get('/users', [UserController::class, 'index'])->middleware([
-        'auth.api',
-        'role:user.view|role:user.create'
+        'auth.api'
     ]);
     Route::get('/users/{id}', [UserController::class, 'show'])->middleware(['auth.api']);
     Route::post('/users', [UserController::class, 'store'])->middleware([
-        'auth.api',
-        'role:user.create'
+        'auth.api'
     ]);
     Route::put('/users', [UserController::class, 'update']);
     Route::delete('/users/{id}', [UserController::class, 'destroy']);
@@ -50,8 +48,8 @@ Route::prefix('v1')->group(function () {
         'auth.api',
         'role:customers.create|user.create'
     ]);
-    Route::put('/customers', [CustomerController::class, 'update'])->middleware(['auth.api', 'role:customers.update']);
-    Route::delete('/customers/{id}', [CustomerController::class, 'destroy'])->middleware(['auth.api', 'role:customers.delete']);
+    Route::put('/customers', [CustomerController::class, 'update'])->middleware(['auth.api']);
+    Route::delete('/customers/{id}', [CustomerController::class, 'destroy'])->middleware(['auth.api']);
 
     Route::get('/categories', [ProductCategoryController::class, 'index'])->middleware(['auth.api']);
     Route::get('/categories/{id}', [ProductCategoryController::class, 'show'])->middleware(['auth.api']);

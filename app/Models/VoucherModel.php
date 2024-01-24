@@ -39,9 +39,13 @@ class VoucherModel extends Model
         return $this->hasOne(PromoModel::class, 'id', 'm_promo_id');
     }
 
+    // public function sale()
+    // {
+    //     return $this->hasMany(SalesModel::class, 'm_voucher_id');
+    // }
     public function sale()
     {
-        return $this->hasMany(SalesModel::class, 'm_voucher_id');
+        return $this->belongsTo(SalesModel::class, 'm_voucher_id', 'id'); // Adjust the foreign key name if necessary
     }
 
     public function drop(int $id)

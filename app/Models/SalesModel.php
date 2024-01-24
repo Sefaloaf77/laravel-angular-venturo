@@ -37,15 +37,15 @@ class SalesModel extends Model
         return $this->hasMany(SalesDetailModel::class, 't_sales_id', 'id');
     }
 
-    // public function voucher()
-    // {
-    //     return $this->hasOne(VoucherModel::class, 'id', 'm_voucher_id');
-    // }
-
     public function voucher()
     {
-        return $this->belongsTo(VoucherModel::class, 'm_voucher_id', 'id'); // Adjust the foreign key name if necessary
+        return $this->hasOne(VoucherModel::class, 'id', 'm_voucher_id');
     }
+
+    // public function voucher()
+    // {
+    //     return $this->belongsTo(VoucherModel::class, 'm_voucher_id', 'id'); // Adjust the foreign key name if necessary
+    // }
 
     public function discount()
     {
